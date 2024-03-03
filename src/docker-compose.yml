@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  django:
+    build: ./django
+    environment:
+      - POSTGRES_HOST=database
+    env_file:
+      - .env
+    ports:
+      - ${BE_PORT}:${BE_PORT}
+      - ${BE_PORT_ALT}:${BE_PORT_ALT}
+    volumes:
+      - ${HOST_SRC}:${DOCK_DST}
+    networks:
+      - bedb
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    expose:
+      - ${DB_PORT}
+    networks:
+      - bedb
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+networks:
+  bedb:
+
+volumes:
+  dev-db-data:
