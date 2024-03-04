@@ -4,8 +4,6 @@
 <html>
   <!-- Stylesheets & Imports -->
   <head>
-    <!-- Latest compiled and minified CSS -->
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/pulse/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'style.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    
@@ -35,18 +33,18 @@
             <tr>
               <td><div id="div_id_first_name" class="mb-3"> 
                 <label for="id_first_name" class="form-label">First Name</label> 
-                <input type="text" name="first_name" maxlength="255" class="textinput form-control" required autofocus id="id_first_name"> 
+                <input type="text" name="first_name" value="{{ form.data.first_name}}" maxlength="255" class="textinput form-control" required autofocus id="id_first_name"> 
               </div></td>
               <td><div id="div_id_last_name" class="mb-3"> 
                 <label for="id_last_name" class="form-label">Last Name</label> 
-                <input type="text" name="last_name" maxlength="255" class="textinput form-control" required id="id_last_name"> 
+                <input type="text" name="last_name" value="{{ form.data.last_name}}" maxlength="255" class="textinput form-control" required id="id_last_name"> 
               </div></td>
             </tr>
 
             <tr>
               <td colspan="2"><div id="div_id_email" class="mb-3"> 
                   <label for="id_email" class="form-label">Email</label> 
-                  <input type="email" name="email" maxlength="255" class="emailinput form-control" required id="id_email"> 
+                  <input type="email" name="email" value="{{ form.data.email }}" maxlength="255" class="emailinput form-control" required id="id_email"> 
               </div></td>
             </tr>
 
@@ -74,6 +72,13 @@
 
           </table>
         </form>
+        <div class="error-msg form">
+          {% for field in form %}
+          <div class="text-danger">
+              {{ field.errors }}
+          </div>
+          {% endfor %}
+        </div>
         <p class="link-text"> Already Have an Account? <a class="link" href="/login">Login</a></p>
         <p class="hr-lines" style="color:LightGray;text-align:center; margin:0;">or</p>
         <div class="d-grid gap-2">
