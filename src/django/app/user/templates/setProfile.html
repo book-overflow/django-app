@@ -30,7 +30,7 @@
                     <div style="position: relative; display: block; margin: 2%; text-align: center; color: #57068C; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ user.email }}</div>
             </div>
             <div class="set-profile"> 
-                <h1 class="form-heading">My Profile</h1>
+                <h1 class="form-heading">Set Up Your Profile</h1>
                 <form id="profileForm" class="form" method="POST" autocomplete="off">
                     <table class="form-input">
                         {% csrf_token %}
@@ -39,7 +39,7 @@
                         <div id="div_id_dob" class="mb-3"> 
                             <label for="id_dob" class="form-label requiredField">
                             Date of Birth</label> 
-                            <input type="date" name="dob" class="textinput form-control" required="" id="id_dob" disabled> 
+                            <input type="date" name="dob" class="textinput form-control" required="" id="id_dob"> 
                         </div>
                         </td>
                         </tr>
@@ -48,7 +48,7 @@
                             <div id="div_id_contact" class="mb-3"> 
                                 <label for="id_contact" class="form-label requiredField">
                                 Contact Number</label> 
-                                <input type="text" name="contact" placeholder="(___) ___-____" class="textinput form-control" required="" id="id_contact" disabled> 
+                                <input type="text" name="contact" placeholder="(___) ___-____" class="textinput form-control" required="" id="id_contact" > 
                             </div>
                             </td>
                             </tr>
@@ -57,7 +57,7 @@
                             <label for="id_address" class="form-label requiredField">
                             Address
                             </label> 
-                            <input type="text" name="address" maxlength="254" class="textinput form-control" id="id_address" disabled> 
+                            <input type="text" name="address" maxlength="254" class="textinput form-control" id="id_address"> 
                         </div>
                         </td></tr>
                         <tr>
@@ -66,7 +66,7 @@
                                     <label for="id_city" class="form-label requiredField">
                                     City
                                     </label> 
-                                    <input type="text" name="city" maxlength="20" class="textinput form-control" id="id_city" disabled> 
+                                    <input type="text" name="city" maxlength="20" class="textinput form-control" id="id_city"> 
                                 </div>
                             </td>
                             <td>
@@ -74,7 +74,7 @@
                                 <label for="id_state" class="form-label requiredField">
                                     State
                                 </label> 
-                                    <select name="state" class="form-select requiredField" id="id_state" style="font-size: 12px;" disabled>
+                                    <select name="state" class="form-select requiredField" id="id_state" style="font-size: 12px;">
                                     <option value="AL">AL</option>
                                     <option value="AK">AK</option>
                                     <option value="AR">AR</option>
@@ -136,12 +136,12 @@
                                     <label for="id_zipcode" class="form-label requiredField">
                                         Zipcode
                                     </label> 
-                                    <input name="zipcode" pattern="[0-9]{5}" title="Five digit zip code" class="textinput form-control" id="id_zipcode" disabled> 
+                                    <input name="zipcode" pattern="[0-9]{5}" title="Five digit zip code" class="textinput form-control" id="id_zipcode"> 
                                 </div>
                             </td>
                         </tr>
                         <tr><td>
-                        <button id="form-button" type="submit"  value="Submit" class="btn btn-primary">Edit Info</button>
+                        <button id="form-button" type="submit"  value="Submit" class="btn btn-primary">Submit Info</button>
                         </td></tr>
                     </table>
                 </form>

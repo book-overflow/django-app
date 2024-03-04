@@ -6,6 +6,7 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
+            request.session['name'] = form.data["first_name"]
             return redirect('user-login')
     else:
         form = CustomUserCreationForm()
@@ -14,3 +15,6 @@ def register(request):
 
 def profile(request):
     return render(request, 'profile.html')
+
+def setProfile(request):
+    return render(request, 'setProfile.html')

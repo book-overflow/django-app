@@ -25,7 +25,14 @@
     <!-- Register Form -->
     <div class="window">
       <div class="window-form">
-        <h1 class="form-heading">Login to Your Acount</h1>
+        {% if request.session.name is not None %}
+          <div class="form-heading"> 
+            <h1 style="font-size: 20px; font-family: 'Montserrat'; font-weight: 700;">Welcome {{ request.session.name }}!</h1>
+            <!-- <h1 style="font-size: 20px; font-family: 'Montserrat'; font-weight: 700;">Login to Your Acount</h1> -->
+          </div>
+        {% else %}
+          <h1 class="form-heading">Login to Your Acount</h1>
+        {% endif %}
         <form class="form" method="POST" action="">
           {% csrf_token %} 
           <!-- {{ form }} -->
