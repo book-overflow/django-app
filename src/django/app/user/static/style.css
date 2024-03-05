@@ -2,10 +2,16 @@
     margin-top: 2%;
     margin-left: auto;
     margin-right: auto;
-    background: #57068C; 
     box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.25); 
     border-radius: 8px;
     position: relative;
+}
+.window-photo{
+    background-image: url("books.png"); 
+    /* <a href="https://www.freepik.com/free-photo/modern-bookstore-showcasing-rows-vibrant-books_84718526.htm#fromView=search&page=1&position=22&uuid=45c3f2d9-97a9-4a79-9d3e-368c1cfffd79">Image by maniacvector on Freepik</a> */
+    background-position: left;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 .logo{
     height: 80px;
