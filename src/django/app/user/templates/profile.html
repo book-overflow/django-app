@@ -1,0 +1,172 @@
+{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/pulse/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    
+    </head>
+    <body>
+        <div class="topnav" id="myTopnav">
+            <img class="logo" src="{% static 'Logo2-mix.png' %}" alt="logo">
+            <a href="javascript:void(0);" class="icon" onclick="openNav()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+                </svg>              
+            </a>
+            <a href="/logout">Logout</a>
+            <a href="#">Contact</a>
+            <a href="#">About</a>
+            <a href="#">Browse</a>
+        </div>
+
+
+        <div style="align-content: start;">
+            <div class="profile-card">
+                    <img class="profile-photo" style="width: 50%; margin:auto; display: block;" src="{% static 'profile.png' %}" />
+                    <button type="button" style="display: block; border-radius: 8px; margin-top: 4%; margin-bottom: 4%; margin-left: auto; margin-right: auto;"; id="form-button" class="btn btn-outline-primary">Upload Photo</button>
+                    <div style="position: relative; display: block; margin-top: 8%; margin-bottom: 8%; text-align: center; color: black; font-size: 14px; font-family: Montserrat; font-weight: 700; word-wrap: break-word">{{ user.first_name }}<br/>{{ user.last_name }}</div>
+                    <div style="position: relative; display: block; margin: 2%; text-align: center; color: #57068C; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ user.email }}</div>
+            </div>
+            <div class="set-profile"> 
+                <h1 class="form-heading">My Profile</h1>
+                <form id="profileForm" class="form" method="POST" autocomplete="off">
+                    <table class="form-input">
+                        {% csrf_token %}
+                        <tr>
+                        <td>
+                        <div id="div_id_dob" class="mb-3"> 
+                            <label for="id_dob" class="form-label requiredField">
+                            Date of Birth</label> 
+                            <input type="date" name="dob" class="textinput form-control" required="" id="id_dob" disabled> 
+                        </div>
+                        </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            <div id="div_id_contact" class="mb-3"> 
+                                <label for="id_contact" class="form-label requiredField">
+                                Contact Number</label> 
+                                <input type="text" name="contact" placeholder="(___) ___-____" class="textinput form-control" required="" id="id_contact" disabled> 
+                            </div>
+                            </td>
+                            </tr>
+                        <tr><td colspan="2">
+                        <div id="div_id_address" class="mb-3"> 
+                            <label for="id_address" class="form-label requiredField">
+                            Address
+                            </label> 
+                            <input type="text" name="address" maxlength="254" class="textinput form-control" id="id_address" disabled> 
+                        </div>
+                        </td></tr>
+                        <tr>
+                            <td>
+                                <div id="div_id_city" class="mb-3"> 
+                                    <label for="id_city" class="form-label requiredField">
+                                    City
+                                    </label> 
+                                    <input type="text" name="city" maxlength="20" class="textinput form-control" id="id_city" disabled> 
+                                </div>
+                            </td>
+                            <td>
+                                <div id="div_id_state" class="mb-3"> 
+                                <label for="id_state" class="form-label requiredField">
+                                    State
+                                </label> 
+                                    <select name="state" class="form-select requiredField" id="id_state" style="font-size: 12px;" disabled>
+                                    <option value="AL">AL</option>
+                                    <option value="AK">AK</option>
+                                    <option value="AR">AR</option>
+                                    <option value="AZ">AZ</option>
+                                    <option value="CA">CA</option>
+                                    <option value="CO">CO</option>
+                                    <option value="CT">CT</option>
+                                    <option value="DC">DC</option>
+                                    <option value="DE">DE</option>
+                                    <option value="FL">FL</option>
+                                    <option value="GA">GA</option>
+                                    <option value="HI">HI</option>
+                                    <option value="IA">IA</option>
+                                    <option value="ID">ID</option>
+                                    <option value="IL">IL</option>
+                                    <option value="IN">IN</option>
+                                    <option value="KS">KS</option>
+                                    <option value="KY">KY</option>
+                                    <option value="LA">LA</option>
+                                    <option value="MA">MA</option>
+                                    <option value="MD">MD</option>
+                                    <option value="ME">ME</option>
+                                    <option value="MI">MI</option>
+                                    <option value="MN">MN</option>
+                                    <option value="MO">MO</option>
+                                    <option value="MS">MS</option>
+                                    <option value="MT">MT</option>
+                                    <option value="NC">NC</option>
+                                    <option value="NE">NE</option>
+                                    <option value="NH">NH</option>
+                                    <option value="NJ">NJ</option>
+                                    <option value="NM">NM</option>
+                                    <option value="NV">NV</option>
+                                    <option value="NY">NY</option>
+                                    <option value="ND">ND</option>
+                                    <option value="OH">OH</option>
+                                    <option value="OK">OK</option>
+                                    <option value="OR">OR</option>
+                                    <option value="PA">PA</option>
+                                    <option value="RI">RI</option>
+                                    <option value="SC">SC</option>
+                                    <option value="SD">SD</option>
+                                    <option value="TN">TN</option>
+                                    <option value="TX">TX</option>
+                                    <option value="UT">UT</option>
+                                    <option value="VT">VT</option>
+                                    <option value="VA">VA</option>
+                                    <option value="WA">WA</option>
+                                    <option value="WI">WI</option>
+                                    <option value="WV">WV</option>
+                                    <option value="WY">WY</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="div_id_zipcode" class="mb-3"> 
+                                    <label for="id_zipcode" class="form-label requiredField">
+                                        Zipcode
+                                    </label> 
+                                    <input name="zipcode" pattern="[0-9]{5}" title="Five digit zip code" class="textinput form-control" id="id_zipcode" disabled> 
+                                </div>
+                            </td>
+                        </tr>
+                        <tr><td>
+                        <button id="form-button" type="submit"  value="Submit" class="btn btn-primary">Edit Info</button>
+                        </td></tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+    function openNav() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+    var phoneInput = document.getElementById('id_contact');
+    var myForm = document.forms.profileForm;
+    phoneInput.addEventListener('input', function (e) {
+        var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+         e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    });
+    myForm.addEventListener('submit', function(e) {
+        phoneInput.value = phoneInput.value.replace(/\D/g, '');
+        e.preventDefault(); // You wouldn't prevent it
+    });
+</script>
