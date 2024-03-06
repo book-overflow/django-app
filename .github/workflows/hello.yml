@@ -4,6 +4,7 @@ on:
     push:
        branches:
         - 'unittest'
+        - 'main'
 
         
 jobs:
