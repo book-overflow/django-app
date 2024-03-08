@@ -14,7 +14,7 @@ jobs:
   container-test-job:
     runs-on: ubuntu-latest
     container:
-      image: docker:latest
+      image: docker:latest        
       env:
         DOCKER_DRIVER: overlay2
       options: --cpus 1
@@ -26,6 +26,9 @@ jobs:
       - name: Output Workflow File Location
         run: |
           echo "Workflow files are running in: $(pwd)"
+
+      - name: Checkout the repo
+        uses: actions/checkout@v2
       
       - name: Verify Documentation Folder Existence
         run: |
