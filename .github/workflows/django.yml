@@ -27,9 +27,6 @@ jobs:
         run: |
           echo "Workflow files are running in: $(pwd)"
       
-      - name: Change Directory
-        run: cd django-app
-
       - name: Verify Documentation Folder Existence
         run: |
           if [ -d "Documentation" ]; then
@@ -39,7 +36,7 @@ jobs:
           fi
 
       - name: Build Docker Image
-        run: docker build -t bookoverflow -f src/django/Dockerfile .
+        run: docker build -t bookoverflow -f ../src/django/Dockerfile .
       
       - name: Run Tests
         run: |
