@@ -46,6 +46,10 @@ jobs:
           echo "Found Dockerfile: $dockerfile"
       - name: Build Docker Image
         run: docker build -t bookoverflow -f src/django/Dockerfile .
+        
+      - name: Log Current Directory
+        run: |
+          echo "Current Directory: $(pwd)"
       - name: Run Tests
         run: |
           docker run bookoverflow python src/django/app/manage.py test
