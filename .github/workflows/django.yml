@@ -42,11 +42,8 @@ jobs:
         run: |
           dockerfile=$(find . -name Dockerfile)
           echo "Found Dockerfile: $dockerfile"
-
       - name: Build Docker Image
-        run: docker build -t bookoverflow -f Dockerfile .
-
-      
+        run: docker build -t bookoverflow -f src/django/Dockerfile .
       - name: Run Tests
         run: |
           docker run my_django_app python src/django/app/manage.py test
