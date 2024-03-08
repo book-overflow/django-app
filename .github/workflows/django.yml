@@ -35,6 +35,17 @@ jobs:
           ls -R
       - name: List Root Directory Contents
         run: ls -la
+      - name: Output Workflow File Location
+        run: |
+          echo "Workflow files are running in: $(pwd)"
+
+      - name: Verify Documentation Folder Existence
+        run: |
+          if [ -d "../Documentation" ]; then
+            echo "Documentation folder exists."
+          else
+            echo "Documentation folder does not exist."
+          fi
       - name: Build Docker Image
         run: docker build -t bookoverflow -f /src/django/Dockerfile .
       - name: Run Tests
