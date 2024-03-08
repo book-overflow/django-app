@@ -46,4 +46,4 @@ jobs:
         run: docker build -t bookoverflow -f src/django/Dockerfile .
       - name: Run Tests
         run: |
-          docker run my_django_app python src/django/app/manage.py test
+          docker run bookoverflow python src/django/app/manage.py test
