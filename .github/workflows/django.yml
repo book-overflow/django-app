@@ -3,28 +3,35 @@ name: Django CI
 on:
   push:
     branches:
-        - "main" 
-        - 'unittest'
+      - "main"
+      - 'unittest'
   pull_request:
     branches:
-        - "main" 
-        - 'unittest'
+      - "main"
+      - 'unittest'
 
 jobs:
   container-test-job:
     runs-on: ubuntu-latest
     container:
-      image: node:18
+      image: docker:latest
       env:
-        NODE_ENV: development
-      ports:
-        - 80
-      volumes:
-        - my_docker_volume:/volume_mount
+        DOCKER_DRIVER: overlay2
       options: --cpus 1
+    services:
+      docker:
+        image: docker:stable-dind
+        options: --privileged
     steps:
       - name: Check for dockerenv file
-        run: (ls /.dockerenv && echo Found dockerenv) || (echo No dockerenv)
+        run: |
+          if [ -f /.dockerenv ]; then
+            echo "Found dockerenv"
+          else
+            echo "No dockerenv"
+          fi
+      - name: Build Docker Image
+        run: docker build -t bookoverflow .
       - name: Run Tests
         run: |
-          pipenv python src/django/app/manage.py test
+          docker run my_django_app python src/django/app/manage.py test
