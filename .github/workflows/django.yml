@@ -44,7 +44,7 @@ jobs:
           echo "Found Dockerfile: $dockerfile"
 
       - name: Build Docker Image
-          run: docker build -t bookoverflow -f Dockerfile .
+        run: docker build -t bookoverflow -f Dockerfile .
 
       
       - name: Run Tests
