@@ -22,32 +22,23 @@ jobs:
       docker:
         image: docker:stable-dind
         options: --privileged
+    working-directory: ${{ github.workspace }}/django-app
     steps:
-      - name: Check for dockerenv file
-        run: |
-          if [ -f /.dockerenv ]; then
-            echo "Found dockerenv"
-          else
-            echo "No dockerenv"
-          fi
-      - name: Verify File Structure
-        run: |
-          ls -R
-      - name: List Root Directory Contents
-        run: ls -la
       - name: Output Workflow File Location
         run: |
           echo "Workflow files are running in: $(pwd)"
 
       - name: Verify Documentation Folder Existence
         run: |
-          if [ -d "../Documentation" ]; then
+          if [ -d "Documentation" ]; then
             echo "Documentation folder exists."
           else
             echo "Documentation folder does not exist."
           fi
+
       - name: Build Docker Image
-        run: docker build -t bookoverflow -f /src/django/Dockerfile .
+        run: docker build -t bookoverflow -f src/django/Dockerfile .
+      
       - name: Run Tests
         run: |
           docker run my_django_app python src/django/app/manage.py test
