@@ -44,7 +44,8 @@ jobs:
           echo "Found Dockerfile: $dockerfile"
 
       - name: Build Docker Image
-        run: docker build ./api/Service/ --file Dockerfile --tag my-image-name:$(date +%s)
+          run: docker build -t bookoverflow -f Dockerfile .
+
       
       - name: Run Tests
         run: |
