@@ -1,0 +1,103 @@
+{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <!-- Stylesheets & Imports -->
+  <head>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/pulse/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    
+  </head>
+  <body>
+  <!-- Navbar -->
+  <div class="topnav" id="myTopnav">
+    <img class="logo" src="{% static 'Logo2-mix.png' %}" alt="logo">
+    <a href="javascript:void(0);" class="icon" onclick="openNav()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+        </svg>              
+    </a>
+    <a href="/login">Login</a>
+    <a href="#">Contact</a>
+    <a href="#">About</a>
+    <a href="#">Browse</a>
+  </div>
+  <!-- Register Form -->
+  <div class="window window-photo">
+    <div class="window-form">
+        <h1 class="form-heading">Create Your Account</h1>
+        <form class="form" method="POST" action="">
+          <table class="form-input">
+            {% csrf_token %} 
+            <!-- {{ form }} -->
+            <tr>
+              <td><div id="div_id_first_name" class="mb-3"> 
+                <label for="id_first_name" class="form-label">First Name</label> 
+                <input type="text" name="first_name" value="{{ form.data.first_name}}" maxlength="255" class="textinput form-control" required autofocus id="id_first_name"> 
+              </div></td>
+              <td><div id="div_id_last_name" class="mb-3"> 
+                <label for="id_last_name" class="form-label">Last Name</label> 
+                <input type="text" name="last_name" value="{{ form.data.last_name}}" maxlength="255" class="textinput form-control" required id="id_last_name"> 
+              </div></td>
+            </tr>
+
+            <tr>
+              <td colspan="2"><div id="div_id_email" class="mb-3"> 
+                  <label for="id_email" class="form-label">Email</label> 
+                  <input type="email" name="email" value="{{ form.data.email }}" maxlength="255" class="emailinput form-control" required id="id_email"> 
+              </div></td>
+            </tr>
+
+            <tr>
+              <td colspan="2"><div id="div_id_password1" class="mb-3"> 
+                  <label for="id_password1" class="form-label">Password</label>
+                  <input type="password" name="password1" autocomplete="new-password" class="passwordinput form-control" required id="id_password1"> 
+              </div></td>
+            </tr>
+
+            <tr>
+              <td colspan="2"><div id="div_id_password2" class="mb-3"> 
+                  <label for="id_password2" class="form-label">Password Confirmation</label>
+                  <input type="password" name="password2" autocomplete="new-password" class="passwordinput form-control" required id="id_password2"> 
+              </div></td>
+            </tr>
+
+            <tr>
+              <td colspan="2"><div class="d-grid gap-2">
+                <!-- <input class="btn btn-primary" id="form-button" type="submit" name="Register"/> -->
+                <button class="btn btn-primary" id="form-button" type="submit" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Tooltip on right">Create Account</button>
+              </td></div>
+            </tr>
+
+
+          </table>
+        </form>
+        <div class="error-msg form">
+          {% for field in form %}
+          <div class="text-danger">
+              {{ field.errors }}
+          </div>
+          {% endfor %}
+        </div>
+        <p class="link-text"> Already Have an Account? <a class="link" href="/login">Login</a></p>
+        <p class="hr-lines" style="color:LightGray;text-align:center; margin:0;">or</p>
+        <div class="d-grid gap-2">
+            <button class="btn" id="gmail-button" type="submit" >        
+                <img class="gmail" src="{% static 'Gmail_Logo_512px.png' %}" alt="gmail">
+                Sign Up with Gmail
+            </button>
+        </div>
+    </div>
+  </div>
+  </body>
+</html>
+<script>
+  function openNav() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+          x.className += " responsive";
+      } else {
+          x.className = "topnav";
+      }
+  }
+</script>

@@ -1,0 +1,88 @@
+{% load crispy_forms_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <!-- Stylesheets & Imports -->
+  <head>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/pulse/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div class="topnav" id="myTopnav">
+      <img class="logo" src="{% static 'Logo2-mix.png' %}" alt="logo">
+      <a href="javascript:void(0);" class="icon" onclick="openNav()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+          </svg>              
+      </a>
+      <a href="/login">Login</a>
+      <a href="#">Contact</a>
+      <a href="#">About</a>
+      <a href="#">Browse</a>
+    </div>
+    <!-- Register Form -->
+    <div class="window window-photo">
+      <div class="window-form">
+        {% if request.session.name is not None %}
+          <div class="form-heading"> 
+            <h1 style="font-size: 20px; font-family: 'Montserrat'; font-weight: 700;">Welcome {{ request.session.name }}!</h1>
+            <!-- <h1 style="font-size: 20px; font-family: 'Montserrat'; font-weight: 700;">Login to Your Acount</h1> -->
+          </div>
+        {% else %}
+          <h1 class="form-heading">Login to Your Acount</h1>
+        {% endif %}
+        <form class="form" method="POST" action="">
+          {% csrf_token %} 
+          <!-- {{ form }} -->
+          <table class="form-input"> 
+
+            <tr>
+              <td colspan="2"><div id="div_id_username" class="mb-3"> 
+                <label for="id_username" class="form-label requiredField">Email</label> 
+                <input class="textinput form-control" type="text" value="{{ form.data.username }}" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="255" required="" id="id_username">
+              </div></td>
+            </tr>
+
+            <tr>
+              <td><div id="div_id_password" class="mb-3"> 
+                <label for="id_password" class="form-label requiredField">Password</label>
+                <input class="passwordinput form-control" type="password" name="password" autocomplete="current-password" required="" id="id_password">
+              </div><a class="link" style="float: right; margin-bottom: 12px; font-size: 11px;" href="#">Forgot Password</a></td>
+            </tr>
+
+            <tr>
+              <td colspan="2"><div class="d-grid gap-2">
+                <button class="btn btn-primary" id="form-button" type="submit" name="login">Sign In</button>
+              </div></td>
+            </tr>
+          </table>
+        </form>
+        <div class="error-msg form">
+          <div class="text-danger">
+              {{ form.non_field_errors }}
+          </div>
+        </div>
+        <p class="link-text">New Here? <a class="link" href="/register">Sign Up</a></p>
+        <p class="hr-lines" style="color:LightGray;text-align:center; margin:0;">or</p>
+        <div class="d-grid gap-2">
+            <button class="btn" id="gmail-button" type="submit" >        
+                <img class="gmail" src="{% static 'Gmail_Logo_512px.png' %}" alt="gmail">
+                Sign Up with Gmail
+            </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  function openNav() {
+      var x = document.getElementById("myTopnav");
+      if (x.className === "topnav") {
+          x.className += " responsive";
+      } else {
+          x.className = "topnav";
+      }
+  }
+</script>
