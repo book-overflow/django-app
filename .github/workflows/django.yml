@@ -34,9 +34,14 @@ jobs:
           else
             echo "Documentation folder does not exist."
           fi
+      
+      - name: Find Dockerfile
+        run: |
+          dockerfile=$(find . -name Dockerfile)
+          echo "Found Dockerfile: $dockerfile"
 
       - name: Build Docker Image
-        run: docker build -t bookoverflow -f /__w/django-app/Dockerfile .
+        run: docker build -t bookoverflow -f $dockerfile .
       
       - name: Run Tests
         run: |
