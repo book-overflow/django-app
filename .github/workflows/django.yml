@@ -50,6 +50,11 @@ jobs:
       - name: Log Current Directory
         run: |
           echo "Current Directory: $(pwd)"
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Log Current Directory
+        run: |
+          echo "Current Directory: $(pwd)"
       - name: Run Tests
         run: |
           docker run bookoverflow python src/django/app/manage.py test
