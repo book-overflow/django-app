@@ -10,6 +10,6 @@ RUN apt update -y && \
 
 EXPOSE $BE_PORT
 
-COPY init.sh .
+COPY src/django/init.sh .
 
 CMD ["bash", "init.sh"]
