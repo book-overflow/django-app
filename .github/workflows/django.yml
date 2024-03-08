@@ -14,7 +14,9 @@ jobs:
   container-test-job:
     runs-on: ubuntu-latest
     container:
-      image: docker:latest        
+      image: docker:latest  
+      volumes: 
+        - ${{github.workspace}}:/django-app
       env:
         DOCKER_DRIVER: overlay2
       options: --cpus 1
