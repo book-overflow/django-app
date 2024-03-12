@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'helloworld',
     'user',
+    'textbook',
     'crispy_forms',
     
 ]
