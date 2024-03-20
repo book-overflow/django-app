@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    
   </head>
   <body>
-    <!-- Navbar -->
+    <!-- Navbar
     <div class="topnav" id="myTopnav">
       <img class="logo" src="{% static 'Logo2-mix.png' %}" alt="logo">
       <a href="javascript:void(0);" class="icon" onclick="openNav()">
@@ -21,18 +21,18 @@
       <a href="#">Contact</a>
       <a href="#">About</a>
       <a href="#">Browse</a>
-    </div>
+    </div> -->
     <!-- Register Form -->
-    <div class="window window-photo">
-      <div class="window-form">
+    <div class="window center">
+      <div class="window-photo">
         {% if request.session.name is not None %}
-          <div class="form-heading"> 
-            <h1 style="font-size: 20px; font-family: 'Montserrat'; font-weight: 700;">Welcome {{ request.session.name }}!</h1>
-            <!-- <h1 style="font-size: 20px; font-family: 'Montserrat'; font-weight: 700;">Login to Your Acount</h1> -->
-          </div>
+        <h1 style="position: absolute; top: 45%; margin-left: 30px; font-size: 30px; font-family: 'Montserrat'; font-weight: bold; color: white;">Welcome {{ request.session.name }}!</h1>
         {% else %}
-          <h1 class="form-heading">Login to Your Acount</h1>
+        <h1 style="position: absolute; top: 45%; margin-left: 30px; font-size: 30px; font-family: 'Montserrat'; font-weight: bold; color: white;">Welcome Back!</h1>
         {% endif %}
+      </div>
+      <div class="window-form">
+          <h1 class="form-heading">Login to Your Account</h1>
         <form class="form" method="POST" action="">
           {% csrf_token %} 
           <!-- {{ form }} -->
@@ -59,7 +59,7 @@
             </tr>
           </table>
         </form>
-        <div class="error-msg form">
+        <div class="error-msg form" style="min-height: 30px;">
           <div class="text-danger">
               {{ form.non_field_errors }}
           </div>
