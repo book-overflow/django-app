@@ -44,11 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'debug_toolbar',
     'helloworld',
     'user',
     'crispy_forms',
-    
+    'shared',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
         'NAME': os.environ.get('POSTGRES_DB'),
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),

@@ -22,8 +22,6 @@ class CustomUserManager(BaseUserManager):
         user.is_superuser = True
         user.save()
         return user
-
-
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(max_length=255, unique=True)
