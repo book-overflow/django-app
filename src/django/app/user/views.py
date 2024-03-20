@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, UserProfileForm
 
 def register(request):
@@ -13,12 +14,14 @@ def register(request):
     context = {'form': form}
     return render(request, 'register.html', context)
 
+@login_required
 def profile(request):
     return render(request, 'profile.html')
 
 def setProfile(request):
     return render(request, 'setProfile.html')
 
+@login_required
 def updateProfile(request):
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=request.user)
