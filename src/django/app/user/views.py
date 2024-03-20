@@ -10,19 +10,28 @@ def register(request):
         if form.is_valid():
             form.save()
             request.session['name'] = form.data["first_name"]
-            return redirect('user-login')
+            return redirect('user-register-profile')
     else:
         form = CustomUserCreationForm()
     context = {'form': form}
     return render(request, 'register.html', context)
 
 @login_required
-@profile_required
-def profile(request):
-    return render(request, 'profile.html')
+def registerProfile(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('user-profile')
+    else:
+        form = UserProfileForm(instance=request.user)
+    context = {'form': form}
+    return render(request, 'registerProfile.html', context)
 
-def setProfile(request):
-    return render(request, 'setProfile.html')
+@login_required
+@profile_required
+def getProfile(request):
+    return render(request, 'profile.html')
 
 @login_required
 @profile_required

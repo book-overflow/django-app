@@ -1,10 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin,
-)
-from django.core.validators import RegexValidator
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 STATE_CHOICES = [
     ('AL', 'Alabama'),
@@ -79,15 +74,15 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
-    email = models.EmailField(max_length=255, unique=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    date_of_birth = models.DateField(null=True, blank=True)
-    phone_number = models.CharField(max_length=20, blank=True)
-    street = models.CharField(max_length=255, blank=True)
-    city = models.CharField(max_length=100, blank=True)
-    state = models.CharField(max_length=2, choices=STATE_CHOICES, blank=True)
-    zip = models.CharField(max_length=5, blank=True)
+    email = models.EmailField(max_length=255, unique=True, null=False, blank=False)
+    first_name = models.CharField(max_length=255, null=False, blank=False)
+    last_name = models.CharField(max_length=255, null=False, blank=False)
+    date_of_birth = models.DateField(null=False, blank=False)
+    phone_number = models.CharField(max_length=20, null=False, blank=False)
+    street = models.CharField(max_length=255, null=False, blank=False)
+    city = models.CharField(max_length=100, null=False, blank=False)
+    state = models.CharField(max_length=2, choices=STATE_CHOICES, null=False, blank=False)
+    zip = models.CharField(max_length=5, null=False, blank=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
