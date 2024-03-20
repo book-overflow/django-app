@@ -1,6 +1,7 @@
 from .forms import CustomUserCreationForm, UserProfileForm
 from .decorators import guest_required, profile_required
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 
 @guest_required
@@ -8,9 +9,14 @@ def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            request.session['name'] = form.data["first_name"]
-            return redirect('user-register-profile')
+            user = form.save()
+            # Authenticate the user
+            user = authenticate(request, email=form.cleaned_data['email'], password=form.cleaned_data['password1'])
+            if user is not None:
+                # Log the user in
+                login(request, user)
+                request.session['name'] = form.cleaned_data["first_name"]
+                return redirect('user-register-profile')
     else:
         form = CustomUserCreationForm()
     context = {'form': form}
