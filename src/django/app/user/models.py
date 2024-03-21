@@ -77,7 +77,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True, null=False, blank=False)
     first_name = models.CharField(max_length=255, null=False, blank=False)
     last_name = models.CharField(max_length=255, null=False, blank=False)
-    date_of_birth = models.DateField(null=False, blank=False)
+    date_of_birth = models.DateField(null=True, blank=False)
     phone_number = models.CharField(max_length=20, null=False, blank=False)
     street = models.CharField(max_length=255, null=False, blank=False)
     city = models.CharField(max_length=100, null=False, blank=False)
