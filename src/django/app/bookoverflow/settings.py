@@ -46,10 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'debug_toolbar',
+    'shared',
     'helloworld',
     'user',
     'crispy_forms',
-    'shared',
 ]
 
 MIDDLEWARE = [
@@ -151,6 +151,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'user.CustomUser'
+AUTH_USER_MODEL = 'shared.Student'
 
 LOGIN_REDIRECT_URL = '/user/profile'
