@@ -3,6 +3,21 @@ from .decorators import guest_required, profile_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, LogoutView
+
+# Add guest_required decorator to built-in LoginView
+class CustomLoginView(LoginView):
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super().as_view(**initkwargs)
+        return guest_required(view)
+
+# Require users to be logged in/authenticated to access built-in LogoutView
+class CustomLogoutView(LogoutView):
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('user-login')
+        return super().get(request, *args, **kwargs)
 
 @guest_required
 def register(request):
