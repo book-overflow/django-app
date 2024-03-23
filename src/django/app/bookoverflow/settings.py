@@ -38,13 +38,13 @@ DEBUG_TOOLBAR_CONFIG = {
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.gis',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.gis',
     'debug_toolbar',
     'shared',
     'helloworld',
@@ -151,6 +151,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'shared.Student'
+AUTH_USER_MODEL = 'shared.CustomUser'
 
 LOGIN_REDIRECT_URL = '/user/profile'
