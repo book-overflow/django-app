@@ -1,6 +1,6 @@
-from django.db import models
-# from django.contrib.gis.db import models
-# from django.contrib.gis.geos import Point
+# from django.db import models
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -46,7 +46,7 @@ class CustomUser(CustomBaseModel, AbstractBaseUser, PermissionsMixin):
 class University(CustomBaseModel):
     domain = models.CharField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
-    # location = models.PointField()
+    location = models.PointField()
 
 # STUDENT MODEL ________________________________________________________________#
 
