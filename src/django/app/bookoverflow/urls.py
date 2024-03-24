@@ -27,4 +27,5 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('helloworld/', include('helloworld.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
+    path('browse/', user_views.browse, name='browse'),
 ]

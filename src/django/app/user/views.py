@@ -66,3 +66,8 @@ def updateProfile(request):
         form = UserProfileForm(instance=request.user)
     context = {'form': form}
     return render(request, 'updateProfile.html', context)
+
+@login_required
+@profile_required
+def browse(request):
+    return render(request, 'browse.html')
