@@ -29,7 +29,7 @@
                         <tr><td>
                           <div id="div_id_date_of_birth" class="mb-3"> 
                             <label for="id_date_of_birth"  class="form-label">Date of Birth</label>
-                            <input required class="textinput form-control" type="date" name="date_of_birth" value="{{user.date_of_birth.year}}-{{user.date_of_birth.month}}-{{user.date_of_birth.day}}" id="id_date_of_birth">
+                            <input required class="textinput form-control" type="text" name="date_of_birth" value="{{ user.date_of_birth | date:'Y-m-d' }}" id="id_date_of_birth">
                           </div>
                         </td></tr>
                         <tr><td>
@@ -148,7 +148,7 @@
       }
   }
   var phoneInput = document.getElementById('id_phone_number');
-  var myForm = document.forms.profileForm;
+  var myForm = document.getElementById('profileForm');
   phoneInput.addEventListener('input', function (e) {
     var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
     e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
@@ -160,8 +160,8 @@
   function loadFile() {
     var output = document.getElementById('profile-photo');
     output.src = URL.createObjectURL(event.target.files[0]);
-    // output.onload = function() {
-    //   URL.revokeObjectURL(output.src) // free memory
-    // }
+    output.onload = function() {
+      URL.revokeObjectURL(output.src) // free memory
+    }
   }
 </script>
