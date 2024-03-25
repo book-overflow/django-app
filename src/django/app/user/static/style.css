@@ -167,6 +167,31 @@ ul {
     box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.25); 
     border-radius: 8px;
 }
+.search{
+    position: relative;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 80%;
+    min-height: 30%;
+    padding: 50px;
+    border-radius: 8px;
+    margin-top:4%;
+    margin-bottom: 4%;
+    left:10%;
+}
+.cards{
+    position: relative;
+    display: flex;
+    width: 80%;
+    border-radius: 8px;
+    left: 10%;
+    font-family: 'Montserrat';
+}
+
+.card{
+    border-radius: 8px;
+}
+
 @media only screen and (max-width: 800px) {
     .window {
         width: 60%;
