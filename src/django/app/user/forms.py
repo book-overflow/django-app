@@ -15,4 +15,4 @@ class CustomUserChangeForm(UserChangeForm):
 class UserProfileForm(ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['date_of_birth', 'phone_number', 'street', 'city', 'state', 'zip']
+        fields = ['date_of_birth', 'phone_number', 'street', 'city', 'state', 'zip', 'image']
