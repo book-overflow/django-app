@@ -1,32 +1,9 @@
-{% load crispy_forms_tags %}
-{% load static %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/pulse/bootstrap.min.css">
-        <link rel="stylesheet" href="{% static 'style.css' %}">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    
-    </head>
-    <body>
-        <div class="topnav" id="myTopnav">
-            <img class="logo" src="{% static 'logo_white.png' %}" alt="logo">
-            <a href="javascript:void(0);" class="icon" onclick="openNav()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
-                </svg>              
-            </a>
-            <a href="/logout">Logout</a>
-            <a href="#">Contact</a>
-            <a href="#">About</a>
-            <a href="/browse">Browse</a>
-        </div>
-
-
+{% extends "base.html" %}
+    {% block content %}
         <div style="align-content: start;">
             <div class="profile-card">
-                    <img class="profile-photo" style="width: 50%; margin:auto; display: block;" src="{% static 'profile.png' %}" />
-                    <button type="button" style="display: block; border-radius: 8px; margin-top: 4%; margin-bottom: 4%; margin-left: auto; margin-right: auto;"; id="form-button" class="btn btn-outline-secondary">Upload Photo</button>
-                    <div style="position: relative; display: block; margin-top: 8%; margin-bottom: 8%; text-align: center; color: white; font-size: 14px; font-family: Montserrat; font-weight: 700; word-wrap: break-word">{{ user.first_name }}<br/>{{ user.last_name }}</div>
+                    <img class="profile-photo" id="profile-photo" style="object-fit: cover; height: 120px; width: 120px; margin:auto; display: block; clip-path: circle();"  src="{{ user.image.url }}" />
+                    <div style="position: relative; display: block; margin-top: 5%; margin-bottom: 5%; text-align: center; color: white; font-size: 14px; font-family: Montserrat; font-weight: 700; word-wrap: break-word">{{ user.first_name }}<br/>{{ user.last_name }}</div>
                     <div style="position: relative; display: block; margin: 2%; text-align: center; color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ user.email }}</div>
             </div>
             <div class="set-profile"> 
@@ -38,7 +15,7 @@
                         <td>
                         <div id="div_id_date_of_birth" class="mb-3"> 
                             <label for="id_date_of_birth" class="form-label">Date of Birth</label> 
-                            <input type="text" name="date_of_birth" value="{{user.date_of_birth.year}}-{{user.date_of_birth.month}}-{{user.date_of_birth.day}}" class="textinput form-control" id="id_date_of_birth" disabled> 
+                            <input type="text" name="date_of_birth" value="{{ user.date_of_birth | date:'m/d/Y' }}" class="textinput form-control" id="id_date_of_birth" disabled> 
                         </div>
                         </td>
                         </tr>
@@ -92,18 +69,10 @@
                 </div>
             </div>
         </div>
-    </body>
-</html>
-
-<script>
-    function openNav() {
-        var x = document.getElementById("myTopnav");
-        if (x.className === "topnav") {
-            x.className += " responsive";
-        } else {
-            x.className = "topnav";
-        }
-    }
-    var x = document.getElementById('id_phone_number').value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-    document.getElementById('id_phone_number').value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');;
-</script>
+    {% endblock content %}
+    {% block script %}
+        <script>
+            var x = document.getElementById('id_phone_number').value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+            document.getElementById('id_phone_number').value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');;
+        </script>
+    {% endblock script %}

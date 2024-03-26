@@ -89,3 +89,4 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
+    image = models.ImageField(default='profile.png', upload_to='profile/')

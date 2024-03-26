@@ -40,10 +40,10 @@ def register(request):
 @login_required
 def registerProfile(request):
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=request.user)
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('user-profile')
+            return redirect('browse')
     else:
         form = UserProfileForm(instance=request.user)
     context = {'form': form}
@@ -58,7 +58,7 @@ def getProfile(request):
 @profile_required
 def updateProfile(request):
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=request.user)
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect('user-profile')
