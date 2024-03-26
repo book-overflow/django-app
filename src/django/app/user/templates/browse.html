@@ -1,26 +1,5 @@
-
-{% load crispy_forms_tags %}
-{% load static %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/pulse/bootstrap.min.css">
-        <link rel="stylesheet" href="{% static 'style.css' %}">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    
-    </head>
-    <body>
-        <div class="topnav" id="myTopnav">
-            <img class="logo" src="{% static 'logo_white.png' %}" alt="logo">
-            <a href="javascript:void(0);" class="icon" onclick="openNav()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
-                </svg>              
-            </a>
-            <a href="/logout">Logout</a>
-            <a href="#">Contact</a>
-            <a href="#">About</a>
-            <a href="#">Browse</a>
-        </div>
+{% extends "base.html" %}
+    {% block content %}
         <div>
             <div class="search" data-bs-theme="dark">
                 <h1 style="font-size: 30px; font-family: 'Montserrat'; font-weight: bold; color: white; margin-bottom: 30px;">Find Your Textbook</h1>
@@ -59,16 +38,5 @@
                 </div>
             </div> -->
         </div>
-    </body>
-</html>
-
-<script>
-    function openNav() {
-        var x = document.getElementById("myTopnav");
-        if (x.className === "topnav") {
-            x.className += " responsive";
-        } else {
-            x.className = "topnav";
-        }
-    }
-</script>
+    {% endblock content %}
+    {% block script %}{% endblock script %}
