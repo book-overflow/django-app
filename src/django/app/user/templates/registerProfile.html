@@ -29,7 +29,7 @@
                         <tr><td>
                           <div id="div_id_date_of_birth" class="mb-3"> 
                             <label for="id_date_of_birth"  class="form-label">Date of Birth</label>
-                            <input required class="textinput form-control" type="date" name="date_of_birth" value="{{user.date_of_birth.year}}-{{user.date_of_birth.month}}-{{user.date_of_birth.day}}" id="id_date_of_birth">
+                            <input required class="textinput form-control" type="date" name="date_of_birth" value="{{ user.date_of_birth | date:'Y-m-d' }}" id="id_date_of_birth">
                           </div>
                         </td></tr>
                         <tr><td>
