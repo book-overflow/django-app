@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
-from django.urls import reverse_lazy
 
 # Add guest_required decorator to built-in LoginView
 class CustomLoginView(LoginView):
@@ -12,8 +11,6 @@ class CustomLoginView(LoginView):
     def as_view(cls, **initkwargs):
         view = super().as_view(**initkwargs)
         return guest_required(view)
-    def get_success_url(self):
-        return reverse_lazy('browse')
 
 # Require users to be logged in/authenticated to access built-in LogoutView
 class CustomLogoutView(LogoutView):
