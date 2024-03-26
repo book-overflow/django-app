@@ -18,14 +18,36 @@ services:
       database:
         condition: service_healthy
 
+  # database:
+  #   image: postgres:latest
+  #   environment:
+  #     - POSTGRES_DB=${POSTGRES_DB}
+  #     - POSTGRES_USER=${POSTGRES_USER}
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #   env_file:
+  #     - .env
+  #   expose:
+  #     - ${POSTGRES_PORT}
+  #   ports:
+  #     - ${POSTGRES_PORT}:${POSTGRES_PORT}
+  #   networks:
+  #     - bedb
+  #   volumes:
+  #     - dev-db-data:/var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
+  
   database:
-    image: postgis/postgis:latest
+    build: ./postgres
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    expose:
-      - ${POSTGRES_PORT}
+    env_file:
+      - .env
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     networks:
@@ -37,7 +59,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-  
+
 networks:
   bedb:
 
