@@ -1,0 +1,60 @@
+name: Django CI
+
+on:
+  push:
+    branches:
+      - "main"
+      - 'unittest'
+  pull_request:
+    branches:
+      - "main"
+      - 'unittest'
+
+jobs:
+  container-test-job:
+    runs-on: ubuntu-latest
+    container:
+      image: docker:latest  
+      volumes: 
+        - ${{github.workspace}}:/django-app
+      env:
+        DOCKER_DRIVER: overlay2
+      options: --cpus 1
+    services:
+      docker:
+        image: docker:stable-dind
+        options: --privileged
+    steps:
+      - name: Output Workflow File Location
+        run: |
+          echo "Workflow files are running in: $(pwd)"
+
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      
+      - name: Verify Documentation Folder Existence
+        run: |
+          if [ -d "Documentation" ]; then
+            echo "Documentation folder exists."
+          else
+            echo "Documentation folder does not exist."
+          fi
+      
+      - name: Find Dockerfile
+        run: |
+          dockerfile=$(find . -name Dockerfile)
+          echo "Found Dockerfile: $dockerfile"
+      - name: Build Docker Image
+        run: docker build -t bookoverflow -f src/django/Dockerfile .
+        
+      - name: Log Current Directory
+        run: |
+          echo "Current Directory: $(pwd)"
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Log Current Directory
+        run: |
+          echo "Current Directory: $(pwd)"
+      - name: Run Tests
+        run: |
+          docker run bookoverflow python src/django/app/manage.py test
