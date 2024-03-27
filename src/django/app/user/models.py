@@ -4,6 +4,8 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin,
 )
+from django.core.exceptions import ValidationError
+
 
 STATE_CHOICES = [
     ("AL", "Alabama"),
@@ -60,11 +62,13 @@ STATE_CHOICES = [
 
 
 class CustomUserManager(BaseUserManager):
-
     def create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError("User must have an email address.")
-        # email = self.normalize_email(email)
+        # Validate email ends with .edu
+        if not email.endswith(".edu"):
+            raise ValidationError("Email must end with .edu")
+        email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save()
@@ -79,7 +83,6 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-
     email = models.EmailField(max_length=255, unique=True, null=False, blank=False)
     first_name = models.CharField(max_length=255, null=False, blank=False)
     last_name = models.CharField(max_length=255, null=False, blank=False)
