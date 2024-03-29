@@ -21,7 +21,6 @@ class CustomLogoutView(LogoutView):
 
 @guest_required
 def register(request):
-    print("In register", flush=True)
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -40,22 +39,16 @@ def register(request):
 
 @login_required
 def registerProfile(request):
-    print("In registerProfile", flush=True)
-    print(request.user, flush=True)
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user.student)
         if form.is_valid():
-            print("form valid", flush=True)
             form.save()
             return redirect('browse')
-        else:
-            print("form invalid", flush=True)
     else:
-        form = UserProfileForm(instance=request.user)
-        # print(form, flush=True)
+        form = UserProfileForm(instance=request.user.student)
     context = {'form': form}
-    print(context, flush=True)
     return render(request, 'registerProfile.html', context)
+
 
 @login_required
 @profile_required
