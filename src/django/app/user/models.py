@@ -1,1 +1,2 @@
-from shared.models import *
+from django.db import models
+

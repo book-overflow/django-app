@@ -79,7 +79,7 @@ ROOT_URLCONF = 'bookoverflow.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -153,4 +153,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'shared.CustomUser'
 
-LOGIN_REDIRECT_URL = '/user/profile'
+LOGIN_URL = 'user-login'
+LOGIN_REDIRECT_URL = '/browse'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
