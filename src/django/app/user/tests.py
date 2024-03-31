@@ -17,7 +17,7 @@ class CustomUserManagerTests(TestCase):
             phone_number="1234567890",
             street="123 Main St",
             city="Anytown",
-            state="TX",  # Example state
+            state="TX",
             zip="12345",
             is_staff=False,
             is_active=True,
@@ -41,6 +41,11 @@ class CustomUserManagerTests(TestCase):
         """Test the email for a new user is normalized"""
         User = get_user_model()
         email = "test@NYU.edu"
+        # The line `user = User.objects.create_user(email, "test123")` is creating a new user object using the
+        # custom user model's manager method `create_user`. This method is typically used to create a standard
+        # user account with the provided email and password. In this case, the email is passed as the first
+        # argument and the password "test123" as the second argument. The method will handle the normalization
+        # of the email and password hashing internally before creating the user in the database.
         user = User.objects.create_user(email, "test123")
         self.assertEqual(user.email, email.lower())
 
