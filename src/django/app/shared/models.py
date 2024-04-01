@@ -49,13 +49,15 @@ class University(CustomBaseModel):
     location = models.PointField()
 
 # STUDENT MODEL ________________________________________________________________#
-
-
 class Student(CustomUser):
     first_name = models.CharField(max_length=255, null=False, blank=False)
     last_name = models.CharField(max_length=255, null=False, blank=False)
     date_of_birth = models.DateField(null=True, blank=True)
-    _university = models.ForeignKey(University, on_delete=models.CASCADE)
+    _university = models.ForeignKey(
+        University,
+        on_delete=models.CASCADE,
+        related_name="students"
+    )
 
 #   To be moved to separate profile model    
     phone_number = models.CharField(max_length=20, null=True, blank=True)
@@ -69,7 +71,6 @@ class Student(CustomUser):
         pass
 
     def save(self, *args, **kwargs):
-        print("Starting to save", flush=True)
         domain = self.email.split("@")[1]
         try: 
             self._university = University.objects.get(domain=domain)
@@ -77,5 +78,105 @@ class Student(CustomUser):
             raise ValidationError("Invalid domain")
         
         self.full_clean()  # Performs full validation
-        print(self, flush=True)
         super().save(*args, **kwargs)
+
+# COURSE MODEL _________________________________________________________________#
+class Course(CustomBaseModel):
+    course_number = models.CharField(max_length=255, primary_key=True)
+    _university = models.ForeignKey(
+        University,
+        on_delete=models.CASCADE,
+        related_name="courses"
+    )
+    
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+
+# TEXTBOOK MODEL _______________________________________________________________#
+class Author(CustomBaseModel):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    
+class Textbook(CustomBaseModel):
+    isbn = models.PositiveBigIntegerField(primary_key=True)
+    _authors = models.ManyToManyField(Author, related_name="textbooks")
+    _belongs = models.ManyToManyField(Course, related_name="textbooks")
+    
+    name = models.CharField(max_length=255)
+    edition = models.IntegerField()
+    year_published = models.IntegerField()
+    # image = models.ImageField(default='profile.png', upload_to='profile/')
+
+class BookCondition(models.TextChoices):
+    NEW = 'NEW', 'New'
+    FINE = 'FINE', 'Fine'
+    VERY_GOOD = 'VERY_GOOD', 'Very Good'
+    GOOD = 'GOOD', 'Good'
+    FAIR = 'FAIR', 'Fair'
+    POOR = 'POOR', 'Poor'
+    
+class TextbookCopy(CustomBaseModel):
+    _textbook = models.ForeignKey(
+        Textbook,
+        on_delete=models.CASCADE,
+        related_name="copies"
+    )
+    _seller = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name="copies"
+    )
+    
+    condition = models.CharField(max_length=255, choices=BookCondition.choices)
+    year_purchased = models.IntegerField()
+    # image = models.ImageField(default='profile.png', upload_to='profile/')
+    for_rent = models.BooleanField()
+    for_sale = models.BooleanField()
+    sale_price = models.DecimalField(max_digits=5, decimal_places=2)
+    rent_price = models.DecimalField(max_digits=5, decimal_places=2)
+
+# TRANSACTIONS _________________________________________________________________#
+class TransactionStatus(models.TextChoices):
+    PENDING = 'PENDING', 'Pending'
+    ONGOING = 'ONGOING', 'Ongoing'
+    CANCELLED = 'CANCELLED', 'Cancelled'
+    COMPLETED = 'COMPLETED', 'Completed'
+
+class TransactionRating(models.TextChoices):
+    BAD = 'BAD', 'Bad'
+    AVERAGE = 'AVERAGE', 'Average'
+    GOOD = 'GOOD', 'Good'
+    EXCELLENT = 'EXCELLENT', 'Excellent'
+    
+class Transaction(CustomBaseModel):
+    _buyer = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name="purchases"
+    )
+    _seller = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name="sales"
+    )
+    _textbook_copy = models.ForeignKey(
+        TextbookCopy,
+        on_delete=models.CASCADE,
+        related_name="transactions"
+    )
+    
+    for_sale = models.BooleanField()  
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    status = models.CharField(max_length=255, choices=TransactionStatus.choices)
+
+#   Rating attributes
+    seller_rating_of_buyer = models.CharField(max_length=255, choices=TransactionRating.choices)
+    seller_notes = models.TextField()
+    buyer_rating_of_seller = models.CharField(max_length=255, choices=TransactionRating.choices)
+    buyer_notes = models.TextField()
+    
+#   Renting attributes
+    start_date = models.DateField()
+    end_date = models.DateField()
+    
+    
