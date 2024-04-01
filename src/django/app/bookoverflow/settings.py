@@ -169,4 +169,9 @@ EMAIL_HOST_PASSWORD = "opxneprikzmqckel"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-PASSWORD_RESET_TIMEOUT = 144000
+PASSWORD_RESET_TIMEOUT = 1440000
+
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)

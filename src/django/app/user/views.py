@@ -14,7 +14,10 @@ from django.core.mail import EmailMessage
 # from .forms import UserRegistrationForm, UserLoginForm, UserUpdateForm
 # from .decorators import user_not_authenticated
 from .tokens import account_activation_token
+import logging
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 # Security key:  opxn epri kzmq ckel
 
 
@@ -39,13 +42,15 @@ def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
+        logger.info(f"Activating user: {user.pk}")
+
     except:
         user = None
+        logger.error("Error decoding UID or user not found.")
 
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-
         messages.success(
             request,
             "Thank you for your email confirmation. Now you can login your account.",
@@ -53,6 +58,7 @@ def activate(request, uidb64, token):
         return redirect("login")
     else:
         messages.error(request, "Activation link is invalid!")
+        logger.error(f"Token validation failed for user {uid}")
 
     return redirect("register")
 
@@ -91,6 +97,7 @@ def register(request):
             user = form.save()
             user.is_active = False
             activateEmail(request, user, form.cleaned_data.get("email"))
+
             # Authenticate the user
             user = authenticate(
                 request,
@@ -114,6 +121,7 @@ def register(request):
 def registerProfile(request):
     if request.method == "POST":
         form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+
         if form.is_valid():
             form.save()
             return redirect("browse")
