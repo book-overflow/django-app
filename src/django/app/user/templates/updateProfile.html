@@ -41,11 +41,10 @@
                         <td>
                             <div id="div_id_state" class="mb-3"> 
                             <label for="id_state" class="form-label">State</label> 
-                              <select required name="state" selected="" value="{{ user.student.state }}" style="font-size: 12px;" class="form-select" id="id_state">
+                              <select required name="state" value="{{ user.student.state }}" style="font-size: 12px;" class="form-select" id="id_state">
                                 { % if user.student.state is not None % }
                                 <option value="{{ user.student.state }}" selected hidden>{{ user.student.state }}</option>
                                 { % endif % }
-                                <option value="">---------</option>
                                 <option value="AL">Alabama</option>
                                 <option value="AK">Alaska</option>
                                 <option value="AZ">Arizona</option>
