@@ -55,7 +55,7 @@ def activate(request, uidb64, token):
             request,
             "Thank you for your email confirmation. Now you can login your account.",
         )
-        return redirect("login")
+        return redirect("user-register-profile")
     else:
         messages.error(request, "Activation link is invalid!")
         logger.error(f"Token validation failed for user {uid}")
