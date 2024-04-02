@@ -17,4 +17,5 @@ def add__univeristy_record():
     record.save()
 
 if __name__ == "__main__":
-    add__univeristy_record()
+    if University.objects.count() == 0:
+        add__univeristy_record()

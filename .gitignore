@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 src/django/app/media/profile/*
+src/data/*

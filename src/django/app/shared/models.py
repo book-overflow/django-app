@@ -42,6 +42,27 @@ class CustomUser(CustomBaseModel, AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
 
+# CHOICES ______________________________________________________________________#
+class BookCondition(models.TextChoices):
+    NEW = 'NEW', 'New'
+    FINE = 'FINE', 'Fine'
+    VERY_GOOD = 'VERY_GOOD', 'Very Good'
+    GOOD = 'GOOD', 'Good'
+    FAIR = 'FAIR', 'Fair'
+    POOR = 'POOR', 'Poor'
+    
+class TransactionStatus(models.TextChoices):
+    PENDING = 'PENDING', 'Pending'
+    ONGOING = 'ONGOING', 'Ongoing'
+    CANCELLED = 'CANCELLED', 'Cancelled'
+    COMPLETED = 'COMPLETED', 'Completed'
+
+class TransactionRating(models.TextChoices):
+    BAD = 'BAD', 'Bad'
+    AVERAGE = 'AVERAGE', 'Average'
+    GOOD = 'GOOD', 'Good'
+    EXCELLENT = 'EXCELLENT', 'Excellent'
+
 # UNIVERSITY MODEL _____________________________________________________________#
 class University(CustomBaseModel):
     domain = models.CharField(max_length=255, unique=True)
@@ -106,14 +127,6 @@ class Textbook(CustomBaseModel):
     edition = models.IntegerField()
     year_published = models.IntegerField()
     # image = models.ImageField(default='profile.png', upload_to='profile/')
-
-class BookCondition(models.TextChoices):
-    NEW = 'NEW', 'New'
-    FINE = 'FINE', 'Fine'
-    VERY_GOOD = 'VERY_GOOD', 'Very Good'
-    GOOD = 'GOOD', 'Good'
-    FAIR = 'FAIR', 'Fair'
-    POOR = 'POOR', 'Poor'
     
 class TextbookCopy(CustomBaseModel):
     _textbook = models.ForeignKey(
@@ -135,19 +148,7 @@ class TextbookCopy(CustomBaseModel):
     sale_price = models.DecimalField(max_digits=5, decimal_places=2)
     rent_price = models.DecimalField(max_digits=5, decimal_places=2)
 
-# TRANSACTIONS _________________________________________________________________#
-class TransactionStatus(models.TextChoices):
-    PENDING = 'PENDING', 'Pending'
-    ONGOING = 'ONGOING', 'Ongoing'
-    CANCELLED = 'CANCELLED', 'Cancelled'
-    COMPLETED = 'COMPLETED', 'Completed'
-
-class TransactionRating(models.TextChoices):
-    BAD = 'BAD', 'Bad'
-    AVERAGE = 'AVERAGE', 'Average'
-    GOOD = 'GOOD', 'Good'
-    EXCELLENT = 'EXCELLENT', 'Excellent'
-    
+# TRANSACTIONS _________________________________________________________________#    
 class Transaction(CustomBaseModel):
     _buyer = models.ForeignKey(
         Student,
@@ -178,5 +179,4 @@ class Transaction(CustomBaseModel):
 #   Renting attributes
     start_date = models.DateField()
     end_date = models.DateField()
-    
     
