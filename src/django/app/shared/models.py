@@ -146,7 +146,7 @@ class TextbookCopy(CustomBaseModel):
     for_rent = models.BooleanField()
     for_sale = models.BooleanField()
     sale_price = models.DecimalField(max_digits=5, decimal_places=2)
-    rent_price = models.DecimalField(max_digits=5, decimal_places=2)
+    rent_price = models.DecimalField(max_digits=5, decimal_places=2) # per month
 
 # TRANSACTIONS _________________________________________________________________#    
 class Transaction(CustomBaseModel):
