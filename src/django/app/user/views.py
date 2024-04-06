@@ -40,14 +40,15 @@ def register(request):
 @login_required
 def registerProfile(request):
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user.student)
         if form.is_valid():
             form.save()
             return redirect('browse')
     else:
-        form = UserProfileForm(instance=request.user)
+        form = UserProfileForm(instance=request.user.student)
     context = {'form': form}
     return render(request, 'registerProfile.html', context)
+
 
 @login_required
 @profile_required
@@ -58,12 +59,12 @@ def getProfile(request):
 @profile_required
 def updateProfile(request):
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=request.user)
+        form = UserProfileForm(request.POST, request.FILES, instance=request.user.student)
         if form.is_valid():
             form.save()
             return redirect('user-profile')
     else:
-        form = UserProfileForm(instance=request.user)
+        form = UserProfileForm(instance=request.user.student)
     context = {'form': form}
     return render(request, 'updateProfile.html', context)
 

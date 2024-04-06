@@ -1,4 +1,4 @@
-from .models import CustomUser
+from shared.models import Student
 from django.shortcuts import redirect
 
 # Will be used to redirect a logged in user (i.e. if they try to access login/register view)
@@ -15,7 +15,7 @@ def profile_required(view_func):
         user = request.user
         if user.is_authenticated:
             profile_fields = ['date_of_birth', 'phone_number', 'street', 'city', 'state', 'zip']
-            profile = CustomUser.objects.filter(pk=user.pk).values(*profile_fields).first()
+            profile = Student.objects.filter(pk=user.pk).values(*profile_fields).first()
             if any(value is None or value == '' for value in profile.values()):
                 return redirect('user-register-profile')
         return view_func(request, *args, **kwargs)

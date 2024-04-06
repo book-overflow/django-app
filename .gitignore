@@ -160,3 +160,5 @@ cython_debug/
 #.idea/
 
 src/django/app/media/profile/*
+src/data/*
+0*_initial.py

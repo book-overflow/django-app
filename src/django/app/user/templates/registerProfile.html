@@ -2,10 +2,10 @@
   {% block content %}
     <div style="align-content: start;">
         <div class="profile-card">
-            <img class="profile-photo" id="profile-photo" style="object-fit: cover; height: 120px; width: 120px; margin:auto; display: block; clip-path: circle();"  src="{{ user.image.url }}" />
+            <img class="profile-photo" id="profile-photo" style="object-fit: cover; height: 120px; width: 120px; margin:auto; display: block; clip-path: circle();"  src="{{ user.student.image.url }}" />
             <button type="button" style="display: block; border-radius: 8px; margin-top: 4%; margin-bottom: 4%; margin-left: auto; margin-right: auto;"; id="form-button" class="btn btn-outline-secondary" onclick="document.getElementById('id_image').click();">Upload Photo</button>
-            <div style="position: relative; display: block; margin-top: 5%; margin-bottom: 5%; text-align: center; color: white; font-size: 14px; font-family: Montserrat; font-weight: 700; word-wrap: break-word">{{ user.first_name }}<br/>{{ user.last_name }}</div>
-            <div style="position: relative; display: block; margin: 2%; text-align: center; color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ user.email }}</div>
+            <div style="position: relative; display: block; margin-top: 5%; margin-bottom: 5%; text-align: center; color: white; font-size: 14px; font-family: Montserrat; font-weight: 700; word-wrap: break-word">{{ user.student.first_name }}<br/>{{ user.student.last_name }}</div>
+            <div style="position: relative; display: block; margin: 2%; text-align: center; color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ user.student.email }}</div>
         </div>
         <div class="set-profile"> 
             <h1 class="form-heading">Register Profile</h1>
@@ -16,36 +16,35 @@
                     <tr><td>
                       <div id="div_id_date_of_birth" class="mb-3"> 
                         <label for="id_date_of_birth"  class="form-label">Date of Birth</label>
-                        <input required class="textinput form-control" type="date" name="date_of_birth" value="{{ user.date_of_birth | date:'Y-m-d' }}" id="id_date_of_birth">
+                        <input required class="textinput form-control" type="date" name="date_of_birth" value="{{ form.data.date_of_birth | date:'Y-m-d' }}" id="id_date_of_birth">
                       </div>
                     </td></tr>
                     <tr><td>
                       <div id="div_id_phone_number" class="mb-3"> 
                           <label for="id_phone_number" class="form-label">Phone Number</label> 
-                          <input required type="text" name="phone_number" value="{{ user.phone_number }}" class="textinput form-control" maxlength="20" id="id_phone_number" > 
+                          <input required type="text" name="phone_number" value="{{ form.data.phone_number }}" class="textinput form-control" maxlength="20" id="id_phone_number" > 
                       </div>
                     </td></tr>
                     <tr><td colspan="2">
                       <div id="div_id_street" class="mb-3"> 
                           <label for="id_street" class="form-label">Street</label> 
-                          <input required type="text" name="street" value="{{ user.street }}" maxlength="255" class="textinput form-control" id="id_street"> 
+                          <input required type="text" name="street" value="{{ form.data.street }}" maxlength="255" class="textinput form-control" id="id_street"> 
                       </div>
                     </td></tr>
                     <tr>
                       <td>
                           <div id="div_id_city" class="mb-3"> 
                               <label for="id_city" class="form-label">City</label> 
-                              <input required type="text" name="city" value="{{ user.city }}" maxlength="100" class="textinput form-control" id="id_city"> 
+                              <input required type="text" name="city" value="{{ form.data.city }}" maxlength="100" class="textinput form-control" id="id_city"> 
                           </div>
                       </td>
                       <td>
                           <div id="div_id_state" class="mb-3"> 
                           <label for="id_state" class="form-label">State</label> 
-                            <select required name="state" selected="" value="{{ user.state }}" style="font-size: 12px;" class="form-select" id="id_state">
-                              { % if user.state is not None % }
-                              <option value="{{ user.state }}" selected hidden>{{ user.state }}</option>
+                            <select required name="state" value="{{ form.data.state }}" style="font-size: 12px;" class="form-select" id="id_state">
+                              { % if form.data.state is not None % }
+                              <option value="{{ form.data.state }}" selected hidden>{{ form.data.state }}</option>
                               { % endif % }
-                              <option value="">---------</option>
                               <option value="AL">Alabama</option>
                               <option value="AK">Alaska</option>
                               <option value="AZ">Arizona</option>
@@ -103,7 +102,7 @@
                     <tr><td>
                         <div id="div_id_zip" class="mb-3"> 
                             <label for="id_zip" class="form-label">Zipcode</label> 
-                            <input required type="text" name="zip" pattern="[0-9]{5}" value="{{ user.zip }}" class="textinput form-control" id="id_zip"> 
+                            <input required type="text" name="zip" pattern="[0-9]{5}" value="{{ form.data.zip }}" class="textinput form-control" id="id_zip"> 
                         </div>
                     </td></tr>
                     <input type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()" style="display: none;"/>
