@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'shared',
+    'student_profile',
     'helloworld',
     'user',
     'crispy_forms',
