@@ -26,7 +26,7 @@ def updateProfile(request):
         form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.student.profile)
         if form.is_valid():
             form.save()
-            return redirect('user-profile')
+            return redirect('get-profile')
     else:
         form = ProfileUpdateForm(instance=request.user.student.profile)
     context = {'form': form}
