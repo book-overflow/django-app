@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileCreationForm, ProfileUpdateForm
+from .decorators import no_profile_required, profile_required
 
 @login_required
+@no_profile_required
 def createProfile(request):
     if request.method == 'POST':
         form = ProfileCreationForm(request.POST, request.FILES)
@@ -17,10 +19,12 @@ def createProfile(request):
     return render(request, 'registerProfile.html', context)
 
 @login_required
+@profile_required
 def getProfile(request):
     return render(request, 'profile.html')
 
 @login_required
+@profile_required
 def updateProfile(request):
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.student.profile)

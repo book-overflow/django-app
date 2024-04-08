@@ -1,5 +1,6 @@
 from .forms import CustomUserCreationForm
 from .decorators import guest_required
+from student_profile.decorators import profile_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -38,5 +39,6 @@ def register(request):
     return render(request, 'register.html', context)
 
 @login_required
+@profile_required
 def browse(request):
     return render(request, 'browse.html')
