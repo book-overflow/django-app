@@ -1,11 +1,7 @@
 # from django.db import models
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin,
-)
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from datetime import timedelta
 from django.utils import timezone
 from django.core.exceptions import ValidationError
@@ -73,21 +69,12 @@ class University(CustomBaseModel):
 class Student(CustomUser):
     first_name = models.CharField(max_length=255, null=False, blank=False)
     last_name = models.CharField(max_length=255, null=False, blank=False)
-    date_of_birth = models.DateField(null=True, blank=True)
     _university = models.ForeignKey(
         University,
         on_delete=models.CASCADE,
         related_name="students"
     )
 
-#   To be moved to separate profile model    
-    phone_number = models.CharField(max_length=20, null=True, blank=True)
-    street = models.CharField(max_length=255, null=True, blank=True)
-    city = models.CharField(max_length=100, null=True, blank=True)
-    state = models.CharField(max_length=2, null=True, blank=True)
-    zip = models.CharField(max_length=5, null=True, blank=True)
-    image = models.ImageField(default='profile.png', upload_to='profile/')
-    
     def clean(self):
         pass
 

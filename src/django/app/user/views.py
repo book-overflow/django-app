@@ -1,5 +1,6 @@
-from .forms import CustomUserCreationForm, UserProfileForm
-from .decorators import guest_required, profile_required
+from .forms import CustomUserCreationForm
+from .decorators import guest_required
+from student_profile.decorators import profile_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -31,42 +32,11 @@ def register(request):
                 # Log the user in
                 login(request, user)
                 request.session['name'] = form.cleaned_data["first_name"]
-                return redirect('user-register-profile')
+                return redirect('create-profile')
     else:
         form = CustomUserCreationForm()
     context = {'form': form}
     return render(request, 'register.html', context)
-
-@login_required
-def registerProfile(request):
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=request.user.student)
-        if form.is_valid():
-            form.save()
-            return redirect('browse')
-    else:
-        form = UserProfileForm(instance=request.user.student)
-    context = {'form': form}
-    return render(request, 'registerProfile.html', context)
-
-
-@login_required
-@profile_required
-def getProfile(request):
-    return render(request, 'profile.html')
-
-@login_required
-@profile_required
-def updateProfile(request):
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=request.user.student)
-        if form.is_valid():
-            form.save()
-            return redirect('user-profile')
-    else:
-        form = UserProfileForm(instance=request.user.student)
-    context = {'form': form}
-    return render(request, 'updateProfile.html', context)
 
 @login_required
 @profile_required
