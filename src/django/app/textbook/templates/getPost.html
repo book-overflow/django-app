@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+    {% block content %}
+    {% load static %}
+
+        <div>
+            <div class="search textbook-post" data-bs-theme="dark">
+                <div class="textbook-image">
+                    <img style="max-height:400px; max-width: 100%;" src="{% static 'test_textbook.JPG' %}" >
+                </div>
+                <div class="textbook-details">
+                    <div style="margin-bottom: 10px;">
+                        <h5>Introduction to Algorithms, fourth edition</h5>
+                        <small> by Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein</small>
+                        <h4 style="margin: 10px 0px 30px 0px;"><b> $ 50.00 </b></h4>
+                    </div>
+                    <div>
+                        <table>
+                            <tr>
+                                <td class="textbook-detail-label">
+                                    <small>ISBN</small>
+                                </td>
+                                <td>
+                                    <small>978-0262046305 </small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="textbook-detail-label">
+                                    <small>Course</small>
+                                </td>
+                                <td>
+                                    <small>CS-GY-6033 </small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="textbook-detail-label">
+                                    <small>Condition</small>
+                                </td>
+                                <td>
+                                    <small>Like New</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="textbook-detail-label">
+                                    <small>Sold By</small>
+                                </td>
+                                <td>
+                                    <a href="#"><small>{{ user.student.first_name }} {{ user.student.last_name }}</small></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="margin-top:30px;">
+                        <button id="form-button" class="btn btn-primary">Contact the Seller</button>
+                    </div>
+                </div>
+                
+            </div>
+    {% endblock content %}
+    {% block script %}
+
+    {% endblock script %}

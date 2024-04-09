@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+    {% block content %}
+    <div style="align-content: start;">
+        <div class="card-left form-input" data-bs-theme="dark" style="color:white">
+            <div id="div_id_school" class="mb-3"> 
+                <label for="id_domain" class="form-label">Post In</label> 
+                  <select required name="school" value="" style="font-size: 12px;" class="form-select" id="id_domain">
+                    <option value="" selected>New York University</option>
+                    <option value="">School</option>
+                    <option value="">School</option>
+                  </select>
+            </div>
+            <div id="div_id_course" class="mb-3"> 
+                <label for="id_course" class="form-label">Course</label> 
+                <input required type="text" name="course" value="" maxlength="100" class="textinput form-control" id="id_course"> 
+            </div>
+        </div>
+        <div class="set-profile"> 
+            <h1 class="form-heading">New Post</h1>
+            <div>
+                <div class="form-input" name="formOptions">
+                    <input style="margin-left:50px; margin-bottom:20px;" class="form-check-input" type="radio" name="optionsRadios" id="optionsRadios1" value="sell" checked="">
+                    <label class="form-check-label" for="optionsRadios1">Sell</label>
+                    <input style="margin-left:20px;" class="form-check-input" type="radio" name="optionsRadios" id="optionsRadios2" value="rent">
+                    <label class="form-check-label" for="optionsRadios2">Rent</label>
+                </div>
+                <div id="sell-form">
+                    <form method="POST" class="form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <table class="form-input">
+                            <tr>
+                                <td>
+                                    <div id="div_id_isbn" class="mb-3"> 
+                                        <label for="id_isbn" class="form-label">ISBN</label> 
+                                        <input required type="text" name="isbn" pattern="[0-9]{13}" value="" maxlength="100" class="textinput form-control" id="id_isbn"> 
+                                    </div>
+                                </td>
+                                <td>
+                                    <li style="margin-top: 10px;margin-left: 5px;"id="form-button" class="btn btn-outline-secondary">Search ISBN</li>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="div_id_street" class="mb-3"> 
+                                        <label for="id_title" class="form-label">Title</label> 
+                                        <input required type="text" name="street" value="" maxlength="255" class="textinput form-control" id="id_title"> 
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="div_id_author" class="mb-3"> 
+                                        <label for="id_author" class="form-label">Author</label> 
+                                        <input required type="text" name="authors" value="" maxlength="100" class="textinput form-control" id="id_author"> 
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="div_id_condition" class="mb-3"> 
+                                        <label for="id_condition" class="form-label">Condition</label> 
+                                        <select required name="condition" value="" style="font-size: 12px;" class="form-select" id="id_condition">
+                                            <option value="" >As New</option>
+                                            <option value="" >Good</option>
+                                            <option value="">Fair</option>
+                                            <option value="">Poor</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="div_id_price" class="mb-3"> 
+                                        <label for="id_price" class="form-label">Price</label>
+                                        <span style="position: relative; top:32px; left:-20px;">$</span>
+                                        <input required type="number"min="0.01" step="0.01" max="500" min="0.01" step="0.01" name="price" value="" class="textinput form-control" style="padding-left: 24px;"id="id_price"> 
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <label for="id_image" class="form-label">Image</label>
+                                        <div style="cursor:pointer; height: 100px; width: 100px; background-color: unset; display: flex; justify-content: center; align-items: center; border-color: grey; border-width: 1px; border-style: dashed;" onclick="document.getElementById('id_image').click();">
+                                            <svg id="image_icon" style="position: absolute; margin: 40px" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                                            </svg>
+                                            <img id="photo-upload" style="height: 100px; width: 100px; display:none;"/>
+                                        </div>
+                                        <svg onclick="deleteImage()" id="image_delete" style="position: absolute; margin-top:-110px; margin-left: 90px; display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                                        </svg>
+                                        <input type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()" style="display: none;"/>
+                                    </div>
+                                </td>
+                            </tr>
+                          </table>
+                          <div class="form-input form-group" style="margin-top: 20px;">
+                            <button id="form-button" class="btn btn-primary" type="submit">Create New Post</button>
+                            </div>
+                        </div>
+                    </form> 
+                </div>
+
+                <div id="rent-form" style="display: none;" >
+                    <form method="POST" class="form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <table class="form-input">
+                              <tr>
+                                  <td>
+                                      <div id="div_id_isbn" class="mb-3"> 
+                                          <label for="id_isbn" class="form-label">ISBN</label> 
+                                          <input required type="text" name="isbn" pattern="[0-9]{13}" value="" maxlength="100" class="textinput form-control" id="id_isbn"> 
+                                      </div>
+                                  </td>
+                                  <td>
+                                      <li style="margin-top: 10px;margin-left: 5px;"id="form-button" class="btn btn-outline-secondary">Search ISBN</li>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div id="div_id_street" class="mb-3"> 
+                                          <label for="id_title" class="form-label">Title</label> 
+                                          <input required type="text" name="street" value="" maxlength="255" class="textinput form-control" id="id_title"> 
+                                      </div>
+                                  </td>
+                                  <td>
+                                      <div id="div_id_author" class="mb-3"> 
+                                          <label for="id_author" class="form-label">Author</label> 
+                                          <input required type="text" name="authors" value="" maxlength="100" class="textinput form-control" id="id_author"> 
+                                      </div>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div id="div_id_condition" class="mb-3"> 
+                                          <label for="id_condition" class="form-label">Condition</label> 
+                                          <select required name="condition" value="" style="font-size: 12px;" class="form-select" id="id_condition">
+                                              <option value="" >As New</option>
+                                              <option value="" >Good</option>
+                                              <option value="">Fair</option>
+                                              <option value="">Poor</option>
+                                          </select>
+                                      </div>
+                                  </td>
+                                  <td>
+                                      <div id="div_id_price" class="mb-3"> 
+                                          <label for="id_price" class="form-label">Price (Monthly)</label>
+                                          <span style="position: relative; top:32px; left:-80px;">$</span>
+                                          <input required type="number"min="0.01" step="0.01" max="500" min="0.01" step="0.01" name="price" value="" class="textinput form-control" style="padding-left: 24px;"id="id_price"> 
+                                      </div>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div id="div_id_avail_from" class="mb-3"> 
+                                      <label for="id_avail_from"  class="form-label">Available From</label>
+                                      <input required class="textinput form-control" type="date" name="avail_from" value="" id="id_avail_from">
+                                      </div>
+                                  </td>
+                                  <td>
+                                      <div id="div_id_avail_to" class="mb-3"> 
+                                      <label for="id_avail_to"  class="form-label">To</label>
+                                      <input required class="textinput form-control" type="date" name="avail_to" value="" id="id_avail_to">
+                                      </div>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      <div>
+                                          <label for="id_image" class="form-label">Image</label>
+                                          <div style="cursor:pointer; height: 100px; width: 100px; background-color: unset; display: flex; justify-content: center; align-items: center; border-color: grey; border-width: 1px; border-style: dashed;" onclick="document.getElementById('id_image').click();">
+                                              <svg id="image_icon" style="position: absolute; margin: 40px" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                                                  <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                                  <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                                              </svg>
+                                              <img id="photo-upload" style="height: 100px; width: 100px; display:none;"/>
+                                          </div>
+                                          <svg onclick="deleteImage()" id="image_delete" style="position: absolute; margin-top:-110px; margin-left: 90px; display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                                          </svg>
+                                          <input type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()" style="display: none;"/>
+                                      </div>
+                                  </td>
+                              </tr>
+                            </table>
+                            <div class="form-input form-group" style="margin-top: 20px;">
+                                <button id="form-button" class="btn btn-primary" type="submit">Create New Post</button>
+                            </div>
+                        </div>
+                    </form> 
+                </div>
+
+                <div class="error-msg form" style="min-height: 30px;">
+                    {% for field in form %}
+                    <div class="text-danger">
+                        {{ field.errors }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+    {% block script %}
+    <script>
+        var rad = document.getElementsByName('optionsRadios');
+        var prev = null;
+        for (var i = 0; i < rad.length; i++) {
+            rad[i].addEventListener('change', function() {
+                (prev) ? console.log(prev.value): null;
+                console.log(this.value);
+                if (this.value == "rent"){
+                    document.getElementById('rent-form').style.display = "block";
+                    document.getElementById('sell-form').style.display = "none";
+                } else {
+                    document.getElementById('rent-form').style.display = "none";
+                    document.getElementById('sell-form').style.display = "block";
+                }
+            });
+        }
+        function loadFile() {
+            var output = document.getElementById('photo-upload');
+            document.getElementById('image_icon').style.display = "none";
+            document.getElementById('image_delete').style.display = "block";
+
+            if (event.target.files[0] != undefined){
+                output.style.display = "block";
+                output.src = URL.createObjectURL(event.target.files[0]);
+                output.onload = function() {
+                    URL.revokeObjectURL(output.src) // free memory
+                }
+            }
+        }
+        function deleteImage() {
+            document.getElementById('photo-upload').style.display = "none";
+            document.getElementById('image_icon').style.display = "block";
+            document.getElementById('image_delete').style.display = "none";
+            document.getElementById('id_image').value = null;
+        }
+    </script>
+    {% endblock script %}
