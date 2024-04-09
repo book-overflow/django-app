@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'student_profile',
     'helloworld',
     'user',
+    'textbook',
     'crispy_forms',
 ]
 
