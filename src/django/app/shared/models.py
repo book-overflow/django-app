@@ -112,7 +112,7 @@ class Textbook(CustomBaseModel):
     
     name = models.CharField(max_length=255)
     edition = models.IntegerField()
-    year_published = models.IntegerField()
+    # year_published = models.IntegerField()
     # image = models.ImageField(default='profile.png', upload_to='profile/')
     
 class TextbookCopy(CustomBaseModel):
@@ -128,8 +128,8 @@ class TextbookCopy(CustomBaseModel):
     )
     
     condition = models.CharField(max_length=255, choices=BookCondition.choices)
-    year_purchased = models.IntegerField()
-    # image = models.ImageField(default='profile.png', upload_to='profile/')
+    # year_purchased = models.IntegerField()
+    image = models.ImageField(upload_to='books/')
     for_rent = models.BooleanField()
     for_sale = models.BooleanField()
     sale_price = models.DecimalField(max_digits=5, decimal_places=2)
