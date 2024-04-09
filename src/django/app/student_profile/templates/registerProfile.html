@@ -2,7 +2,7 @@
   {% block content %}
   {% load static %}
     <div style="align-content: start;">
-        <div class="profile-card">
+        <div class="card-left">
             <img class="profile-photo" id="profile-photo" style="object-fit: cover; height: 120px; width: 120px; margin:auto; display: block; clip-path: circle();"  src="{% static 'profile.png' %}" />
             <button type="button" style="display: block; border-radius: 8px; margin-top: 4%; margin-bottom: 4%; margin-left: auto; margin-right: auto;"; id="form-button" class="btn btn-outline-secondary" onclick="document.getElementById('id_image').click();">Upload Photo</button>
             <div style="position: relative; display: block; margin-top: 5%; margin-bottom: 5%; text-align: center; color: white; font-size: 14px; font-family: Montserrat; font-weight: 700; word-wrap: break-word">{{ user.student.first_name }}<br/>{{ user.student.last_name }}</div>
