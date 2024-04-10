@@ -33,7 +33,7 @@ def createPost(request):
                         _last_name = ""
                     else:
                         _first_name = author.lstrip().split(" ")[0]
-                        _last_name = author.lstrip().split(" ")[1:]
+                        _last_name = " ".join(author.lstrip().split(" ")[1:])
                     try:
                         author_list.append(Author.objects.get(first_name = _first_name, last_name = _last_name))
                     except Author.DoesNotExist:
