@@ -10,6 +10,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
+from django.utils.safestring import mark_safe
+
 
 # from .forms import UserRegistrationForm, UserLoginForm, UserUpdateForm
 # from .decorators import user_not_authenticated
@@ -79,8 +81,9 @@ def activateEmail(request, user, to_email):
     if email.send():
         messages.success(
             request,
-            f"Dear <b>{user}</b>, please go to you email <b>{to_email}</b> inbox and click on \
-                received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.",
+            mark_safe(
+                f"Dear <b>{user}</b>, please go to you email <b>{to_email}</b> inbox and click on received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder."
+            ),
         )
     else:
         messages.error(

@@ -13,7 +13,16 @@
   <div class="window center">
     <div class="window-photo">    
       <h1 style="position:absolute; top: 42%; margin-left: 30px; font-size: 35px; font-family: 'Montserrat'; font-weight: bold; color: white;">Welcome to <br> BookOverflow.</h1>
-    </div>
+    </div>{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <div class="alert alert-dismissible fade show alert-{{ message.tags }}" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </ul>
+{% endif %}
     <div class="window-form">
         <h1 class="form-heading">Create Your Account</h1>
         <form class="form" method="POST" action="">
