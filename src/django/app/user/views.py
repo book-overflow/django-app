@@ -82,7 +82,7 @@ def activateEmail(request, user, to_email):
         messages.success(
             request,
             mark_safe(
-                f"Dear <b>{user}</b>, please go to you email <b>{to_email}</b> inbox and click on received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder."
+                f"Dear <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder."
             ),
         )
     else:
