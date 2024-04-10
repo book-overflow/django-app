@@ -18,11 +18,11 @@
             </a>
             <div class="nav-section">
                 <div class="profile-section">
-                    <a href="/user/profile" style="margin: 0;">
-                        <img class="profile-photo" id="profile-photo" style="object-fit: cover; display:inline-block; clip-path: circle();"  src="{{ user.image.url }}" />
+                    <a href="/profile" style="margin: 0;">
+                        <img class="profile-photo" id="profile-photo" style="object-fit: cover; display:inline-block; clip-path: circle();"  src="{{ user.student.profile.image.url }}" />
                     </a>
-                    <a class="name" href="/user/profile" style="font-size: 12px; font-weight: bold;">
-                        {{ user.first_name }} {{ user.last_name }}
+                    <a class="name" href="/profile" style="font-size: 12px; font-weight: bold;">
+                        {{ user.student.first_name }} {{ user.student.last_name }}
                     </a>
                     <a id="logout-icon" href="/logout">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">

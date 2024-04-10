@@ -2,6 +2,8 @@ version: "3.9"
 
 services:
   django:
+    container_name: django
+    image: django:custom
     build: ./django
     environment:
       - POSTGRES_HOST=database
@@ -17,15 +19,19 @@ services:
     depends_on:
       database:
         condition: service_healthy
-
+  
   database:
-    image: postgres
+    container_name: database
+    image: database:custom
+    build: ./postgres
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    expose:
-      - ${DB_PORT}
+    env_file:
+      - .env
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     networks:
       - bedb
     volumes:
@@ -35,9 +41,16 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-  
+
 networks:
   bedb:
+    name: bedb
 
 volumes:
   dev-db-data:
+    name: dev-db-data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data

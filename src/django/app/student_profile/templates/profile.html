@@ -2,9 +2,9 @@
     {% block content %}
         <div style="align-content: start;">
             <div class="profile-card">
-                    <img class="profile-photo" id="profile-photo" style="object-fit: cover; height: 120px; width: 120px; margin:auto; display: block; clip-path: circle();"  src="{{ user.image.url }}" />
-                    <div style="position: relative; display: block; margin-top: 5%; margin-bottom: 5%; text-align: center; color: white; font-size: 14px; font-family: Montserrat; font-weight: 700; word-wrap: break-word">{{ user.first_name }}<br/>{{ user.last_name }}</div>
-                    <div style="position: relative; display: block; margin: 2%; text-align: center; color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ user.email }}</div>
+                    <img class="profile-photo" id="profile-photo" style="object-fit: cover; height: 120px; width: 120px; margin:auto; display: block; clip-path: circle();"  src="{{ user.student.profile.image.url }}" />
+                    <div style="position: relative; display: block; margin-top: 5%; margin-bottom: 5%; text-align: center; color: white; font-size: 14px; font-family: Montserrat; font-weight: 700; word-wrap: break-word">{{ user.student.first_name }}<br/>{{ user.student.last_name }}</div>
+                    <div style="position: relative; display: block; margin: 2%; text-align: center; color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ user.student.email }}</div>
             </div>
             <div class="set-profile"> 
                 <h1 class="form-heading">My Profile</h1>
@@ -15,7 +15,7 @@
                         <td>
                         <div id="div_id_date_of_birth" class="mb-3"> 
                             <label for="id_date_of_birth" class="form-label">Date of Birth</label> 
-                            <input type="text" name="date_of_birth" value="{{ user.date_of_birth | date:'m/d/Y' }}" class="textinput form-control" id="id_date_of_birth" disabled> 
+                            <input type="text" name="date_of_birth" value="{{ user.student.profile.date_of_birth | date:'m/d/Y' }}" class="textinput form-control" id="id_date_of_birth" disabled> 
                         </div>
                         </td>
                         </tr>
@@ -23,27 +23,27 @@
                             <td>
                             <div id="div_id_phone_number" class="mb-3"> 
                                 <label for="id_phone_number" class="form-label">Phone Number</label> 
-                                <input type="text" name="phone_number" value="{{ user.phone_number }}" class="textinput form-control" id="id_phone_number" disabled> 
+                                <input type="text" name="phone_number" value="{{ user.student.profile.phone_number }}" class="textinput form-control" id="id_phone_number" disabled> 
                             </div>
                             </td>
                             </tr>
                         <tr><td colspan="2">
                         <div id="div_id_address" class="mb-3"> 
                             <label for="id_address" class="form-label requiredField">Street</label> 
-                            <input type="text" name="address" value="{{ user.street }}" maxlength="254" class="textinput form-control" id="id_address" disabled> 
+                            <input type="text" name="address" value="{{ user.student.profile.street }}" maxlength="254" class="textinput form-control" id="id_address" disabled> 
                         </div>
                         </td></tr>
                         <tr>
                             <td>
                                 <div id="div_id_city" class="mb-3"> 
                                     <label for="id_city" class="form-label requiredField">City</label> 
-                                    <input type="text" name="city" value="{{ user.city }}" maxlength="20" class="textinput form-control" id="id_city" disabled> 
+                                    <input type="text" name="city" value="{{ user.student.profile.city }}" maxlength="20" class="textinput form-control" id="id_city" disabled> 
                                 </div>
                             </td>
                             <td>
                                 <div id="div_id_state" class="mb-3"> 
                                 <label for="id_state" class="form-label requiredField">State</label> 
-                                <input type="text" name="state" value="{{ user.state }}" maxlength="20" class="textinput form-control" id="id_state" disabled> 
+                                <input type="text" name="state" value="{{ user.student.profile.state }}" maxlength="20" class="textinput form-control" id="id_state" disabled> 
                                 </div>
                             </td>
                         </tr>
@@ -51,12 +51,12 @@
                             <td>
                                 <div id="div_id_zipcode" class="mb-3"> 
                                     <label for="id_zip" class="form-label requiredField">Zipcode</label> 
-                                    <input name="zip" value="{{ user.zip }}" pattern="[0-9]{5}"class="textinput form-control" id="id_zip" disabled> 
+                                    <input name="zip" value="{{ user.student.profile.zip }}" pattern="[0-9]{5}"class="textinput form-control" id="id_zip" disabled> 
                                 </div>
                             </td>
                         </tr>
                         <tr><td>
-                        <a id="form-button" href="/user/profile/update" class="btn btn-primary">Edit Info</button>
+                        <a id="form-button" href="/profile/update" class="btn btn-primary">Edit Info</button>
                         </td></tr>
                     </table>
                     <div class="error-msg form" style="min-height: 30px;">
