@@ -46,9 +46,10 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
+        login(request, user)
         messages.success(
             request,
-            "Thank you for your email confirmation. Now you can login your account.",
+            "Thank you for your email confirmation. Please fill out your profile.",
         )
         return redirect("create-profile")
     else:
@@ -93,18 +94,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             activateEmail(request, user, form.cleaned_data.get("email"))
-            # Authenticate the user
-            user = authenticate(
-                request,
-                email=form.cleaned_data["email"],
-                password=form.cleaned_data["password1"],
-            )
-            if user is not None and user.is_active:
-                print("user found to be active and not none")
-                # Log the user in
-                login(request, user)
-                request.session["name"] = form.cleaned_data["first_name"]
-                return redirect("create-profile")
+            # Render html asking user to check their email for account activation link
     else:
         form = CustomUserCreationForm()
     context = {"form": form}
