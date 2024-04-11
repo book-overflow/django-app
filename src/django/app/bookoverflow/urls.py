@@ -25,6 +25,7 @@ urlpatterns = [
     path('register/', user_views.register, name='user-register'),
     path('login/', user_views.CustomLoginView.as_view(template_name='login.html'), name='user-login'),
     path('logout/', user_views.CustomLogoutView.as_view(template_name='logout.html'), name='user-logout'),
+    path('auth/', include('user.urls')),
     path('profile/', include('student_profile.urls')),
     path('helloworld/', include('helloworld.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
