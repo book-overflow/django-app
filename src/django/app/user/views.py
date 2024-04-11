@@ -99,7 +99,6 @@ def register(request):
                 email=form.cleaned_data["email"],
                 password=form.cleaned_data["password1"],
             )
-            user.is_active = False
             if user is not None and user.is_active:
                 print("user found to be active and not none")
                 # Log the user in
