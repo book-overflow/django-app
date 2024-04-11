@@ -13,6 +13,10 @@ from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe
 from .tokens import account_activation_token
 from student_profile.decorators import profile_required
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 # Add guest_required decorator to built-in LoginView
@@ -46,10 +50,10 @@ def activate(request, uidb64, token):
             request,
             "Thank you for your email confirmation. Now you can login your account.",
         )
-        return redirect("user-register-profile")
+        return redirect("create-profile")
     else:
         messages.error(request, "Activation link is invalid!")
-    return redirect("register")
+    return redirect("create-profile")
 
 
 def activateEmail(request, user, to_email):
@@ -64,8 +68,11 @@ def activateEmail(request, user, to_email):
             "protocol": "https" if request.is_secure() else "http",
         },
     )
+    print("activate email sent")
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
+        print("activate email success")
+
         messages.success(
             request,
             mark_safe(
@@ -85,7 +92,6 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            user.is_active = False
             activateEmail(request, user, form.cleaned_data.get("email"))
             # Authenticate the user
             user = authenticate(
@@ -93,7 +99,9 @@ def register(request):
                 email=form.cleaned_data["email"],
                 password=form.cleaned_data["password1"],
             )
+            user.is_active = False
             if user is not None and user.is_active:
+                print("user found to be active and not none")
                 # Log the user in
                 login(request, user)
                 request.session["name"] = form.cleaned_data["first_name"]
