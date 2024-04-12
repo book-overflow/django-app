@@ -29,9 +29,9 @@ jobs:
 
     - name: Create data folder
       run: make create_data_folder
-      
+
     - name: Set up Docker Compose
-      run: docker-compose -f docker-compose.yml up -d
+      run: docker-compose -f src/docker-compose.yml up -d
 
     # - name: Make Docker Container
     #   run: make all 
