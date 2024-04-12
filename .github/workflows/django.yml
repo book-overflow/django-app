@@ -61,7 +61,7 @@ jobs:
 
 
     - name: run tests
-      run: python src/django/app/manage.py test --settings=bookoverflow.test_settings
+      run: make test
       env:
         DOCK_DST: /app
         HOST_SRC: ./django${DOCK_DST}
