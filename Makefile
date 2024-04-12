@@ -17,7 +17,7 @@ build:
 	${DOCKER_CMD} build
 
 up:
-	${DOCKER_CMD} up -d
+	${DOCKER_CMD} up -d 
 
 down:
 	${DOCKER_CMD} down
@@ -33,6 +33,8 @@ goin_postgres:
 
 
 test:
+	${DOCKER_CMD} build
+	${DOCKER_CMD} up -d 
 	${DOCKER_CMD} exec ${DJANGO_CONTNR} pwd
 	${DOCKER_CMD} exec ${DJANGO_CONTNR} ls -R /app
 	${DOCKER_CMD} exec ${DJANGO_CONTNR} python app/src/django/app/manage.py test --settings=bookoverflow.test_settings
