@@ -4,10 +4,11 @@ on:
   push:
     branches: 
       - main
-      - dev
+      - git-workflows
   pull_request:
     branches: 
       - main
+      - git-workflows
   schedule:
     - cron: '0 0 * * *'  # Runs every day at midnight
 
