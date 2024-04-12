@@ -34,8 +34,8 @@ goin_postgres:
 
 test:
 	${DOCKER_CMD} exec ${DJANGO_CONTNR} pwd
-	${DOCKER_CMD} exec ${DJANGO_CONTNR} ls -R /
-	${DOCKER_CMD} exec ${DJANGO_CONTNR} python app/manage.py test --settings=bookoverflow.test_settings
+	${DOCKER_CMD} exec ${DJANGO_CONTNR} ls -R /app
+	${DOCKER_CMD} exec ${DJANGO_CONTNR} python app/src/django/app/manage.py test --settings=bookoverflow.test_settings
 
 
 clean: rm_containers rm_images rm_volumes rm_networks rm_migration_files prune
