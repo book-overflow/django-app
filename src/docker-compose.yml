@@ -5,7 +5,7 @@ services:
     container_name: django
     image: django:custom
     build: ./django
-    command: python django/app/manage.py test
+    command: python /app/manage.py test
     environment:
       - POSTGRES_HOST=database
     # env_file:
