@@ -32,7 +32,7 @@ jobs:
       run: make create_data_folder
 
     - name: Set up Docker Compose
-      run: docker-compose -f src/docker-compose.yml up -d
+      run: make all
       env:
         DOCK_DST: /app
         HOST_SRC: ./django${DOCK_DST}
@@ -61,7 +61,7 @@ jobs:
 
 
     - name: run tests
-      run: docker-compose exec -T app python src/django/app/manage.py test --settings=bookoverflow.test_settings
+      run: python src/django/app/manage.py test --settings=bookoverflow.test_settings
       env:
         DOCK_DST: /app
         HOST_SRC: ./django${DOCK_DST}
