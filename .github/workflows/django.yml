@@ -28,8 +28,8 @@ jobs:
         sudo curl -L "https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
 
-    - name: Create data folder
-      run: make create_data_folder
+    # - name: Create data folder
+    #   run: make create_data_folder
 
     - name: Set up Docker Compose
       run: make all
