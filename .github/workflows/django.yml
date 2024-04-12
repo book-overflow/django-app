@@ -9,7 +9,6 @@ on:
     branches: 
       - main
       - git-workflows
-
   schedule:
     - cron: '0 0 * * *'  # Runs every day at midnight
 
@@ -33,6 +32,15 @@ jobs:
 
     - name: Build containers
       run: make build
+      env:
+        HOST_SRC: /path/on/host
+        DOCK_DST: /path/in/container
+        BE_PORT: 8000
+        BE_PORT_ALT: 9000
+        POSTGRES_DB: exampledb
+        POSTGRES_USER: exampleuser
+        POSTGRES_PASSWORD: examplepass
+        POSTGRES_PORT: 5432
 
     - name: Bring up services
       run: make up
