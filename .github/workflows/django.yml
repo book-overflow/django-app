@@ -46,7 +46,8 @@ jobs:
 
 
     - name: run tests
-      run: python src/django/app/manage.py test --settings=bookoverflow.test_settings
+      run: docker-compose exec -T app python src/django/app/manage.py test --settings=bookoverflow.test_settings
+
 
 
 
