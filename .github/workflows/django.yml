@@ -11,7 +11,7 @@ on:
       - git-workflows
   schedule:
     - cron: '0 0 * * *'  # Runs every day at midnight
-    
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -44,8 +44,8 @@ jobs:
         POSTGRES_PASSWORD: password123
         POSTGRES_PORT: 5432
 
-    - name: Bring up services and run tests
-      run: docker-compose up --abort-on-container-exit
+    - name: Bring up services
+      run: make up
       env:
         DOCK_DST: /app
         HOST_SRC: ./django${DOCK_DST}
@@ -58,5 +58,8 @@ jobs:
         POSTGRES_PASSWORD: password123
         POSTGRES_PORT: 5432
 
+    - name: Run Django tests
+      run: docker exec ${DJANGO_CONTNR} python manage.py test
+
     - name: Clean up
-      run: docker-compose down
+      run: make down
