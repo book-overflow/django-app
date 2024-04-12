@@ -34,6 +34,7 @@ goin_postgres:
 
 test:
 	${DOCKER_CMD} exec ${DJANGO_CONTNR} pwd
+	${DOCKER_CMD} exec ${DJANGO_CONTNR} ls -R /
 	${DOCKER_CMD} exec ${DJANGO_CONTNR} python app/manage.py test --settings=bookoverflow.test_settings
 
 
