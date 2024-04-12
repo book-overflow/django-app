@@ -37,6 +37,7 @@ test:
 	${DOCKER_CMD} up -d 
 	${DOCKER_CMD} exec ${DJANGO_CONTNR} pwd
 	${DOCKER_CMD} exec ${DJANGO_CONTNR} ls ./
+	${DOCKER_CMD} exec ${DJANGO_CONTNR} ls ./app
 	${DOCKER_CMD} exec ${DJANGO_CONTNR} python ./app/src/django/app/manage.py test --settings=bookoverflow.test_settings
 
 
