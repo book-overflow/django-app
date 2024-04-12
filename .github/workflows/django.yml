@@ -9,6 +9,7 @@ on:
     branches: 
       - main
       - git-workflows
+
   schedule:
     - cron: '0 0 * * *'  # Runs every day at midnight
 
@@ -28,16 +29,16 @@ jobs:
         sudo chmod +x /usr/local/bin/docker-compose
 
     - name: Create data folder
-      run: make -C ./src create_data_folder
+      run: make create_data_folder
 
     - name: Build containers
-      run: make -C ./src build
+      run: make build
 
     - name: Bring up services
-      run: make -C ./src up
+      run: make up
 
     - name: Run Django tests
       run: docker exec ${DJANGO_CONTNR} python manage.py test
 
     - name: Clean up
-      run: make -C ./src down
+      run: make down
