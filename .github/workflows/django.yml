@@ -11,12 +11,11 @@ on:
       - git-workflows
   schedule:
     - cron: '0 0 * * *'  # Runs every day at midnight
-
+    
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    env:
-        DJANGO_CONTNR: django
+
     steps:
     - uses: actions/checkout@v2
 
@@ -45,27 +44,19 @@ jobs:
         POSTGRES_PASSWORD: password123
         POSTGRES_PORT: 5432
 
-    # - name: Bring up services
-    #   run: make up
-    #   env:
-    #     DOCK_DST: /app
-    #     HOST_SRC: ./django${DOCK_DST}
-    #     BE_PORT: 8000
-    #     BE_PORT_ALT: 9000
-    #     DJANGO_SUPERUSER_EMAIL: admin@admin.com
-    #     DJANGO_SUPERUSER_PASSWORD: atac_pass_100!
-    #     POSTGRES_DB: bookoverflow_db
-    #     POSTGRES_USER: bookoverflow_admin
-    #     POSTGRES_PASSWORD: password123
-    #     POSTGRES_PORT: 5432
-
-    - name: List Docker containers
-      run: docker ps
-
-    - name: Run Django tests
+    - name: Bring up services and run tests
+      run: docker-compose up --abort-on-container-exit
       env:
-        DJANGO_CONTNR: django
-      run: docker exec ${DJANGO_CONTNR} python manage.py test
+        DOCK_DST: /app
+        HOST_SRC: ./django${DOCK_DST}
+        BE_PORT: 8000
+        BE_PORT_ALT: 9000
+        DJANGO_SUPERUSER_EMAIL: admin@admin.com
+        DJANGO_SUPERUSER_PASSWORD: atac_pass_100!
+        POSTGRES_DB: bookoverflow_db
+        POSTGRES_USER: bookoverflow_admin
+        POSTGRES_PASSWORD: password123
+        POSTGRES_PORT: 5432
 
     - name: Clean up
-      run: make down
+      run: docker-compose down
