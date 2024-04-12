@@ -14,7 +14,7 @@ services:
       - ${BE_PORT}:${BE_PORT}
       - ${BE_PORT_ALT}:${BE_PORT_ALT}
     volumes:
-      - ${HOST_SRC}:${DOCK_DST}
+      - ./django:/app
     networks:
       - bedb
     depends_on:
