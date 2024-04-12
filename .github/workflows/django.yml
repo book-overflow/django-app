@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Set up Docker
       uses: docker/setup-buildx-action@v1
@@ -29,6 +29,9 @@ jobs:
 
     - name: Create data folder
       run: make create_data_folder
+      
+    - name: Set up Docker Compose
+      run: docker-compose -f docker-compose.yml up -d
 
     # - name: Make Docker Container
     #   run: make all 
