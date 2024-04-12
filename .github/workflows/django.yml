@@ -1,0 +1,38 @@
+name: Django CI with Makefile
+
+on: 
+    push:
+      branches: 
+        - main
+        - git-workflows
+    pull_request:
+      branches: 
+        - git-workflows
+        - main
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: docker/setup-buildx-action@v1
+
+    - name: Set up Docker Compose
+      uses: docker/setup-compose-action@v1
+
+    - name: Create data folder
+      run: make -C ./src create_data_folder
+
+    - name: Build containers
+      run: make -C ./src build
+
+    - name: Bring up services
+      run: make -C ./src up
+
+    - name: Run Django tests
+      run: docker exec ${DJANGO_CONTNR} python manage.py test
+
+    - name: Clean up
+      run: make -C ./src down
