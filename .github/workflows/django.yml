@@ -15,7 +15,8 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
+    env:
+        DJANGO_CONTNR: django
     steps:
     - uses: actions/checkout@v2
 
@@ -58,7 +59,12 @@ jobs:
     #     POSTGRES_PASSWORD: password123
     #     POSTGRES_PORT: 5432
 
+    - name: List Docker containers
+      run: docker ps
+
     - name: Run Django tests
+      env:
+        DJANGO_CONTNR: django
       run: docker exec ${DJANGO_CONTNR} python manage.py test
 
     - name: Clean up
