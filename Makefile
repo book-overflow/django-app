@@ -34,7 +34,7 @@ goin_postgres:
 
 test:
 	${DOCKER_CMD} build
-	${DOCKER_CMD} up -d 
+	${DOCKER_CMD} up 
 	${DOCKER_CMD} exec ${DJANGO_CONTNR} pwd
 	${DOCKER_CMD} exec ${DJANGO_CONTNR} ls ./
 	${DOCKER_CMD} exec ${DJANGO_CONTNR} ls ./app
