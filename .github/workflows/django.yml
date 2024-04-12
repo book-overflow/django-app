@@ -46,7 +46,7 @@ jobs:
 
 
     - name: run tests
-      run: python .src/django/app/manage.py test --settings=bookoverflow.test_settings
+      run: python src/django/app/manage.py test --settings=bookoverflow.test_settings
 
 
 
