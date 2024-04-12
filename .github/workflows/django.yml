@@ -30,23 +30,23 @@ jobs:
     - name: Create data folder
       run: make create_data_folder
 
-    - name: Make Docker Container
-      run: make all 
-      env:
-        DOCK_DST: /app
-        HOST_SRC: ./django${DOCK_DST}
-        BE_PORT: 8000
-        BE_PORT_ALT: 9000
-        DJANGO_SUPERUSER_EMAIL: admin@admin.com
-        DJANGO_SUPERUSER_PASSWORD: atac_pass_100!
-        POSTGRES_DB: bookoverflow_db
-        POSTGRES_USER: bookoverflow_admin
-        POSTGRES_PASSWORD: password123
-        POSTGRES_PORT: 5432
+    # - name: Make Docker Container
+    #   run: make all 
+    #   env:
+    #     DOCK_DST: /app
+    #     HOST_SRC: ./django${DOCK_DST}
+    #     BE_PORT: 8000
+    #     BE_PORT_ALT: 9000
+    #     DJANGO_SUPERUSER_EMAIL: admin@admin.com
+    #     DJANGO_SUPERUSER_PASSWORD: atac_pass_100!
+    #     POSTGRES_DB: bookoverflow_db
+    #     POSTGRES_USER: bookoverflow_admin
+    #     POSTGRES_PASSWORD: password123
+    #     POSTGRES_PORT: 5432
 
 
     - name: run tests
-      run: python src/django/app/manage.py test --settings=bookoverflow.test_settings
+      run: python .src/django/app/manage.py test --settings=bookoverflow.test_settings
 
 
 
