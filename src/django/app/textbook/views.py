@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from student_profile.decorators import profile_required
 from django.contrib.auth.decorators import login_required
-from .forms import TextbookCopyCreationForm, TextbookCopyCreationForm2
+from .forms import CourseCreationForm, AuthorCreationForm, TextbookCreationForm, TextbookCopyCreationForm, TextbookCopyCreationForm2
 from shared.models import Textbook, TextbookCopy, Author, Course
 
 @login_required
@@ -65,36 +65,79 @@ def createPost(request):
     context = {'form': form}
     return render(request, 'createPost.html', context)
 
+
 def createPost2(request):
     if request.method == 'POST':
-        form = TextbookCopyCreationForm2(request.POST)
-        if form.is_valid():
-            textbook_copy_data = form.cleaned_data
-            textbook_data = textbook_copy_data['textbook']
-            
-            print("Creating textbook...", flush=True)
-            Textbook.objects.get_or_create(**textbook_data)
+        print("In the POST request block...", flush=True)
+        course_form = CourseCreationForm(request.POST)
+        author_form = AuthorCreationForm(request.POST)
+        textbook_form = TextbookCreationForm(request.POST)
+        textbook_copy_form = TextbookCopyCreationForm2(request.POST, request.FILES)
 
-            for course_form in textbook_data.course_formset:
-                print("Creating course...", flush=True)
-                course_data = course_form.cleaned_data
-                Course.objects.get_or_create(**course_data)
-            
-            for author_form in textbook_data.author_formset:
-                print("Creating author...", flush=True)
-                author_data = author_form.cleaned_data
-                Author.objects.get_or_create(**author_data)
+        print("request.POST:", request.POST, flush=True)
+        print("request.FILES:", request.FILES, flush=True)
 
-            textbook_copy = form.save(commit=False)
-            textbook_copy._seller = request.user.student
+        if course_form.is_valid() and author_form.is_valid() and textbook_form.is_valid() and textbook_copy_form.is_valid():
+            print("All forms are valid...", flush=True)
+            # Create course if it doesn't exist
+            course_number = course_form.cleaned_data['course_number']
+            course, _ = Course.objects.get_or_create(
+                course_number=course_number,
+                defaults={
+                    'name': course_form.cleaned_data['name'],
+                    'description': course_form.cleaned_data['description']
+                }
+            )
+            # Create author if it doesn't exist
+            author_first_name = author_form.cleaned_data['first_name']
+            author_last_name = author_form.cleaned_data['last_name']
+            author, _ = Author.objects.get_or_create(
+                first_name=author_first_name,
+                last_name=author_last_name
+            )
+            # Create textbook if it doesn't exist
+            isbn = textbook_form.cleaned_data['isbn']
+            textbook, _ = Textbook.objects.get_or_create(
+                isbn=isbn,
+                defaults={
+                    'title': textbook_form.cleaned_data['title'],
+                    'edition': textbook_form.cleaned_data['edition']
+                }
+            )
+            # Add author to textbook if it isn't already associated
+            textbook._authors.add(author)
+            # Add course to textbook if it isn't already associated
+            textbook._belongs.add(course)
+            # Create textbook copy
+            textbook_copy = textbook_copy_form.save(commit=False)
+            textbook_copy._textbook = textbook
+            textbook_copy._seller = request.user
             textbook_copy.save()
-
+            # Redirect to my textbooks page
             return redirect('my-textbooks')
-    else:
-        form = TextbookCopyCreationForm2()
+        
+        else:
+            print("Not all forms are valid...", flush=True)
+            print("Course form errors:", course_form.errors, flush=True)
+            print("Author form errors:", author_form.errors, flush=True)
+            print("Textbook form errors:", textbook_form.errors, flush=True)
+            print("Textbook copy form errors:", textbook_copy_form.errors, flush=True)
 
-    context = {'form': form}
-    return render(request, 'createPost2.html', context)
+    else:
+        print("In the GET request block...", flush=True)
+        # If not a POST request, create empty forms
+        course_form = CourseCreationForm()
+        author_form = AuthorCreationForm()
+        textbook_form = TextbookCreationForm()
+        textbook_copy_form = TextbookCopyCreationForm2()
+
+    return render(request, 'createPost2.html', {
+        'course_form': course_form,
+        'author_form': author_form,
+        'textbook_form': textbook_form,
+        'textbook_copy_form': textbook_copy_form
+    })
+
 
 
 @login_required

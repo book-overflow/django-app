@@ -110,7 +110,7 @@ class Textbook(CustomBaseModel):
     _authors = models.ManyToManyField(Author, related_name="textbooks")
     _belongs = models.ManyToManyField(Course, related_name="textbooks")
     
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     edition = models.IntegerField()
     # year_published = models.IntegerField()
     # image = models.ImageField(default='profile.png', upload_to='profile/')

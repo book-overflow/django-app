@@ -1,263 +1,193 @@
 {% extends "base.html" %}
     {% block content %}
-    <div style="align-content: start;">
-        <div class="card-left form-input" data-bs-theme="dark" style="color:white">
-            <div id="div_id_school" class="mb-3"> 
-                <label for="id_domain" class="form-label">Post In</label> 
-                  <select name="school" value="" style="font-size: 12px;" class="form-select" id="id_domain">
-                    <option value="" selected>New York University</option>
-                  </select>
+    <fieldset id="sell-form">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- {{ form }} -->
+            <div class="new-post-left">
+                <div class="multi-card-left form-input" data-bs-theme="dark" style="color:white;">
+                    <label for="id_image" class="form-label">Image</label>
+                    <svg onclick="deleteImage()" id="image_delete" style= " cursor: pointer; z-index:1; color:white; display:none;" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                    </svg>
+                    <div id="image_upload" style="cursor:pointer; max-width: 100%; aspect-ratio:1; background-color: unset; display: flex; justify-content: center; align-items: center; border-color: grey; border-width: 1px; border-style: dashed;" onclick="document.getElementById('id_image').click();">
+                        <svg id="image_icon" style="position: absolute; margin: 40px" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                            <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
+                        </svg>
+                    </div>
+                    <img id="photo-upload" style="object-fit: contain; max-width: 100%; display:none;"/>
+                <br>
+                <div id="div_id_condition" class="mb-3"> 
+                    <label for="id_condition" class="form-label">Condition</label> 
+                    <select required name="condition" value="{{textbook_copy_form.data.condition}}" style="font-size: 12px;" class="form-select" id="id_condition">
+                        <option value="NEW">New</option>
+                        <option value="FINE">Fine</option>
+                        <option value="VERY_GOOD">Very Good</option>
+                        <option value="GOOD">Good</option>
+                        <option value="FAIR">Fair</option>
+                        <option value="POOR">Poor</option>
+                    </select>
+                </div>
             </div>
-            {{ form.textbook.course_formset.management_form }}
-            {% for course_form in form.textbook.course_formset %}
-                <div class="mb-3"> 
+            <div class="multi-card-left form-input" data-bs-theme="dark" style="color:white">
                     <label class="form-label">Course</label> 
-                    <input type="text" value="{{ course_form.data.course_number }}" placeholder="Course Number" maxlength="100" class="textinput form-control" id="course_number_{{ course_form.prefix }}">
-                    <input type="text" value="{{ course_form.data.name }}" placeholder="Name" maxlength="100" class="textinput form-control" id="name_{{ course_form.prefix }}">
-                    <input type="text" value="{{ course_form.data.description }}" placeholder="Description" maxlength="100" class="textinput form-control" id="description_{{ course_form.prefix }}">
-                </div>
-            {% endfor %}
+                    <input type="text" name="course_number" placeholder="Course Number" value="{{course_form.data.course_number}}" maxlength="100" class="textinput form-control" id="id_course_number"> 
+                    <input type="text" name="name" placeholder="Name" value="{{course_form.data.name}}" maxlength="100" class="textinput form-control" id="id_name"> 
+                    <input type="text" name="description" placeholder="Description" value="{{course_form.data.description}}" maxlength="100" class="textinput form-control" id="id_description"> 
+            </div>
         </div>
-        <div class="set-profile"> 
+
+
+
+        <div class="new-post-form"> 
             <h1 class="form-heading">New Post</h1>
-            <div>
+            <div class="form" >
                 <div class="form-input" name="formOptions">
-                    <input style="margin-left:50px; margin-bottom:20px;" class="form-check-input" type="radio" name="optionsRadios" id="optionsRadios1" value="sell" checked="">
-                    <label class="form-check-label" for="optionsRadios1">Sell</label>
-                    <input style="margin-left:20px;" class="form-check-input" type="radio" name="optionsRadios" id="optionsRadios2" value="rent">
-                    <label class="form-check-label" for="optionsRadios2">Rent</label>
+                    <input style="margin-bottom:20px;" class="form-check-input" type="checkbox" name="for_sale" id="id_for_sale" checked="">
+                    <label class="form-check-label" for="id_for_sale">Sell</label>
+                    <input style="margin-left:20px;" class="form-check-input" type="checkbox" name="for_rent" id="id_for_rent" checked="">
+                    <label class="form-check-label" for="for_rent">Rent</label>
                 </div>
-                <fieldset id="sell-form">
-                    <form method="POST" class="form" enctype="multipart/form-data">
-                        <input hidden checked type="checkbox" name="for_sale" id="id_for_sale" >
-                        <input hidden value="0" type="number" name="rent_price" step="0.01" id="id_rent_price">
-                        <input hidden value="document.getElementById('course').value" id="id_course" name="course" >
-                        {% csrf_token %}
-                        <!-- {{ form }} -->
-                        <div class="form-group">
-                          <table class="form-input">
-                            <tr>
-                                <td>
-                                    <div id="div_id_isbn" class="mb-3"> 
-                                        <label for="id_isbn" class="form-label">ISBN</label> 
-                                        <input required type="text" name="isbn" pattern="[0-9]{13}" value="{{ form.data.textbook.isbn }}" maxlength="100" class="textinput form-control" id="id_isbn"> 
-                                    </div>
-                                </td>
-                                <td>
-                                    <li style="margin-top: 10px;margin-left: 5px;"id="form-button" class="btn btn-outline-secondary">Search ISBN</li>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div id="div_id_name" class="mb-3"> 
-                                        <label for="id_name" class="form-label">Title</label> 
-                                        <input required type="text" name="name" value="{{ form.data.textbook.name }}" maxlength="255" class="textinput form-control" id="id_name"> 
-                                    </div>
-                                </td>
-                                <td>
-                                    <div id="div_id_edition" class="mb-3"> 
-                                        <label for="id_edition" class="form-label">Edition</label> 
-                                        <input required type="number" name="edition" value="{{ form.data.textbook.edition }}" maxlength="100" class="textinput form-control" id="id_edition"> 
-                                    </div>
-                                </td>
-                            </tr>
-                            {{ form.textbook.author_formset.management_form }}
-                            {% for author_form in form.textbook.author_formset %}
-                                <tr>
-                                    <td colspan="2">
-                                        <div id="div_id_authors" class="mb-3"> 
-                                            <label for="id_authors" class="form-label">Author</label> 
-                                            <input required type="text" name="first_name" value="{{ author_form.data.first_name }}" placeholder="First Name" maxlength="100" class="textinput form-control" id="first_name_{{ author_form.prefix }}"> 
-                                            <input required type="text" name="last_name" value="{{ author_form.data.last_name }}" placeholder="Last Name" maxlength="100" class="textinput form-control" id="last_name_{{ author_form.prefix }}"> 
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            <tr>
-                                <td>
-                                    <div id="div_id_condition" class="mb-3"> 
-                                        <label for="id_condition" class="form-label">Condition</label> 
-                                        <select required name="condition" value="{{form.data.condition}}" style="font-size: 12px;" class="form-select" id="id_condition">
-                                            <option value="NEW">New</option>
-                                            <option value="FINE">Fine</option>
-                                            <option value="VERY_GOOD">Very Good</option>
-                                            <option value="GOOD">Good</option>
-                                            <option value="FAIR">Fair</option>
-                                            <option value="POOR">Poor</option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div id="div_id_price" class="mb-3"> 
-                                        <label for="id_sale_price" class="form-label">Price</label>
-                                        <span style="position: relative; top:32px; left:-20px;">$</span>
-                                        <input required type="number"min="0.01" step="0.01" max="500" min="0.01" step="0.01" name="sale_price" value="{{form.data.sale_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_sale_price"> 
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div>
-                                        <label for="id_image" class="form-label">Image</label>
-                                        <div style="cursor:pointer; height: 100px; width: 100px; background-color: unset; display: flex; justify-content: center; align-items: center; border-color: grey; border-width: 1px; border-style: dashed;" onclick="document.getElementById('id_image').click();">
-                                            <svg id="image_icon" style="position: absolute; margin: 40px" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
-                                                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-                                                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
-                                            </svg>
-                                            <img id="photo-upload" style="height: 100px; width: 100px; display:none;"/>
-                                        </div>
-                                        <svg onclick="deleteImage()" id="image_delete" style="position: absolute; margin-top:-110px; margin-left: 90px; display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
-                                        </svg>
-                                        <input type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()" style="display: none;"/>
-                                    </div>
-                                </td>
-                            </tr>
-                          </table>
-                          <div class="form-input form-group" style="margin-top: 20px;">
-                            <button id="form-button" class="btn btn-primary" type="submit" onclick="getCourse()">Create New Post</button>
+                <input hidden value="document.getElementById('course').value" id="id_course" name="course" >
+                <div class="form-group">
+                    <table class="form-input">
+                    <tr>
+                        <td colspan="2">
+                            <div id="div_id_isbn" class="mb-3"> 
+                                <label for="id_isbn" class="form-label">ISBN</label> 
+                                <input required type="text" name="isbn" pattern="[0-9]{13}" value="{{textbook_form.data.isbn}}" maxlength="100" class="textinput form-control" id="id_isbn"> 
                             </div>
-                        </div>
-                    </form> 
-                </fieldset>
-
-                <fieldset hidden="hidden" id="rent-form" style="display: none;" >
-                    <form method="POST" class="form" enctype="multipart/form-data">
-                        <input hidden checked type="checkbox" name="for_rent" id="id_for_rent" >
-                        <input hidden value="0" type="number" name="sale_price" step="0.01" id="id_sale_price">
-                        <input hidden value="" id="id_course" name="course" >
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <table class="form-input">
-                              <tr>
-                                  <td>
-                                      <div id="div_id_isbn" class="mb-3"> 
-                                          <label for="id_isbn" class="form-label">ISBN</label> 
-                                          <input required type="text" name="isbn" pattern="[0-9]{13}" value="{{ form.data.textbook.isbn }}" maxlength="100" class="textinput form-control" id="id_isbn"> 
-                                      </div>
-                                  </td>
-                                  <td>
-                                      <li style="margin-top: 10px;margin-left: 5px;"id="form-button" class="btn btn-outline-secondary">Search ISBN</li>
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td>
-                                      <div id="div_id_name" class="mb-3"> 
-                                          <label for="id_name" class="form-label">Title</label> 
-                                          <input required type="text" name="name" value="{{ form.data.textbook.name }}" maxlength="255" class="textinput form-control" id="id_name"> 
-                                      </div>
-                                  </td>
-                                  {{ form.textbook.author_formset.management_form }}
-                                  {% for author_form in form.textbook.author_formset %}
-                                    <td colspan="2">
-                                        <div id="div_id_authors" class="mb-3"> 
-                                            <label for="id_authors" class="form-label">Author</label> 
-                                            <input required type="text" name="first_name" value="{{ author_form.data.first_name }}" placeholder="First Name" maxlength="100" class="textinput form-control" id="first_name_{{ author_form.prefix }}"> 
-                                            <input required type="text" name="last_name" value="{{ author_form.data.last_name }}" placeholder="Last Name" maxlength="100" class="textinput form-control" id="last_name_{{ author_form.prefix }}"> 
-                                        </div>
-                                    </td>
-                                  {% endfor %}
-                              </tr>
-                              <tr>
-                                  <td>
-                                      <div id="div_id_condition" class="mb-3"> 
-                                          <label for="id_condition" class="form-label">Condition</label> 
-                                          <select required name="condition" value="{{form.data.condition}}" style="font-size: 12px;" class="form-select" id="id_condition">
-                                              <option value="" >As New</option>
-                                              <option value="" >Good</option>
-                                              <option value="">Fair</option>
-                                              <option value="">Poor</option>
-                                          </select>
-                                      </div>
-                                  </td>
-                                  <td>
-                                      <div id="div_id_rent_price" class="mb-3"> 
-                                          <label for="id_rent_price" class="form-label">Price (Monthly)</label>
-                                          <span style="position: relative; top:32px; left:-80px;">$</span>
-                                          <input required type="number"min="0.01" step="0.01" max="500" min="0.01" step="0.01" name="rent_price" value="{{form.data.rent_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_rent_price"> 
-                                      </div>
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td>
-                                      <div id="div_id_avail_from" class="mb-3"> 
-                                      <label for="id_avail_from"  class="form-label">Available From</label>
-                                      <input required class="textinput form-control" type="date" name="avail_from" value={{form.data.avail_from}} id="id_avail_from">
-                                      </div>
-                                  </td>
-                                  <td>
-                                      <div id="div_id_avail_to" class="mb-3"> 
-                                      <label for="id_avail_to"  class="form-label">To</label>
-                                      <input required class="textinput form-control" type="date" name="avail_to" value={{form.data.avail_to}} id="id_avail_to">
-                                      </div>
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td>
-                                      <div>
-                                          <label for="id_image" class="form-label">Image</label>
-                                          <div style="cursor:pointer; height: 100px; width: 100px; background-color: unset; display: flex; justify-content: center; align-items: center; border-color: grey; border-width: 1px; border-style: dashed;" onclick="document.getElementById('id_image').click();">
-                                              <svg id="image_icon" style="position: absolute; margin: 40px" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
-                                                  <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-                                                  <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
-                                              </svg>
-                                              <img id="photo-upload" style="height: 100px; width: 100px; display:none;"/>
-                                          </div>
-                                          <svg onclick="deleteImage()" id="image_delete" style="position: absolute; margin-top:-110px; margin-left: 90px; display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
-                                          </svg>
-                                          <input class="form-control" type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()" style="display: none;"/>
-                                      </div>
-                                  </td>
-                              </tr>
-                            </table>
-                            <div class="form-input form-group" style="margin-top: 20px;">
-                                <button id="form-button" class="btn btn-primary" type="submit">Create New Post</button>
+                        </td>
+                        <td>
+                            <li style="margin-top: 10px;height: 30px; width: 100%;"id="form-button" class="btn btn-outline-secondary">Search ISBN</li>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div id="div_id_title" class="mb-3"> 
+                                <label for="id_textbook_title" class="form-label">Title</label> 
+                                <input required type="text" name="title" value="{{textbook_form.data.title}}" maxlength="255" class="textinput form-control" id="id_title"> 
                             </div>
-                        </div>
-                    </form> 
-                </fieldset>
+                        </td>
+                        <td>
+                            <div id="div_id_edition" class="mb-3"> 
+                                <label for="id_edition" class="form-label">Edition</label> 
+                                <input required type="number" name="edition" max="100" value="{{textbook_form.data.edition}}" maxlength="100" class="textinput form-control" id="id_edition"> 
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="id_authors" class="form-label">Authors</label> 
+                            <input type="text" maxlength="100" pattern="[A-Za-z]{1,255}" name="first_name" placeholder="First Name" value="{{author_form.data.first_name}}" class="textinput form-control" id="first_name"> 
+                        </td>
+                        <td>
+                            <input style="margin-top: 26px;" type="text" maxlength="100" pattern="[A-Za-z]{1,255}" name="last_name" placeholder="Last Name" value="{{author_form.data.last_name}}" class="textinput form-control" id="last_name"> 
+                        </td>
+                        <td>
+                            <span style="margin-top: 26px; height:30px; width:100%;"id="form-button" class="btn btn-outline-secondary" onclick="addAuthor()">Add Author</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div id="div_id_authors" class="mb-3"></div>
+                        </td>
+                        <input hidden type="text" name="authors"  value="{{form.data.authors}}" maxlength="100" class="textinput" id="id_authors"> 
+                    </tr>
 
-                <div class="error-msg form" style="min-height: 30px;">
-                    {% for field in form %}
-                        {% for e in field.errors %}
-                            {% if e != "" %}
-                                <div class="text-danger">
-                                {{ field.label }} - {{ e }} 
+                    <tr>
+                        <td>
+                            <div id="div_id_sale_price" class="mb-3"> 
+                                <label for="id_sale_price" class="form-label">Sale Price</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" style="font-size: 11px;">$</span>
+                                    <input required type="number" max="500" min="0.01" step="0.01" name="sale_price" value="{{textbook_copy_form.data.sale_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_sale_price"> 
                                 </div>
-                            {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div id="div_id_rent_price" class="for-rent mb-3"> 
+                                <label for="id_rent_price" class="form-label">Rent Price (Monthly)</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" style="font-size: 11px;">$</span>
+                                    <input required type="number" max="500" min="0.01" step="0.01" name="rent_price" value="{{textbook_copy_form.data.rent_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_rent_price"> 
+                                </div>
+                            </div>
+                            </td>
+                            <td>
+                            <div id="div_id_avail_from" class="for-rent mb-3"> 
+                            <label for="id_avail_from"  class="form-label">Available From</label>
+                            <input required class="textinput form-control" type="date" name="avail_from" value={{form.data.avail_from}} id="id_avail_from">
+                            </div>
+                        </td>
+                        <td>
+                            <div id="div_id_avail_to" class="for-rent mb-3"> 
+                            <label for="id_avail_to"  class="form-label">To</label>
+                            <input required class="textinput form-control" type="date" name="avail_to" value={{form.data.avail_to}} id="id_avail_to">
+                            </div>
+                        </td>
+                    </tr>
+
+                    </table>
+                    <input class="form-control" type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()" style="display: none;"/>
+                    <div class="form-input form-group" style="margin-top: 10px;">
+                        <button id="form-button" class="btn btn-primary" type="submit" onclick="submitForm()">Create New Post</button>
+                    </div>
+                    <div class="error-msg" style="min-height: 30px;">
+                        {% for field in form %}
+                            {% for e in field.errors %}
+                                {% if e != "" %}
+                                    <div class="text-danger">
+                                    {{ field.label }} - {{ e }} 
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    </form> 
+    </fieldset>
     {% endblock content %}
     {% block script %}
     <script>
-        var rad = document.getElementsByName('optionsRadios');
-        var prev = null;
-        for (var i = 0; i < rad.length; i++) {
-            rad[i].addEventListener('change', function() {
-                (prev) ? console.log(prev.value): null;
-                console.log(this.value);
-                if (this.value == "rent"){
-                    document.getElementById('rent-form').style.display = "block";
-                    document.getElementById('rent-form').removeAttribute("hidden");
-                    document.getElementById('sell-form').style.display = "none";
-                    document.getElementById('sell-form').setAttribute("hidden","hidden");
-                } else {
-                    document.getElementById('rent-form').style.display = "none";
-                    document.getElementById('rent-form').setAttribute("hidden","hidden");
-                    document.getElementById('sell-form').style.display = "block";
-                    document.getElementById('sell-form').removeAttribute("hidden");
+        var sale_check = document.getElementById('id_for_sale');
+        sale_check.addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('div_id_sale_price').style.display = 'block';
+                document.getElementsByName('sale_price')[0].value = null;
+            } else {
+                document.getElementById('div_id_sale_price').style.display = 'none';
+                document.getElementsByName('sale_price')[0].value = 0;
+            }
+        });
+
+        var rent_check = document.getElementById('id_for_rent');
+        rent_check.addEventListener('change', function() {
+            var for_rent = document.getElementsByClassName('for-rent');
+            if (this.checked) {
+                for (var i = 0; i < for_rent.length; i++){
+                    for_rent[i].style.display = 'block';
                 }
-            });
-        }
+                document.getElementsByName('rent_price')[0].value = null;
+            } else {
+                for (var i = 0; i < for_rent.length; i++){
+                    for_rent[i].style.display = 'none';
+                }
+                document.getElementsByName('rent_price')[0].value = 0;
+            }
+        });
+
         function loadFile() {
             var output = document.getElementById('photo-upload');
-            document.getElementById('image_icon').style.display = "none";
-            document.getElementById('image_delete').style.display = "block";
+            document.getElementById('image_upload').style.display = "none";
+            document.getElementById('image_delete').style.display = "inline";
 
             if (event.target.files[0] != undefined){
                 output.style.display = "block";
@@ -269,12 +199,50 @@
         }
         function deleteImage() {
             document.getElementById('photo-upload').style.display = "none";
-            document.getElementById('image_icon').style.display = "block";
+            document.getElementById('image_upload').style.display = "flex";
             document.getElementById('image_delete').style.display = "none";
             document.getElementById('id_image').value = null;
         }
-        function getCourse(){
-            document.getElementById('id_course').value = document.getElementById('course').value;
+        function submitForm(){
+            // document.getElementById('id_course').value = document.getElementById('course').value;
+            document.getElementById('id_authors').value = document.getElementById('id_authors').value.replace(/,\s*$/, "");
+        }
+        function addAuthor(){
+            var first_name = document.getElementById('first_name').value.toUpperCase().trim();
+            var last_name = document.getElementById('last_name').value.toUpperCase().trim();
+            var warning = document.getElementById('author_warning');
+            var author = document.getElementById(first_name+last_name);
+
+            if (warning != null) document.getElementById('author_warning').remove();
+
+            if (author != null) {
+                var warning = document.createElement('div');
+                warning.style.color = "red";
+                warning.setAttribute("id", "author_warning");
+                warning.innerHTML = "<small>The author already exists.</small>";
+                document.getElementById('div_id_authors').appendChild(warning);
+            } else if (first_name == "" || last_name == "" ){
+                var warning = document.createElement('div');
+                warning.style.color = "red";
+                warning.setAttribute("id", "author_warning");
+                warning.innerHTML = "<small>Please enter first name and last name.</small>";
+                document.getElementById('div_id_authors').appendChild(warning);
+            } else {
+                var author = document.createElement('small');
+                author.setAttribute("id", first_name+last_name);
+                author.setAttribute("value", first_name+" "+last_name);
+                author.innerHTML=first_name+" "+last_name + "<span style='margin-right:10px; cursor:pointer;' onclick='deleteName(this)'> x</span>";
+                document.getElementById('div_id_authors').appendChild(author);
+                document.getElementById('first_name').value = "";
+                document.getElementById('last_name').value = "";
+                document.getElementById('id_authors').value += first_name+' '+last_name+',';
+            }
+        }
+        function deleteName(element){
+            var author = element.parentElement.childNodes[0].data+",";
+            var authors = document.getElementById('id_authors').value;
+            document.getElementById('id_authors').value = authors.replace(author, '');
+            element.parentElement.remove();
         }
     </script>
     {% endblock script %}
