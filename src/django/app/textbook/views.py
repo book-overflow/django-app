@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from student_profile.decorators import profile_required
 from django.contrib.auth.decorators import login_required
-from .forms import TextbookCopyCreationForm
+from .forms import TextbookCopyCreationForm, TextbookCopyCreationForm2
 from shared.models import Textbook, TextbookCopy, Author, Course
 
 @login_required
@@ -64,6 +64,38 @@ def createPost(request):
         form = TextbookCopyCreationForm()
     context = {'form': form}
     return render(request, 'createPost.html', context)
+
+def createPost2(request):
+    if request.method == 'POST':
+        form = TextbookCopyCreationForm2(request.POST)
+        if form.is_valid():
+            textbook_copy_data = form.cleaned_data
+            textbook_data = textbook_copy_data['textbook']
+            
+            print("Creating textbook...", flush=True)
+            Textbook.objects.get_or_create(**textbook_data)
+
+            for course_form in textbook_data.course_formset:
+                print("Creating course...", flush=True)
+                course_data = course_form.cleaned_data
+                Course.objects.get_or_create(**course_data)
+            
+            for author_form in textbook_data.author_formset:
+                print("Creating author...", flush=True)
+                author_data = author_form.cleaned_data
+                Author.objects.get_or_create(**author_data)
+
+            textbook_copy = form.save(commit=False)
+            textbook_copy._seller = request.user.student
+            textbook_copy.save()
+
+            return redirect('my-textbooks')
+    else:
+        form = TextbookCopyCreationForm2()
+
+    context = {'form': form}
+    return render(request, 'createPost2.html', context)
+
 
 @login_required
 @profile_required

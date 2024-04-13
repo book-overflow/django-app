@@ -27,14 +27,12 @@ class TextbookCreationForm(ModelForm):
         model = Textbook
         fields = ['isbn', 'name', 'edition']
     
-    CourseFormSet = inlineformset_factory(Textbook, Course, form=CourseCreationForm, extra=0)
-    AuthorFormSet = inlineformset_factory(Textbook, Author, form=AuthorCreationForm, extra=0)
-    
     def __init__(self, *args, **kwargs):
         super(TextbookCreationForm, self).__init__(*args, **kwargs)
-        self.course_formset = self.CourseFormSet(*args, **kwargs)
-        self.author_formset = self.AuthorFormSet(*args, **kwargs)
-
+        self.course_formset = inlineformset_factory(Textbook, Course, form=CourseCreationForm, extra=2, max_num=5)
+        self.author_formset = inlineformset_factory(Textbook, Author, form=AuthorCreationForm, extra=2, max_num=5)
+        print(f"Course formset extra={self.course_formset.extra}, max_num={self.course_formset.max_num}", flush=True)
+        print(f"Author formset extra={self.author_formset.extra}, max_num={self.author_formset.max_num}", flush=True)
 
 class TextbookCopyCreationForm2(ModelForm):
     textbook = TextbookCreationForm()
