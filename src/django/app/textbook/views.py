@@ -57,7 +57,6 @@ def createPost(request):
                 # Create textbook copy
                 textbookCopy._textbook = newTextbook
                 textbookCopy.save()
-                print("Save Complete", flush=True)
                 return redirect('my-textbooks')
         else:
             print("Form Error", flush=True)

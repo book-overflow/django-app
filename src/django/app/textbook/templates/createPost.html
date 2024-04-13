@@ -1,8 +1,11 @@
 {% extends "base.html" %}
     {% block content %}
-        <div class="new-post-left">
-            <div class="multi-card-left form-input" data-bs-theme="dark" style="color:white;">
-                <div>
+    <fieldset id="sell-form">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- {{ form }} -->
+            <div class="new-post-left">
+                <div class="multi-card-left form-input" data-bs-theme="dark" style="color:white;">
                     <label for="id_image" class="form-label">Image</label>
                     <svg onclick="deleteImage()" id="image_delete" style= " cursor: pointer; z-index:1; color:white; display:none;" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
                         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
@@ -14,15 +17,16 @@
                         </svg>
                     </div>
                     <img id="photo-upload" style="object-fit: contain; max-width: 100%; display:none;"/>
-                </div>
                 <br>
                 <div id="div_id_condition" class="mb-3"> 
                     <label for="id_condition" class="form-label">Condition</label> 
                     <select required name="condition" value="{{form.data.condition}}" style="font-size: 12px;" class="form-select" id="id_condition">
-                        <option value="" >As New</option>
-                        <option value="" >Good</option>
-                        <option value="">Fair</option>
-                        <option value="">Poor</option>
+                        <option value="NEW">New</option>
+                        <option value="FINE">Fine</option>
+                        <option value="VERY_GOOD">Very Good</option>
+                        <option value="GOOD">Good</option>
+                        <option value="FAIR">Fair</option>
+                        <option value="POOR">Poor</option>
                     </select>
                 </div>
             </div>
@@ -36,123 +40,118 @@
 
         <div class="new-post-form"> 
             <h1 class="form-heading">New Post</h1>
-            <div>
+            <div class="form" >
                 <div class="form-input" name="formOptions">
-                    <input style="margin-left:50px; margin-bottom:20px;" class="form-check-input" type="checkbox" name="postOption" id="id_for_sale" value="sell" checked>
-                    <label class="form-check-label" for="for_sale">Sell</label>
-                    <input style="margin-left:20px;" class="form-check-input" type="checkbox" name="postOption" id="id_for_rent" value="rent" checked>
+                    <input style="margin-bottom:20px;" class="form-check-input" type="checkbox" name="for_sale" id="id_for_sale" checked="">
+                    <label class="form-check-label" for="id_for_sale">Sell</label>
+                    <input style="margin-left:20px;" class="form-check-input" type="checkbox" name="for_rent" id="id_for_rent" checked="">
                     <label class="form-check-label" for="for_rent">Rent</label>
                 </div>
-                <fieldset id="sell-form">
-                    <form method="POST" class="form" enctype="multipart/form-data">
-                        <input hidden value="0" type="number" name="rent_price" step="0.01" id="id_rent_price">
-                        <input hidden value="document.getElementById('course').value" id="id_course" name="course" >
-                        {% csrf_token %}
-                        <div class="form-group">
-                          <table class="form-input">
-                            <tr>
-                                <td colspan="2">
-                                    <div id="div_id_isbn" class="mb-3"> 
-                                        <label for="id_isbn" class="form-label">ISBN</label> 
-                                        <input required type="text" name="isbn" pattern="[0-9]{13}" value="{{form.data.isbn}}" maxlength="100" class="textinput form-control" id="id_isbn"> 
-                                    </div>
-                                </td>
-                                <td>
-                                    <li style="margin-top: 10px;height: 30px; width: 100%;"id="form-button" class="btn btn-outline-secondary">Search ISBN</li>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <div id="div_id_name" class="mb-3"> 
-                                        <label for="id_name" class="form-label">Title</label> 
-                                        <input required type="text" name="name" value="{{form.data.name}}" maxlength="255" class="textinput form-control" id="id_name"> 
-                                    </div>
-                                </td>
-                                <td>
-                                    <div id="div_id_edition" class="mb-3"> 
-                                        <label for="id_edition" class="form-label">Edition</label> 
-                                        <input required type="number" name="edition" value="{{form.data.edition}}" maxlength="100" class="textinput form-control" id="id_edition"> 
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="id_authors" class="form-label">Authors</label> 
-                                    <input type="text" maxlength="100" pattern="[A-Za-z]{1,255}" placeholder="First Name" class="textinput form-control" id="first_name"> 
-                                </td>
-                                <td>
-                                    <input style="margin-top: 26px;" type="text" maxlength="100" pattern="[A-Za-z]{1,255}" placeholder="Last Name" class="textinput form-control" id="last_name"> 
-                                </td>
-                                <td>
-                                    <span style="margin-top: 26px; height:30px; width:100%;"id="form-button" class="btn btn-outline-secondary" onclick="addAuthor()">Add Author</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="3">
-                                    <div id="div_id_authors" class="mb-3"></div>
-                                </td>
-                                <input hidden required type="text" name="authors"  value="{{form.data.authors}}" maxlength="100" class="textinput mb-3" id="id_authors"> 
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <div id="div_id_sale_price" class="mb-3"> 
-                                        <label for="id_sale_price" class="form-label">Sale Price</label>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text" style="font-size: 11px;">$</span>
-                                            <input required type="number"min="0.01" step="0.01" max="500" min="0.01" step="0.01" name="sale_price" value="{{form.data.sale_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_sale_price"> 
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <div id="div_id_rent_price" class="for-rent mb-3"> 
-                                        <label for="id_rent_price" class="form-label">Rent Price (Monthly)</label>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text" style="font-size: 11px;">$</span>
-                                            <input required type="number"min="0.01" step="0.01" max="500" min="0.01" step="0.01" name="rent_price" value="{{form.data.rent_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_rent_price"> 
-                                        </div>
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div id="div_id_avail_from" class="for-rent mb-3"> 
-                                    <label for="id_avail_from"  class="form-label">Available From</label>
-                                    <input required class="textinput form-control" type="date" name="avail_from" value={{form.data.avail_from}} id="id_avail_from">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div id="div_id_avail_to" class="for-rent mb-3"> 
-                                    <label for="id_avail_to"  class="form-label">To</label>
-                                    <input required class="textinput form-control" type="date" name="avail_to" value={{form.data.avail_to}} id="id_avail_to">
-                                    </div>
-                                </td>
-                            </tr>
-
-                            </table>
-                            <input class="form-control" type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()" style="display: none;"/>
-                            <div class="form-input form-group" style="margin-top: 20px;">
-                                <button id="form-button" class="btn btn-primary" type="submit" onclick="submitForm()">Create New Post</button>
+                <input hidden value="document.getElementById('course').value" id="id_course" name="course" >
+                <div class="form-group">
+                    <table class="form-input">
+                    <tr>
+                        <td colspan="2">
+                            <div id="div_id_isbn" class="mb-3"> 
+                                <label for="id_isbn" class="form-label">ISBN</label> 
+                                <input required type="text" name="isbn" pattern="[0-9]{13}" value="{{form.data.isbn}}" maxlength="100" class="textinput form-control" id="id_isbn"> 
                             </div>
-                        </div>
-                    </form> 
-                </fieldset>
+                        </td>
+                        <td>
+                            <li style="margin-top: 10px;height: 30px; width: 100%;"id="form-button" class="btn btn-outline-secondary">Search ISBN</li>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div id="div_id_name" class="mb-3"> 
+                                <label for="id_name" class="form-label">Title</label> 
+                                <input required type="text" name="name" value="{{form.data.name}}" maxlength="255" class="textinput form-control" id="id_name"> 
+                            </div>
+                        </td>
+                        <td>
+                            <div id="div_id_edition" class="mb-3"> 
+                                <label for="id_edition" class="form-label">Edition</label> 
+                                <input required type="number" name="edition" max="100" value="{{form.data.edition}}" maxlength="100" class="textinput form-control" id="id_edition"> 
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="id_authors" class="form-label">Authors</label> 
+                            <input type="text" maxlength="100" pattern="[A-Za-z]{1,255}" placeholder="First Name" class="textinput form-control" id="first_name"> 
+                        </td>
+                        <td>
+                            <input style="margin-top: 26px;" type="text" maxlength="100" pattern="[A-Za-z]{1,255}" placeholder="Last Name" class="textinput form-control" id="last_name"> 
+                        </td>
+                        <td>
+                            <span style="margin-top: 26px; height:30px; width:100%;"id="form-button" class="btn btn-outline-secondary" onclick="addAuthor()">Add Author</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div id="div_id_authors" class="mb-3"></div>
+                        </td>
+                        <input hidden type="text" name="authors"  value="{{form.data.authors}}" maxlength="100" class="textinput" id="id_authors"> 
+                    </tr>
 
-                <div class="error-msg form" style="min-height: 30px;">
-                    {% for field in form %}
-                        {% for e in field.errors %}
-                            {% if e != "" %}
-                                <div class="text-danger">
-                                {{ field.label }} - {{ e }} 
+                    <tr>
+                        <td>
+                            <div id="div_id_sale_price" class="mb-3"> 
+                                <label for="id_sale_price" class="form-label">Sale Price</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" style="font-size: 11px;">$</span>
+                                    <input required type="number" max="500" min="0.01" step="0.01" name="sale_price" value="{{form.data.sale_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_sale_price"> 
                                 </div>
-                            {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div id="div_id_rent_price" class="for-rent mb-3"> 
+                                <label for="id_rent_price" class="form-label">Rent Price (Monthly)</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" style="font-size: 11px;">$</span>
+                                    <input required type="number" max="500" min="0.01" step="0.01" name="rent_price" value="{{form.data.rent_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_rent_price"> 
+                                </div>
+                            </div>
+                            </td>
+                            <td>
+                            <div id="div_id_avail_from" class="for-rent mb-3"> 
+                            <label for="id_avail_from"  class="form-label">Available From</label>
+                            <input required class="textinput form-control" type="date" name="avail_from" value={{form.data.avail_from}} id="id_avail_from">
+                            </div>
+                        </td>
+                        <td>
+                            <div id="div_id_avail_to" class="for-rent mb-3"> 
+                            <label for="id_avail_to"  class="form-label">To</label>
+                            <input required class="textinput form-control" type="date" name="avail_to" value={{form.data.avail_to}} id="id_avail_to">
+                            </div>
+                        </td>
+                    </tr>
+
+                    </table>
+                    <input class="form-control" type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()" style="display: none;"/>
+                    <div class="form-input form-group" style="margin-top: 10px;">
+                        <button id="form-button" class="btn btn-primary" type="submit" onclick="submitForm()">Create New Post</button>
+                    </div>
+                    <div class="error-msg" style="min-height: 30px;">
+                        {% for field in form %}
+                            {% for e in field.errors %}
+                                {% if e != "" %}
+                                    <div class="text-danger">
+                                    {{ field.label }} - {{ e }} 
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    </form> 
+    </fieldset>
     {% endblock content %}
     {% block script %}
     <script>
@@ -204,14 +203,7 @@
         }
         function submitForm(){
             document.getElementById('id_course').value = document.getElementById('course').value;
-            var authorlist = document.getElementById('div_id_authors').childNodes;
-            var authors = "";
-            if (authorlist.length > 1){
-                for (var i = 1; i < authorlist.length; i++){
-                    authors += authorlist[i].firstChild.nodeValue + ',';
-                }
-            }
-            console.log(authors);
+            document.getElementById('id_authors').value = document.getElementById('id_authors').value.replace(/,\s*$/, "");
         }
         function addAuthor(){
             var first_name = document.getElementById('first_name').value.toUpperCase().trim();
@@ -241,11 +233,14 @@
                 document.getElementById('div_id_authors').appendChild(author);
                 document.getElementById('first_name').value = "";
                 document.getElementById('last_name').value = "";
+                document.getElementById('id_authors').value += first_name+' '+last_name+',';
             }
         }
-        function deleteName(name){
-            element = name.parentElement;
-            element.remove();
+        function deleteName(element){
+            var author = element.parentElement.childNodes[0].data+",";
+            var authors = document.getElementById('id_authors').value;
+            document.getElementById('id_authors').value = authors.replace(author, '');
+            element.parentElement.remove();
         }
     </script>
     {% endblock script %}
