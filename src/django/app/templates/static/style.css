@@ -179,6 +179,24 @@ ul {
     border-radius: 8px;
     margin-bottom: 4%;
 }
+.multi-card-left{
+    margin: auto; 
+    height: fit-content;
+    background: rgba(0, 0, 0, 0.5); 
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 4%;
+}
+.new-post-form{
+    margin-top: 2%;
+    padding-bottom: 2%;
+    border-radius: 8px;
+    box-sizing: border-box;
+    width: 55%;
+    margin-right: 10%;
+    float: right;
+    background-color: white;
+}
 .search{
     position: relative;
     display: block;
@@ -260,6 +278,7 @@ ul {
 .textbook-image{
     width: 30%;
 }
+
 @media only screen and (max-width: 767px) {
     .window {
         width: 60%;
@@ -326,7 +345,19 @@ ul {
         margin: auto; 
         padding-bottom: 2%;
         margin-bottom: 10%;
-
+    }
+    .new-post-left{
+        display: block;
+        width: 60%;
+        margin: auto;
+        margin-top: 3%;
+    }
+    .new-post-form{
+        float: none;
+        width: 60%;
+        margin: auto; 
+        padding-bottom: 2%;
+        margin-bottom: 10%;
     }
     .textbook-post{
         height: fit-content; 
@@ -366,7 +397,23 @@ ul {
         padding: 3%;
         box-sizing: border-box;
         float: left;
-    }   
+    } 
+    .new-post-form{
+        margin-top: 2%;
+        padding-bottom: 2%;
+        box-sizing: border-box;
+        width: 55%;
+        margin-right: 10%;
+        float: right;
+    }
+    .new-post-left{
+        display: flex; 
+        flex-direction: column; 
+        float:left; 
+        margin-left: 10%; 
+        margin-top:2%; 
+        width:23%;
+    }
     .set-profile{
         margin-top: 2%;
         padding-bottom: 2%;
