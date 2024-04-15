@@ -20,7 +20,7 @@
                 <br>
                 <div id="div_id_condition" class="mb-3"> 
                     <label for="id_condition" class="form-label">Condition</label> 
-                    <select required name="condition" value="{{form.data.condition}}" style="font-size: 12px;" class="form-select" id="id_condition">
+                    <select required name="condition" value="{{textbook_copy_form.data.condition}}" style="font-size: 12px;" class="form-select" id="id_condition">
                         <option value="NEW">New</option>
                         <option value="FINE">Fine</option>
                         <option value="VERY_GOOD">Very Good</option>
@@ -32,7 +32,9 @@
             </div>
             <div class="multi-card-left form-input" data-bs-theme="dark" style="color:white">
                     <label class="form-label">Course</label> 
-                    <input type="text" value="{{form.data.course}}" maxlength="100" class="textinput form-control" id="course"> 
+                    <input type="text" name="course_number" placeholder="Course Number" value="{{course_form.data.course_number}}" maxlength="100" class="textinput form-control" id="id_course_number"> 
+                    <input type="text" name="name" placeholder="Name" value="{{course_form.data.name}}" maxlength="100" class="textinput form-control" id="id_name"> 
+                    <input type="text" name="description" placeholder="Description" value="{{course_form.data.description}}" maxlength="100" class="textinput form-control" id="id_description"> 
             </div>
         </div>
 
@@ -54,7 +56,7 @@
                         <td colspan="2">
                             <div id="div_id_isbn" class="mb-3"> 
                                 <label for="id_isbn" class="form-label">ISBN</label> 
-                                <input required type="text" name="isbn" pattern="[0-9]{13}" value="{{form.data.isbn}}" maxlength="100" class="textinput form-control" id="id_isbn"> 
+                                <input required type="text" name="isbn" pattern="[0-9]{13}" value="{{textbook_form.data.isbn}}" maxlength="100" class="textinput form-control" id="id_isbn"> 
                             </div>
                         </td>
                         <td>
@@ -63,25 +65,25 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <div id="div_id_name" class="mb-3"> 
-                                <label for="id_name" class="form-label">Title</label> 
-                                <input required type="text" name="name" value="{{form.data.name}}" maxlength="255" class="textinput form-control" id="id_name"> 
+                            <div id="div_id_title" class="mb-3"> 
+                                <label for="id_title" class="form-label">Title</label> 
+                                <input required type="text" name="title" value="{{textbook_form.data.title}}" maxlength="255" class="textinput form-control" id="id_title"> 
                             </div>
                         </td>
                         <td>
                             <div id="div_id_edition" class="mb-3"> 
                                 <label for="id_edition" class="form-label">Edition</label> 
-                                <input required type="number" name="edition" max="100" value="{{form.data.edition}}" maxlength="100" class="textinput form-control" id="id_edition"> 
+                                <input required type="number" name="edition" max="100" value="{{textbook_form.data.edition}}" maxlength="100" class="textinput form-control" id="id_edition"> 
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <label for="id_authors" class="form-label">Authors</label> 
-                            <input type="text" maxlength="100" pattern="[A-Za-z]{1,255}" placeholder="First Name" class="textinput form-control" id="first_name"> 
+                            <input type="text" maxlength="100" pattern="[A-Za-z]{1,255}" name="first_name" placeholder="First Name" value="{{author_form.data.first_name}}" class="textinput form-control" id="first_name"> 
                         </td>
                         <td>
-                            <input style="margin-top: 26px;" type="text" maxlength="100" pattern="[A-Za-z]{1,255}" placeholder="Last Name" class="textinput form-control" id="last_name"> 
+                            <input style="margin-top: 26px;" type="text" maxlength="100" pattern="[A-Za-z]{1,255}" name="last_name" placeholder="Last Name" value="{{author_form.data.last_name}}" class="textinput form-control" id="last_name"> 
                         </td>
                         <td>
                             <span style="margin-top: 26px; height:30px; width:100%;"id="form-button" class="btn btn-outline-secondary" onclick="addAuthor()">Add Author</span>
@@ -100,7 +102,7 @@
                                 <label for="id_sale_price" class="form-label">Sale Price</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" style="font-size: 11px;">$</span>
-                                    <input required type="number" max="500" min="0.01" step="0.01" name="sale_price" value="{{form.data.sale_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_sale_price"> 
+                                    <input required type="number" max="500" min="0.01" step="0.01" name="sale_price" value="{{textbook_copy_form.data.sale_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_sale_price"> 
                                 </div>
                             </div>
                         </td>
@@ -112,7 +114,7 @@
                                 <label for="id_rent_price" class="form-label">Rent Price (Monthly)</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" style="font-size: 11px;">$</span>
-                                    <input required type="number" max="500" min="0.01" step="0.01" name="rent_price" value="{{form.data.rent_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_rent_price"> 
+                                    <input required type="number" max="500" min="0.01" step="0.01" name="rent_price" value="{{textbook_copy_form.data.rent_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_rent_price"> 
                                 </div>
                             </div>
                             </td>
@@ -202,7 +204,7 @@
             document.getElementById('id_image').value = null;
         }
         function submitForm(){
-            document.getElementById('id_course').value = document.getElementById('course').value;
+            // document.getElementById('id_course').value = document.getElementById('course').value;
             document.getElementById('id_authors').value = document.getElementById('id_authors').value.replace(/,\s*$/, "");
         }
         function addAuthor(){
