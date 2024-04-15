@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
-from student_profile.decorators import profile_required
 from django.contrib.auth.decorators import login_required
-from .forms import CourseForm, AuthorForm, TextbookForm, TextbookCopyForm
+from django.db import transaction
+from django.core.exceptions import ValidationError
 from shared.models import Textbook, Author, Course
+from student_profile.decorators import profile_required
+from .forms import CourseForm, AuthorForm, TextbookForm, TextbookCopyForm
 
 @login_required
 @profile_required
@@ -13,38 +15,43 @@ def createPost(request):
         textbook_form = TextbookForm(request.POST)
         textbook_copy_form = TextbookCopyForm(request.POST, request.FILES)
 
-        if course_form.is_valid():
-            course = course_form.save(commit=False)
-            course._university = request.user.student._university
-            course.save()
-        elif request.POST['course_number']:
-            course = Course.objects.get(course_number=request.POST['course_number'])
-        else:
-            print("Course form errors:", course_form.errors, flush=True)
-        
-        if author_form.is_valid():
-            author = author_form.save()
-        elif request.POST['first_name'] and request.POST['last_name']:
-            author = Author.objects.get(first_name=request.POST['first_name'], last_name=request.POST['last_name'])
-        else:
-            print("Author form errors:", author_form.errors, flush=True)
-        
-        if textbook_form.is_valid():
-            textbook = textbook_form.save()
-            textbook._authors.add(author)
-            textbook._belongs.add(course)
-        elif request.POST['isbn']:
-            textbook = Textbook.objects.get(isbn=request.POST['isbn'])
-        else:
-            print("Textbook form errors:", textbook_form.errors, flush=True)
-        
-        if textbook_copy_form.is_valid():
-            textbook_copy = textbook_copy_form.save(commit=False)
-            textbook_copy._textbook = textbook
-            textbook_copy._seller = request.user.student
-            textbook_copy.save()
-        else:
-            print("Textbook copy form errors:", textbook_copy_form.errors, flush=True)
+        try:
+            with transaction.atomic():
+                if course_form.is_valid():
+                    course = course_form.save(commit=False)
+                    course._university = request.user.student._university
+                    course.save()
+                elif request.POST['course_number']:
+                    course = Course.objects.get(course_number=request.POST['course_number'])
+                else:
+                    raise ValidationError(course_form.errors)
+                
+                if author_form.is_valid():
+                    author = author_form.save()
+                elif request.POST['first_name'] and request.POST['last_name']:
+                    author = Author.objects.get(first_name=request.POST['first_name'], last_name=request.POST['last_name'])
+                else:
+                    raise ValidationError(author_form.errors)
+                
+                if textbook_form.is_valid():
+                    textbook = textbook_form.save()
+                    textbook._authors.add(author)
+                    textbook._belongs.add(course)
+                elif request.POST['isbn']:
+                    textbook = Textbook.objects.get(isbn=request.POST['isbn'])
+                else:
+                    raise ValidationError(textbook_form.errors)
+                
+                if textbook_copy_form.is_valid():
+                    textbook_copy = textbook_copy_form.save(commit=False)
+                    textbook_copy._textbook = textbook
+                    textbook_copy._seller = request.user.student
+                    textbook_copy.save()
+                else:
+                    raise ValidationError(textbook_copy_form.errors)
+        except ValidationError as e:
+            form_errors = e.message_dict
+            print("Form errors:", form_errors)
 
         return redirect('my-textbooks')
 
