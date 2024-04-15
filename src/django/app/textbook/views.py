@@ -8,61 +8,47 @@ from shared.models import Textbook, Author, Course
 @profile_required
 def createPost(request):
     if request.method == 'POST':
-        print("In the POST request block...", flush=True)
         course_form = CourseForm(request.POST)
         author_form = AuthorForm(request.POST)
         textbook_form = TextbookForm(request.POST)
         textbook_copy_form = TextbookCopyForm(request.POST, request.FILES)
 
-        print("request.POST:", request.POST, flush=True)
-        print("request.FILES:", request.FILES, flush=True)
-
-        if course_form.is_valid() and author_form.is_valid() and textbook_form.is_valid() and textbook_copy_form.is_valid():
-            print("All forms are valid...", flush=True)
-            # Create course if it doesn't exist
-            course, _ = Course.objects.get_or_create(
-                course_number=course_form.cleaned_data['course_number'],
-                defaults={
-                    'name': course_form.cleaned_data['name'],
-                    'description': course_form.cleaned_data['description'],
-                    '_university': request.user.student._university
-                }
-            )
-            # Create author if it doesn't exist
-            author, _ = Author.objects.get_or_create(
-                first_name=author_form.cleaned_data['first_name'],
-                last_name=author_form.cleaned_data['last_name']
-            )
-            # Create textbook if it doesn't exist
-            textbook, _ = Textbook.objects.get_or_create(
-                isbn=textbook_form.cleaned_data['isbn'],
-                defaults={
-                    'title': textbook_form.cleaned_data['title'],
-                    'edition': textbook_form.cleaned_data['edition']
-                }
-            )
-            # Add author to textbook if it isn't already associated
+        if course_form.is_valid():
+            course = course_form.save(commit=False)
+            course._university = request.user.student._university
+            course.save()
+        elif request.POST['course_number']:
+            course = Course.objects.get(course_number=request.POST['course_number'])
+        else:
+            print("Course form errors:", course_form.errors, flush=True)
+        
+        if author_form.is_valid():
+            author = author_form.save()
+        elif request.POST['first_name'] and request.POST['last_name']:
+            author = Author.objects.get(first_name=request.POST['first_name'], last_name=request.POST['last_name'])
+        else:
+            print("Author form errors:", author_form.errors, flush=True)
+        
+        if textbook_form.is_valid():
+            textbook = textbook_form.save()
             textbook._authors.add(author)
-            # Add course to textbook if it isn't already associated
             textbook._belongs.add(course)
-            # Create textbook copy
+        elif request.POST['isbn']:
+            textbook = Textbook.objects.get(isbn=request.POST['isbn'])
+        else:
+            print("Textbook form errors:", textbook_form.errors, flush=True)
+        
+        if textbook_copy_form.is_valid():
             textbook_copy = textbook_copy_form.save(commit=False)
             textbook_copy._textbook = textbook
             textbook_copy._seller = request.user.student
             textbook_copy.save()
-            # Redirect to my textbooks page
-            return redirect('my-textbooks')
-        
         else:
-            print("Not all forms are valid...", flush=True)
-            print("Course form errors:", course_form.errors, flush=True)
-            print("Author form errors:", author_form.errors, flush=True)
-            print("Textbook form errors:", textbook_form.errors, flush=True)
             print("Textbook copy form errors:", textbook_copy_form.errors, flush=True)
 
+        return redirect('my-textbooks')
+
     else:
-        print("In the GET request block...", flush=True)
-        # If not a POST request, create empty forms
         course_form = CourseForm()
         author_form = AuthorForm()
         textbook_form = TextbookForm()

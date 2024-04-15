@@ -105,6 +105,9 @@ class Author(CustomBaseModel):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     
+    class Meta:
+        unique_together = ('first_name', 'last_name')
+    
 class Textbook(CustomBaseModel):
     isbn = models.PositiveBigIntegerField(primary_key=True)
     _authors = models.ManyToManyField(Author, related_name="textbooks")
