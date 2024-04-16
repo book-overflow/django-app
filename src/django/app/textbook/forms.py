@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, formset_factory
 from shared.models import Course, Author, Textbook, TextbookCopy
 
 class CourseForm(ModelForm):
@@ -20,3 +20,6 @@ class TextbookCopyForm(ModelForm):
     class Meta:
         model = TextbookCopy
         fields = ['condition', 'for_rent', 'for_sale', 'sale_price', 'rent_price', 'image']
+
+CourseFormSet = formset_factory(CourseForm, extra=1)
+AuthorFormSet = formset_factory(AuthorForm, extra=1)
