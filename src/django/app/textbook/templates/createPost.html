@@ -30,12 +30,6 @@
                     </select>
                 </div>
             </div>
-            <!-- <div class="multi-card-left form-input" data-bs-theme="dark" style="color:white">
-                    <label class="form-label">Course</label> 
-                    <input type="text" name="course_number" placeholder="Course Number" value="{{course_form.data.course_number}}" maxlength="100" class="textinput form-control" id="id_course_number"> 
-                    <input type="text" name="name" placeholder="Name" value="{{course_form.data.name}}" maxlength="100" class="textinput form-control" id="id_name"> 
-                    <input type="text" name="description" placeholder="Description" value="{{course_form.data.description}}" maxlength="100" class="textinput form-control" id="id_description"> 
-            </div> -->
             {{ course_formset.management_form }}
             <div id="id_course_formset" class="multi-card-left form-input" data-bs-theme="dark" style="color:white">
                 <label class="form-label">Courses</label>
@@ -113,25 +107,6 @@
                             {% endfor %}
                         </table>
 
-                        <!-- <tr>
-                            <td>
-                                <label for="id_authors" class="form-label">Authors</label> 
-                                <input type="text" maxlength="100" pattern="[A-Za-z]{1,255}" name="first_name" placeholder="First Name" value="{{author_form.data.first_name}}" class="textinput form-control" id="first_name"> 
-                            </td>
-                            <td>
-                                <input style="margin-top: 26px;" type="text" maxlength="100" pattern="[A-Za-z]{1,255}" name="last_name" placeholder="Last Name" value="{{author_form.data.last_name}}" class="textinput form-control" id="last_name"> 
-                            </td>
-                            <td>
-                                <span style="margin-top: 26px; height:30px; width:100%;"id="form-button" class="btn btn-outline-secondary" onclick="addAuthorForm()">Add Author</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <div id="div_id_authors" class="mb-3"></div>
-                            </td>
-                            <input hidden type="text" name="authors"  value="{{form.data.authors}}" maxlength="100" class="textinput" id="id_authors"> 
-                        </tr> -->
-
                         <tr>
                             <td>
                                 <div id="div_id_sale_price" class="mb-3"> 
@@ -171,7 +146,6 @@
                     </table>
                     <input class="form-control" type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()" style="display: none;"/>
                     <div class="form-input form-group" style="margin-top: 10px;">
-                        <!-- <button id="form-button" class="btn btn-primary" type="submit" onclick="submitForm()">Create New Post</button> -->
                         <button id="form-button" class="btn btn-primary" type="submit">Create New Post</button>
                     </div>
                     <div class="error-msg" style="min-height: 30px;">
@@ -240,10 +214,6 @@
             document.getElementById('image_delete').style.display = "none";
             document.getElementById('id_image').value = null;
         }
-        // function submitForm(){
-        //     document.getElementById('id_course').value = document.getElementById('course').value;
-        //     document.getElementById('id_authors').value = document.getElementById('id_authors').value.replace(/,\s*$/, "");
-        // }
 
         function addAuthorForm() {
             var authorFormset = document.getElementById('id_author_formset');
