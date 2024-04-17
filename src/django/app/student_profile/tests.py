@@ -4,17 +4,20 @@ from django.core.exceptions import ValidationError
 from django.contrib.gis.geos import Point
 from student_profile.models import Profile
 from shared.models import Student, University
+from django.db import IntegrityError
 
 
 # Create your tests here.
 class ProfileModelTest(TestCase):
     def setUp(self):
         self.university = University.objects.create(
-            name="Test University", domain="@nyu.edu", location=Point(1, 1)
+            name="Test University", domain="nyu.edu", location=Point(1, 1)
         )
         self.student = Student.objects.create(
             first_name="John",
             last_name="Doe",
+            email="john@nyu.edu",
+            password="password1234",
         )
 
     def test_profile_creation(self):
