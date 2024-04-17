@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.contrib.gis.geos import Point
 
 # Create your tests here.
 from django.test import TestCase
@@ -28,9 +29,6 @@ class CustomUserModelTest(TestCase):
     def test_user_without_email_raises_error(self):
         with self.assertRaises(ValueError):
             User.objects.create_user(email=None, password="foo")
-
-
-from django.contrib.gis.geos import Point
 
 
 class UniversityModelTest(TestCase):
