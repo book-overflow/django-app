@@ -30,6 +30,10 @@ class CustomUserModelTest(TestCase):
         with self.assertRaises(ValueError):
             User.objects.create_user(email=None, password="foo")
 
+    def test_user_without_password_raises_error(self):
+        with self.assertRaises(ValueError):
+            User.objects.create_user(email="nopass@nyu.edu", password=None)
+
 
 class UniversityModelTest(TestCase):
     def test_creating_university(self):

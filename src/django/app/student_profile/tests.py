@@ -11,7 +11,7 @@ from django.db import IntegrityError
 class ProfileModelTest(TestCase):
     def setUp(self):
         self.university = University.objects.create(
-            name="Test University", domain="nyu.edu", location=Point(1, 1)
+            name="New York University", domain="nyu.edu", location=Point(1, 1)
         )
         self.student = Student.objects.create(
             first_name="John",
@@ -23,7 +23,7 @@ class ProfileModelTest(TestCase):
     def test_profile_creation(self):
         profile = Profile.objects.create(
             student=self.student,
-            date_of_birth="1990-01-01",
+            date_of_birth="1999-01-01",
             phone_number="1234567890",
             street="123 Main St",
             city="Anytown",
