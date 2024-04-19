@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-25vizk@kq^*h2$7fweh%*@gnpjw&4d-fge5ruy76h-a-fc=!am
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".awsapprunner.com"]
 
 
 def show_toolbar(request):
@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     "helloworld",
     "user",
     "crispy_forms",
+    "chat",
+    "channels",
 ]
 
 MIDDLEWARE = [

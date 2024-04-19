@@ -14,22 +14,33 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from user import views as user_views
 from django.conf import settings
 from django.conf.urls.static import static
+from chat import views as chat_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('register/', user_views.register, name='user-register'),
-    path('login/', user_views.CustomLoginView.as_view(template_name='login.html'), name='user-login'),
-    path('logout/', user_views.CustomLogoutView.as_view(template_name='logout.html'), name='user-logout'),
-    path('auth/', include('user.urls')),
-    path('profile/', include('student_profile.urls')),
-    path('helloworld/', include('helloworld.urls')),
+    path("admin/", admin.site.urls),
+    path("register/", user_views.register, name="user-register"),
+    path(
+        "login/",
+        user_views.CustomLoginView.as_view(template_name="login.html"),
+        name="user-login",
+    ),
+    path(
+        "logout/",
+        user_views.CustomLogoutView.as_view(template_name="logout.html"),
+        name="user-logout",
+    ),
+    path("auth/", include("user.urls")),
+    path("profile/", include("student_profile.urls")),
+    path("helloworld/", include("helloworld.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
-    path('browse/', user_views.browse, name='browse'),
+    path("browse/", user_views.browse, name="browse"),
+    path("lobby/", chat_views.lobby),
 ]
 # Only add this when we are in debug mode.
 if settings.DEBUG:

@@ -59,3 +59,9 @@ rm_migration_files:
 	sudo find ./src/django/ -name '0*_initial.py' -type f -delete
 
 re: clean all
+
+test:
+	mkdir -p ${VOLUME_DIR}
+	${DOCKER_CMD} build
+	${DOCKER_CMD} up -d
+	${DOCKER_CMD} exec ${DJANGO_CONTNR} python ./src/django/app/manage.py test

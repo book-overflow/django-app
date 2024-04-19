@@ -8,10 +8,11 @@ RUN apt update -y && \
 	apt install gdal-bin -y && \
 	pip3 install pipenv && \
 	apt -y autoremove && \
-    apt -y clean
+	apt -y clean
 
 EXPOSE $BE_PORT
 
 COPY init.sh .
 
+COPY . /app
 CMD ["bash", "init.sh"]
