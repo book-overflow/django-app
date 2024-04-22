@@ -32,14 +32,21 @@
             </div>
             {{ course_formset.management_form }}
             <div id="id_course_formset" class="multi-card-left form-input" data-bs-theme="dark" style="color:white">
-                <label class="form-label">Courses</label>
-                <span id="form-button" class="btn btn-outline-secondary" style="height:30px; width:100%;" onclick="addCourseForm()">Add Course</span>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label class="form-label">Courses</label>
+                    <span id="form-button mb-3" class="text-secondary mb-2" style="cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: flex-end;" onclick="addCourseForm()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                        </svg>
+                        <small style="margin-left: 4px;"><b>Add Course</b></small>
+                    </span>
+                </div>
                 {% for form in course_formset %}
                 <div class="course-form">
                     <input type="text" name="{{ form.prefix }}-course_number" placeholder="Course Number" value="{{ form.data.course_number }}" maxlength="100" class="textinput form-control" id="{{ form.prefix }}-course_number">
                     <input type="text" name="{{ form.prefix }}-name" placeholder="Name" value="{{ form.data.name }}" maxlength="100" class="textinput form-control" id="{{ form.prefix }}-name">
                     <input type="text" name="{{ form.prefix }}-description" placeholder="Description" value="{{ form.data.description }}" maxlength="100" class="textinput form-control" id="{{ form.prefix }}-description">
-                    <button id="form-button" class="remove-course-button btn btn-outline-danger" style="height:30px; width:100%; display: none;" onclick="removeCourseForm(this)">Remove</button>
+                    <button id="form-button" class="remove-course-button btn btn-outline-danger mb-3" style="height:30px; width:100%; display: none; margin:2px;" onclick="removeCourseForm(this)">Remove</button>
                 </div>
                 {% endfor %}
             </div>
@@ -83,25 +90,33 @@
                             </td>
                         </tr>
                         {{ author_formset.management_form }}
-                        <table id="id_author_formset">
+                        <table id="id_author_formset" class="form-input mb-3">
                             <tr>
                                 <td>
                                     <label class="form-label">Authors</label>
                                 </td>
                                 <td>
-                                    <span id="form-button" class="btn btn-outline-secondary" style="height:30px; width:100%;" onclick="addAuthorForm()">Add Author</span>
+                                    
+                                </td>
+                                <td>
+                                    <span id="form-button" class="text-secondary" style="cursor: pointer; display: flex; align-items: center; justify-content: flex-end;" onclick="addAuthorForm()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+                                        </svg>
+                                        <small style="margin-left: 4px;">Add Author</small>
+                                    </span>
                                 </td>
                             </tr>
                             {% for form in author_formset %}
                                 <tr class="author-form">
-                                    <td>
+                                    <td style="width:40%;">
                                         <input type="text" maxlength="100" pattern="[A-Za-z]{1,255}" name="{{ form.prefix }}-first_name" placeholder="First Name" value="{{ form.data.first_name }}" class="textinput form-control" id="{{ form.prefix }}-first_name"> 
                                     </td>
-                                    <td>
+                                    <td style="width:40%;">
                                         <input type="text" maxlength="100" pattern="[A-Za-z]{1,255}" name="{{ form.prefix }}-last_name" placeholder="Last Name" value="{{ form.data.last_name }}" class="textinput form-control" id="{{ form.prefix }}-last_name"> 
                                     </td>
                                     <td>
-                                        <button id="form-button" class="remove-author-button btn btn-outline-danger" style="height:30px; width:100%; display: none;" onclick="removeAuthorForm(this)">Remove</button>
+                                        <span id="form-button" class="remove-author-button btn btn-outline-danger" style="height:30px; width:100%; display: none;" onclick="removeAuthorForm(this)">Remove</span>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -109,7 +124,7 @@
 
                         <tr>
                             <td>
-                                <div id="div_id_sale_price" class="mb-3"> 
+                                <div id="div_id_sale_price" class="form-input mb-3"> 
                                     <label for="id_sale_price" class="form-label">Sale Price</label>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" style="font-size: 11px;">$</span>
@@ -121,7 +136,7 @@
 
                         <tr>
                             <td>
-                                <div id="div_id_rent_price" class="for-rent mb-3"> 
+                                <div id="div_id_rent_price" class="for-rent form-input mb-3"> 
                                     <label for="id_rent_price" class="form-label">Rent Price (Monthly)</label>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" style="font-size: 11px;">$</span>
@@ -130,13 +145,13 @@
                                 </div>
                                 </td>
                                 <td>
-                                <div id="div_id_avail_from" class="for-rent mb-3"> 
+                                <div id="div_id_avail_from" class="for-rent form-input mb-3"> 
                                 <label for="id_avail_from"  class="form-label">Available From</label>
                                 <input required class="textinput form-control" type="date" name="avail_from" value={{form.data.avail_from}} id="id_avail_from">
                                 </div>
                             </td>
                             <td>
-                                <div id="div_id_avail_to" class="for-rent mb-3"> 
+                                <div id="div_id_avail_to" class="for-rent form-input mb-3"> 
                                 <label for="id_avail_to"  class="form-label">To</label>
                                 <input required class="textinput form-control" type="date" name="avail_to" value={{form.data.avail_to}} id="id_avail_to">
                                 </div>
