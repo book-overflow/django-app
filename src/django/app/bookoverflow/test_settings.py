@@ -102,17 +102,17 @@ WSGI_APPLICATION = "bookoverflow.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
     "default": {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
-        "HOST": os.environ.get("POSTGRES_HOST"),
-        "PORT": os.environ.get("POSTGRES_PORT"),
-        "NAME": os.environ.get("POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "NAME": os.environ.get("POSTGRES_DB", "mytestdb"),  # Provide a default value
+        "USER": os.environ.get("POSTGRES_USER", "clarke"),  # Change to your local user
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "yourpassword"),
+        "HOST": "localhost",
+        "PORT": "",
     }
 }
-
 
 # Mail server
 
@@ -184,3 +184,8 @@ LOGIN_REDIRECT_URL = "/browse"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+
+GEOS_LIBRARY_PATH = "/opt/homebrew/opt/geos/lib/libgeos_c.dylib"
+
+GDAL_LIBRARY_PATH = "/opt/homebrew/Cellar/gdal/3.8.5/lib/libgdal.dylib"
