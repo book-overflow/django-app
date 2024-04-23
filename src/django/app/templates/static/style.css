@@ -91,6 +91,12 @@ body{
     font-family: 'Montserrat';
     width: 100%; 
 }
+.form-button {
+    font-family: 'Montserrat';
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 8px;
+}
 #form-button {
     font-family: 'Montserrat';
     font-size: 12px;

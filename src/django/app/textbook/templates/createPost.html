@@ -7,20 +7,23 @@
             <div class="new-post-left">
                 <div class="multi-card-left form-input" data-bs-theme="dark" style="color:white;">
                     <label for="id_image" class="form-label">Image</label>
-                    <svg onclick="deleteImage()" id="image_delete" style= " cursor: pointer; z-index:1; color:white; display:none;" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
-                    </svg>
-                    <div id="image_upload" style="cursor:pointer; max-width: 100%; aspect-ratio:1; background-color: unset; display: flex; justify-content: center; align-items: center; border-color: grey; border-width: 1px; border-style: dashed;" onclick="document.getElementById('id_image').click();">
+                    <input required class="form-control" style="font-size: 12px;" type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()" />
+                    <div id="image_upload" style="cursor:pointer; max-width: 100%; aspect-ratio:1; background-color: unset; display: flex; justify-content: center; align-items: center; border-color: grey; border-width: 1px; border-style: dashed; margin-top: 15px;" onclick="document.getElementById('id_image').click();">
                         <svg id="image_icon" style="position: absolute; margin: 40px" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
                             <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
                             <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z"/>
                         </svg>
                     </div>
-                    <img id="photo-upload" style="object-fit: contain; max-width: 100%; display:none;"/>
+                    <img id="photo-upload" style="object-fit: contain; max-width: 100%; max-height:200px; margin-top: 15px; display:none;"/>
                 <br>
                 <div id="div_id_condition" class="mb-3"> 
                     <label for="id_condition" class="form-label">Condition</label> 
-                    <select required name="condition" value="{{textbook_copy_form.data.condition}}" style="font-size: 12px;" class="form-select" id="id_condition">
+                    <select required name="condition" value="{{ textbook_copy_form.data.condition }}" style="font-size: 12px;" class="form-select" id="id_condition">
+                        {% if textbook_copy_form.data.condition is not None %}
+                        <option value="{{ textbook_copy_form.data.condition }}" selected hidden>{{ textbook_copy_form.data.condition }}</option>
+                        {% else %}
+                        <option value="" selected hidden>------</option>
+                        {% endif %}
                         <option value="NEW">New</option>
                         <option value="FINE">Fine</option>
                         <option value="VERY_GOOD">Very Good</option>
@@ -34,7 +37,7 @@
             <div id="id_course_formset" class="multi-card-left form-input" data-bs-theme="dark" style="color:white">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <label class="form-label">Courses</label>
-                    <span id="form-button mb-3" class="text-secondary mb-2" style="cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: flex-end;" onclick="addCourseForm()">
+                    <span class="text-secondary mb-2" style="cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: flex-end;" onclick="addCourseForm()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
                         </svg>
@@ -43,10 +46,10 @@
                 </div>
                 {% for form in course_formset %}
                 <div class="course-form">
-                    <input type="text" name="{{ form.prefix }}-course_number" placeholder="Course Number" value="{{ form.data.course_number }}" maxlength="100" class="textinput form-control" id="{{ form.prefix }}-course_number">
-                    <input type="text" name="{{ form.prefix }}-name" placeholder="Name" value="{{ form.data.name }}" maxlength="100" class="textinput form-control" id="{{ form.prefix }}-name">
-                    <input type="text" name="{{ form.prefix }}-description" placeholder="Description" value="{{ form.data.description }}" maxlength="100" class="textinput form-control" id="{{ form.prefix }}-description">
-                    <button id="form-button" class="remove-course-button btn btn-outline-danger mb-3" style="height:30px; width:100%; display: none; margin:2px;" onclick="removeCourseForm(this)">Remove</button>
+                    <input required type="text" name="{{ form.prefix }}-course_number" placeholder="Course Number" value="{{ form.data.course_number }}" maxlength="100" class="textinput form-control" id="{{ form.prefix }}-course_number">
+                    <input required type="text" name="{{ form.prefix }}-name" placeholder="Name" value="{{ form.data.name }}" maxlength="100" class="textinput form-control" id="{{ form.prefix }}-name">
+                    <input required type="text" name="{{ form.prefix }}-description" placeholder="Description" value="{{ form.data.description }}" maxlength="100" class="textinput form-control" id="{{ form.prefix }}-description">
+                    <span class="remove-course-button btn btn-outline-danger form-button mb-3" style="height:30px; width:100%; display: none; margin:2px;" onclick="removeCourseForm(this)">Remove</span>
                 </div>
                 {% endfor %}
             </div>
@@ -60,6 +63,7 @@
                     <label class="form-check-label" for="id_for_sale">Sell</label>
                     <input style="margin-left:20px;" class="form-check-input" type="checkbox" name="for_rent" id="id_for_rent" checked="">
                     <label class="form-check-label" for="for_rent">Rent</label>
+                    <small class="text-secondary" id="checkbox-warning" style="margin-left:20px; display: none;"> You must choose at least one option. </small>
                 </div>
                 <input hidden value="document.getElementById('course').value" id="id_course" name="course" >
                 <div class="form-group">
@@ -72,7 +76,7 @@
                                 </div>
                             </td>
                             <td>
-                                <li style="margin-top: 10px;height: 30px; width: 100%;"id="form-button" class="btn btn-outline-secondary">Search ISBN</li>
+                                <li style="margin-top: 10px;height: 30px; width: 100%;"class="btn btn-outline-secondary form-button">Search ISBN</li>
                             </td>
                         </tr>
                         <tr>
@@ -89,6 +93,7 @@
                                 </div>
                             </td>
                         </tr>
+                        </table>
                         {{ author_formset.management_form }}
                         <table id="id_author_formset" class="form-input mb-3">
                             <tr>
@@ -99,7 +104,7 @@
                                     
                                 </td>
                                 <td>
-                                    <span id="form-button" class="text-secondary" style="cursor: pointer; display: flex; align-items: center; justify-content: flex-end;" onclick="addAuthorForm()">
+                                    <span class="text-secondary form-button" style="cursor: pointer; display: flex; align-items: center; justify-content: flex-end;" onclick="addAuthorForm()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
                                         </svg>
@@ -110,21 +115,21 @@
                             {% for form in author_formset %}
                                 <tr class="author-form">
                                     <td style="width:40%;">
-                                        <input type="text" maxlength="100" pattern="[A-Za-z]{1,255}" name="{{ form.prefix }}-first_name" placeholder="First Name" value="{{ form.data.first_name }}" class="textinput form-control" id="{{ form.prefix }}-first_name"> 
+                                        <input required ="text" maxlength="100" pattern="[A-Za-z]{1,255}" name="{{ form.prefix }}-first_name" placeholder="First Name" value="{{ form.data.first_name }}" class="textinput form-control" id="{{ form.prefix }}-first_name"> 
                                     </td>
                                     <td style="width:40%;">
-                                        <input type="text" maxlength="100" pattern="[A-Za-z]{1,255}" name="{{ form.prefix }}-last_name" placeholder="Last Name" value="{{ form.data.last_name }}" class="textinput form-control" id="{{ form.prefix }}-last_name"> 
+                                        <input required type="text" maxlength="100" pattern="[A-Za-z]{1,255}" name="{{ form.prefix }}-last_name" placeholder="Last Name" value="{{ form.data.last_name }}" class="textinput form-control" id="{{ form.prefix }}-last_name"> 
                                     </td>
                                     <td>
-                                        <span id="form-button" class="remove-author-button btn btn-outline-danger" style="height:30px; width:100%; display: none;" onclick="removeAuthorForm(this)">Remove</span>
+                                        <span class="remove-author-button btn btn-outline-danger form-button" style="height:30px; width:100%; display: none;" onclick="removeAuthorForm(this)">Remove</span>
                                     </td>
                                 </tr>
                             {% endfor %}
                         </table>
-
+                        <table class="form-input" >
                         <tr>
                             <td>
-                                <div id="div_id_sale_price" class="form-input mb-3"> 
+                                <div id="div_id_sale_price" class="mb-3"> 
                                     <label for="id_sale_price" class="form-label">Sale Price</label>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" style="font-size: 11px;">$</span>
@@ -133,27 +138,28 @@
                                 </div>
                             </td>
                         </tr>
-
                         <tr>
                             <td>
-                                <div id="div_id_rent_price" class="for-rent form-input mb-3"> 
+                                <div id="div_id_rent_price" class="for-rent mb-3"> 
                                     <label for="id_rent_price" class="form-label">Rent Price (Monthly)</label>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" style="font-size: 11px;">$</span>
-                                        <input required type="number" max="500" min="0.01" step="0.01" name="rent_price" value="{{textbook_copy_form.data.rent_price}}" class="textinput form-control" style="padding-left: 24px;"id="id_rent_price"> 
+                                        <input required type="number" max="500" min="0.01" step="0.01" name="rent_price" value="{{textbook_copy_form.data.rent_price}}" class="input-for-rent textinput form-control" style="padding-left: 24px;"id="id_rent_price"> 
                                     </div>
                                 </div>
-                                </td>
-                                <td>
-                                <div id="div_id_avail_from" class="for-rent form-input mb-3"> 
-                                <label for="id_avail_from"  class="form-label">Available From</label>
-                                <input required class="textinput form-control" type="date" name="avail_from" value={{form.data.avail_from}} id="id_avail_from">
+                            </td>
+                        </tr>
+                            <tr>
+                            <td>
+                                <div id="div_id_avail_from" class="for-rent mb-3"> 
+                                    <label for="id_avail_from"  class="form-label">Available From</label>
+                                    <input required class="input-for-rent textinput form-control" type="date" name="avail_from" value="{{textbook_copy_form.data.avail_from | date:'Y-m-d' }}"id="id_avail_from">
                                 </div>
                             </td>
                             <td>
-                                <div id="div_id_avail_to" class="for-rent form-input mb-3"> 
-                                <label for="id_avail_to"  class="form-label">To</label>
-                                <input required class="textinput form-control" type="date" name="avail_to" value={{form.data.avail_to}} id="id_avail_to">
+                                <div id="div_id_avail_to" class="for-rent mb-3"> 
+                                    <label for="id_avail_to"  class="form-label">To</label>
+                                    <input required class="input-for-rent textinput form-control" type="date" name="avail_to" value="{{textbook_copy_form.data.avail_to | date:'Y-m-d' }}" id="id_avail_to">
                                 </div>
                             </td>
                         </tr>
@@ -161,7 +167,7 @@
                     </table>
                     <input class="form-control" type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()" style="display: none;"/>
                     <div class="form-input form-group" style="margin-top: 10px;">
-                        <button id="form-button" class="btn btn-primary" type="submit">Create New Post</button>
+                        <button id="submit-button" class="btn btn-primary form-button" type="submit">Create New Post</button>
                     </div>
                     <div class="error-msg" style="min-height: 30px;">
                         {% for field in form %}
@@ -184,43 +190,66 @@
     {% block script %}
     <script>
         var sale_check = document.getElementById('id_for_sale');
+        var rent_check = document.getElementById('id_for_rent');
+
         sale_check.addEventListener('change', function() {
             if (this.checked) {
+                document.getElementById('checkbox-warning').style.display= 'none';
+                document.getElementById('submit-button').removeAttribute('disabled');
+
                 document.getElementById('div_id_sale_price').style.display = 'block';
-                document.getElementsByName('sale_price')[0].value = null;
+                document.getElementById('id_sale_price').setAttribute('required', true);
+                document.getElementById('id_sale_price').removeAttribute('disabled');
             } else {
                 document.getElementById('div_id_sale_price').style.display = 'none';
-                document.getElementsByName('sale_price')[0].value = 0;
+                document.getElementById('id_sale_price').removeAttribute('required');
+                document.getElementById('id_sale_price').setAttribute('disabled', '');
+                // Show error if both checkboxes are unchecked
+                if (!rent_check.checked){
+                    document.getElementById('checkbox-warning').style.display= 'inline';
+                    document.getElementById('submit-button').setAttribute('disabled',true);
+                }
             }
         });
 
-        var rent_check = document.getElementById('id_for_rent');
         rent_check.addEventListener('change', function() {
             var for_rent = document.getElementsByClassName('for-rent');
+            var input_for_rent = document.getElementsByClassName('input-for-rent');
             if (this.checked) {
+                document.getElementById('checkbox-warning').style.display= 'none';
+                document.getElementById('submit-button').removeAttribute('disabled');
+
                 for (var i = 0; i < for_rent.length; i++){
                     for_rent[i].style.display = 'block';
+                    input_for_rent[i].setAttribute('required', true);
+                    input_for_rent[i].removeAttribute('disabled');
                 }
-                document.getElementsByName('rent_price')[0].value = null;
             } else {
                 for (var i = 0; i < for_rent.length; i++){
                     for_rent[i].style.display = 'none';
+                    input_for_rent[i].removeAttribute('required');
+                    input_for_rent[i].setAttribute('disabled', '');
                 }
-                document.getElementsByName('rent_price')[0].value = 0;
+                // Show error if both checkboxes are unchecked
+                if (!sale_check.checked){
+                    document.getElementById('checkbox-warning').style.display= 'inline';
+                    document.getElementById('submit-button').setAttribute('disabled',true);
+                }
             }
         });
 
         function loadFile() {
             var output = document.getElementById('photo-upload');
             document.getElementById('image_upload').style.display = "none";
-            document.getElementById('image_delete').style.display = "inline";
-
             if (event.target.files[0] != undefined){
                 output.style.display = "block";
                 output.src = URL.createObjectURL(event.target.files[0]);
                 output.onload = function() {
                     URL.revokeObjectURL(output.src) // free memory
                 }
+            } else {
+                document.getElementById('image_upload').style.display = "flex";
+                output.style.display = "none";
             }
         }
         function deleteImage() {

@@ -57,11 +57,11 @@ def createPost(request):
                     textbook_copy.save()
                 else:
                     raise ValidationError(textbook_copy_form.errors)
+                
+                return redirect('my-textbooks')
         except ValidationError as e:
             form_errors = e.message_dict
             print("Form errors:", form_errors)
-
-        return redirect('my-textbooks')
 
     else:
         course_formset = CourseFormSet(prefix='course')

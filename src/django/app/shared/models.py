@@ -135,8 +135,10 @@ class TextbookCopy(CustomBaseModel):
     image = models.ImageField(upload_to='books/')
     for_rent = models.BooleanField()
     for_sale = models.BooleanField()
-    sale_price = models.DecimalField(max_digits=5, decimal_places=2)
-    rent_price = models.DecimalField(max_digits=5, decimal_places=2) # per month
+    sale_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    rent_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True) # per month
+    avail_from = models.DateField(null=True, blank=True) # for rent only
+    avail_to = models.DateField(null=True, blank=True) # for rent only
 
 # TRANSACTIONS _________________________________________________________________#    
 class Transaction(CustomBaseModel):

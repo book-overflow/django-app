@@ -19,7 +19,7 @@ class TextbookForm(ModelForm):
 class TextbookCopyForm(ModelForm):
     class Meta:
         model = TextbookCopy
-        fields = ['condition', 'for_rent', 'for_sale', 'sale_price', 'rent_price', 'image']
+        fields = ['condition', 'for_rent', 'for_sale', 'sale_price', 'rent_price', 'image', 'avail_from', 'avail_to']
 
 CourseFormSet = formset_factory(CourseForm, extra=1)
 AuthorFormSet = formset_factory(AuthorForm, extra=1)
