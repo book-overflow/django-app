@@ -4,6 +4,8 @@ echo 1. Installing
 
 pipenv install
 
+pipenv install requests
+
 echo 2. Migrating
 
 pipenv run python manage.py makemigrations

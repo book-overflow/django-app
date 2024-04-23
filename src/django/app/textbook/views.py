@@ -5,6 +5,8 @@ from django.core.exceptions import ValidationError
 from shared.models import Textbook, Author, Course
 from student_profile.decorators import profile_required
 from .forms import CourseFormSet, AuthorFormSet, TextbookForm, TextbookCopyForm
+from .api import searchISBN
+import requests
 
 @login_required
 @profile_required
@@ -63,11 +65,35 @@ def createPost(request):
             form_errors = e.message_dict
             print("Form errors:", form_errors)
 
-    else:
-        course_formset = CourseFormSet(prefix='course')
-        author_formset = AuthorFormSet(prefix='author')
-        textbook_form = TextbookForm()
-        textbook_copy_form = TextbookCopyForm()
+    elif request.method == 'GET':
+        if request.GET.get('isbn'):
+            isbn = request.GET.get('isbn')
+            try:
+                textbook = Textbook.objects.get(isbn=int(isbn))
+                textbook_initial = {
+                    'isbn': textbook.isbn,
+                    'title': textbook.title,
+                }
+                author_initial = [{'first_name': author.first_name, 'last_name': author.last_name} for author in textbook._authors.all()]
+            except Exception as e:
+                textbook = searchISBN(isbn)
+                textbook_initial = {
+                    'isbn': textbook['isbn'],
+                    'title': textbook['title'],
+                }
+                author_initial = [{'first_name': author.split()[0], 'last_name': author.split()[1]} for author in textbook['authors']]
+            # print(textbook_initial, flush=True)
+            # print(author_initial, flush=True)
+            # print('hello', flush=True)
+            textbook_form = TextbookForm(initial=textbook_initial)
+            author_formset = AuthorFormSet(initial=author_initial, prefix='author')
+            course_formset = CourseFormSet(prefix='course')
+            textbook_copy_form = TextbookCopyForm()
+        else:
+            course_formset = CourseFormSet(prefix='course')
+            author_formset = AuthorFormSet(prefix='author')
+            textbook_form = TextbookForm()
+            textbook_copy_form = TextbookCopyForm()
 
     return render(request, 'createPost.html', {
         'author_formset': author_formset,
@@ -84,4 +110,4 @@ def getPost(request):
 @login_required
 @profile_required
 def getMyTextbooks(request):
-    return render(request, 'MyTextbooks.html')
+    return render(request, 'myTextbooks.html')
