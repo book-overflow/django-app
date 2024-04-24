@@ -4,7 +4,7 @@ def searchISBN(isbn):
     api = 'https://www.googleapis.com/books/v1/volumes'
     
     response_isbn = requests.get(api, params={'q': f'isbn:{isbn}'})
-    if response_isbn.status_code != 200:
+    if response_isbn.status_code != 200 or response_isbn.json()['totalItems'] == 0:
         return None 
     response_isbn = response_isbn.json()['items'][0]
     

@@ -6,7 +6,7 @@ from shared.models import Textbook, Author, Course
 from student_profile.decorators import profile_required
 from .forms import CourseFormSet, AuthorFormSet, TextbookForm, TextbookCopyForm
 from .api import searchISBN
-import requests
+from django.contrib import messages
 
 @login_required
 @profile_required
@@ -59,13 +59,17 @@ def createPost(request):
                     textbook_copy.save()
                 else:
                     raise ValidationError(textbook_copy_form.errors)
-                
+                messages.info(request, message="New Post Created",extra_tags="success")
                 return redirect('my-textbooks')
         except ValidationError as e:
             form_errors = e.message_dict
             print("Form errors:", form_errors)
 
     elif request.method == 'GET':
+        course_formset = CourseFormSet(prefix='course')
+        author_formset = AuthorFormSet(prefix='author')
+        textbook_form = TextbookForm()
+        textbook_copy_form = TextbookCopyForm()
         if request.GET.get('isbn'):
             isbn = request.GET.get('isbn')
             try:
@@ -77,23 +81,16 @@ def createPost(request):
                 author_initial = [{'first_name': author.first_name, 'last_name': author.last_name} for author in textbook._authors.all()]
             except Exception as e:
                 textbook = searchISBN(isbn)
-                textbook_initial = {
-                    'isbn': textbook['isbn'],
-                    'title': textbook['title'],
-                }
-                author_initial = [{'first_name': author.split()[0], 'last_name': author.split()[1]} for author in textbook['authors']]
-            # print(textbook_initial, flush=True)
-            # print(author_initial, flush=True)
-            # print('hello', flush=True)
-            textbook_form = TextbookForm(initial=textbook_initial)
-            author_formset = AuthorFormSet(initial=author_initial, prefix='author')
-            course_formset = CourseFormSet(prefix='course')
-            textbook_copy_form = TextbookCopyForm()
-        else:
-            course_formset = CourseFormSet(prefix='course')
-            author_formset = AuthorFormSet(prefix='author')
-            textbook_form = TextbookForm()
-            textbook_copy_form = TextbookCopyForm()
+                if textbook: # Only set initial when search result is returned
+                    textbook_initial = {
+                        'isbn': textbook['isbn'],
+                        'title': textbook['title'],
+                    }
+                    author_initial = [{'first_name': author.split()[0], 'last_name': author.split()[1]} for author in textbook['authors']]
+                else: textbook_initial, author_initial = None, None
+            if textbook_initial and author_initial:
+                textbook_form = TextbookForm(initial=textbook_initial)
+                author_formset = AuthorFormSet(initial=author_initial, prefix='author')[:len(author_initial)] # Do not send extra form when populated with Search
 
     return render(request, 'createPost.html', {
         'author_formset': author_formset,

@@ -284,7 +284,29 @@ ul {
 .textbook-image{
     width: 30%;
 }
-
+.alert-window{
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 300px;
+    height: 60px;
+    margin: auto;
+    overflow-y: auto;
+    font-size: 14px;
+    font-family: 'Montserrat'; 
+    text-align: center;
+    vertical-align: middle;
+}
+@keyframes out{
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+  
+#alert{
+    animation: out 2s ease-out forwards;
+    animation-delay: 2s;
+}
 @media only screen and (max-width: 767px) {
     .window {
         width: 60%;
