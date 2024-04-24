@@ -107,14 +107,17 @@ class Author(CustomBaseModel):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     
+    class Meta:
+        unique_together = ('first_name', 'last_name')
+    
 class Textbook(CustomBaseModel):
     isbn = models.PositiveBigIntegerField(primary_key=True)
     _authors = models.ManyToManyField(Author, related_name="textbooks")
     _belongs = models.ManyToManyField(Course, related_name="textbooks")
     
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     edition = models.IntegerField()
-    year_published = models.IntegerField()
+    # year_published = models.IntegerField()
     # image = models.ImageField(default='profile.png', upload_to='profile/')
     
 class TextbookCopy(CustomBaseModel):
@@ -130,12 +133,14 @@ class TextbookCopy(CustomBaseModel):
     )
     
     condition = models.CharField(max_length=255, choices=BookCondition.choices)
-    year_purchased = models.IntegerField()
-    # image = models.ImageField(default='profile.png', upload_to='profile/')
+    # year_purchased = models.IntegerField()
+    image = models.ImageField(upload_to='books/')
     for_rent = models.BooleanField()
     for_sale = models.BooleanField()
-    sale_price = models.DecimalField(max_digits=5, decimal_places=2)
-    rent_price = models.DecimalField(max_digits=5, decimal_places=2) # per month
+    sale_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    rent_price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True) # per month
+    avail_from = models.DateField(null=True, blank=True) # for rent only
+    avail_to = models.DateField(null=True, blank=True) # for rent only
 
 # TRANSACTIONS _________________________________________________________________#    
 class Transaction(CustomBaseModel):

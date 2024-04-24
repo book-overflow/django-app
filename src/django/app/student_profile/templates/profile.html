@@ -1,7 +1,7 @@
 {% extends "base.html" %}
     {% block content %}
         <div style="align-content: start;">
-            <div class="profile-card">
+            <div class="card-left">
                     <img class="profile-photo" id="profile-photo" style="object-fit: cover; height: 120px; width: 120px; margin:auto; display: block; clip-path: circle();"  src="{{ user.student.profile.image.url }}" />
                     <div style="position: relative; display: block; margin-top: 5%; margin-bottom: 5%; text-align: center; color: white; font-size: 14px; font-family: Montserrat; font-weight: 700; word-wrap: break-word">{{ user.student.first_name }}<br/>{{ user.student.last_name }}</div>
                     <div style="position: relative; display: block; margin: 2%; text-align: center; color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ user.student.email }}</div>

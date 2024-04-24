@@ -8,9 +8,13 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">    
     </head>
     <body>
-        <div class="topnav" id="myTopnav">
-            <a href="/browse" class="logo-link"><img class="logo" src="{% static 'logo_white.png' %}" ></a>
-        </div>
+        <nav class="navbar navbar-expand-md" data-bs-theme="dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" style="padding: 0;" href="/browse">
+                <img alt="" height="50" src="{% static 'logo_white.png' %}" >
+              </a>
+            </div>
+          </nav>
     {% block content %}{% endblock content %}
     {% block script %}{% endblock script %}
     <script>

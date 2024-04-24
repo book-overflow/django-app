@@ -27,6 +27,7 @@ urlpatterns = [
     path('logout/', user_views.CustomLogoutView.as_view(template_name='logout.html'), name='user-logout'),
     path('auth/', include('user.urls')),
     path('profile/', include('student_profile.urls')),
+    path('textbook/', include('textbook.urls')),
     path('helloworld/', include('helloworld.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
     path('browse/', user_views.browse, name='browse'),
