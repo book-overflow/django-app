@@ -86,7 +86,7 @@ def createPost(request):
                         'isbn': textbook['isbn'],
                         'title': textbook['title'],
                     }
-                    author_initial = [{'first_name': author.split()[0], 'last_name': author.split()[1]} for author in textbook['authors']]
+                    author_initial = [{'first_name': author.split()[0], 'last_name': author.split()[-1]} for author in textbook['authors']]
                 else: textbook_initial, author_initial = None, None
             if textbook_initial and author_initial:
                 textbook_form = TextbookForm(initial=textbook_initial)
