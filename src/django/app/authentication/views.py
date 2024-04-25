@@ -31,7 +31,7 @@ class CustomLoginView(LoginView):
 class CustomLogoutView(LogoutView):
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect("user-login")
+            return redirect("login")
         return super().get(request, *args, **kwargs)
 
 

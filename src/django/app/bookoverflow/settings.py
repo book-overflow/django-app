@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'shared',
     'student_profile',
     'helloworld',
-    'user',
+    'authentication',
     'textbook',
     'crispy_forms',
 ]
@@ -126,7 +126,7 @@ EMAIL_USE_TLS = True
 # Auth backends
 
 AUTHENTICATION_BACKENDS = [
-    'user.backends.CustomAuthBackend',
+    'authentication.backends.CustomAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -177,7 +177,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'shared.CustomUser'
 
-LOGIN_URL = 'user-login'
+LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/browse'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
