@@ -16,21 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from user import views as user_views
+from authentication import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', user_views.register, name='user-register'),
-    path('login/', user_views.CustomLoginView.as_view(template_name='login.html'), name='user-login'),
-    path('logout/', user_views.CustomLogoutView.as_view(template_name='logout.html'), name='user-logout'),
-    path('auth/', include('user.urls')),
-    path('profile/', include('student_profile.urls')),
-    path('textbook/', include('textbook.urls')),
+    path('register/', auth_views.register, name='register'),
+    path('login/', auth_views.CustomLoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', auth_views.CustomLogoutView.as_view(template_name='logout.html'), name='logout'),
+    path('auth/', include('authentication.urls')),
+    path('user/', include('user.urls')),
+    path('textbooks/', include('textbook.urls')),
     path('helloworld/', include('helloworld.urls')),
     path("__debug__/", include("debug_toolbar.urls")),
-    path('browse/', user_views.browse, name='browse'),
+    path('browse/', auth_views.browse, name='browse'),
 ]
 # Only add this when we are in debug mode.
 if settings.DEBUG:

@@ -4,7 +4,7 @@
             <div class="search" data-bs-theme="dark" style="height:620px;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
                     <h1 style="margin:0; font-size: 30px; font-family: 'Montserrat'; font-weight: bold; color: white;">My Textbooks</h1>
-                    <a href="/textbook/newPost" class="btn btn-light" id="form-button" style="display: flex; align-content: center; align-items: center;">
+                    <a href="{% url 'create-listing' %}" class="btn btn-light" id="form-button" style="display: flex; align-content: center; align-items: center;">
                         <svg style="margin-right: 4px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h6a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h6v-5A.5.5 0 0 1 8 2"/>
                         </svg>    
@@ -29,9 +29,28 @@
                       <div id="myTabContent" class="tab-content">
                         <!-- Textbooks to sell -->
                         <div class="tab-pane fade show active" id="sell" role="tabpanel">
-    
-                            <div class="list-group">
-                                <a href="/textbook/getPost" class="list-group-item list-group-item-action flex-column align-items-start">
+                            
+                            {% for context in contexts %}
+                              <div class="list-group">
+                                  <a href="{% url 'get-user-listing' id=context.listing.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                    <div class="d-flex w-100 justify-content-between">
+                                      <h6 class="mb-1">{{ context.textbook.title }}, {{ context.textbook.edition }}</h6>
+                                      <small class="text-muted">
+                                          <span class="badge rounded-pill bg-primary">Sold</span>
+                                      </small>
+                                    </div>
+                                    <small class="mb-1">
+                                      by {% for author in context.authors %}
+                                        {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+                                      {% endfor %}
+                                    </small><br>
+                                    <small class="mb-1">${{ context.listing.sale_price }}</small>
+                                  </a>
+                              </div>
+                            {% endfor %}
+                            
+                            <!-- <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                                   <div class="d-flex w-100 justify-content-between">
                                     <h6 class="mb-1">Introduction to Algorithms, fourth edition</h6>
                                     <small class="text-muted">
@@ -78,7 +97,8 @@
                                   <small class="mb-1">Author</small><br>
                                   <small class="mb-1">$ Price</small>
                                 </a>
-                            </div>
+                            </div> -->
+
                             <!-- Pagination Example -->
                             <div style="margin-top: 20px;">
                                 <ul class="pagination pagination-sm justify-content-center">

@@ -9,9 +9,13 @@
                 </div>
                 <div class="textbook-details">
                     <div style="margin-bottom: 10px;">
-                        <h5>Introduction to Algorithms, fourth edition</h5>
-                        <small> by Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein</small>
-                        <h4 style="margin: 10px 0px 30px 0px;"><b> $ 50.00 </b></h4>
+                        <h5>{{ textbook.title }}</h5>
+                        <small>
+                            by {% for author in authors %}
+                                {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </small>
+                        <h4 style="margin: 10px 0px 30px 0px;"><b>${{ listing.sale_price }}</b></h4>
                     </div>
                     <div>
                         <table>
@@ -20,15 +24,19 @@
                                     <small>ISBN</small>
                                 </td>
                                 <td>
-                                    <small>978-0262046305 </small>
+                                    <small>{{ textbook.isbn }}</small>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="textbook-detail-label">
-                                    <small>Course</small>
+                                    <small>Courses</small>
                                 </td>
                                 <td>
-                                    <small>CS-GY-6033 </small>
+                                    <small>
+                                        {% for course in courses %}
+                                            {{ course.course_number }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </small>
                                 </td>
                             </tr>
                             <tr>
@@ -36,7 +44,7 @@
                                     <small>Condition</small>
                                 </td>
                                 <td>
-                                    <small>Like New</small>
+                                    <small>{{ listing.condition }}</small>
                                 </td>
                             </tr>
                             <tr>
@@ -44,7 +52,7 @@
                                     <small>Sold By</small>
                                 </td>
                                 <td>
-                                    <a href="#"><small>{{ user.student.first_name }} {{ user.student.last_name }}</small></a>
+                                    <a href="#"><small>{{ seller.first_name }} {{ seller.last_name }}</small></a>
                                 </td>
                             </tr>
                         </table>

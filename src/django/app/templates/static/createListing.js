@@ -51,7 +51,7 @@ function searchISBN(button){
     if (isbn.length == 13){
         button.href = "?isbn="+document.getElementById('id_isbn').value;
     } else {
-        button.href = "/textbook/newPost";
+        button.href = "{% url 'create-listing' %}";
     }
 }
 function loadFile() {
