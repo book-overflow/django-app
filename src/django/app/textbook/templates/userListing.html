@@ -1,4 +1,18 @@
 {% extends "base.html" %}
     {% block content %}
-        <div>User textbook listing</div>
+        <div>Title: {{ textbook.title }}</div>
+        <div>
+            Authors:
+            {% for author in authors %}
+                {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </div>
+        <div>
+            Courses:
+            {% for course in courses %}
+                {{ course.course_number }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </div>
+        <div>Condition: {{ listing.condition }}</div>
+        <div>Sale Price: {{ listing.sale_price }}</div>
     {% endblock content %}

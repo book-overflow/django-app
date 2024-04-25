@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.core.exceptions import ValidationError
-from shared.models import Textbook, Author, Course
+from django.http import HttpResponse
+from shared.models import TextbookCopy, Textbook, Author, Course
 from student_profile.decorators import profile_required
 from .forms import CourseFormSet, AuthorFormSet, TextbookForm, TextbookCopyForm
 from .api import searchISBN
@@ -60,7 +61,7 @@ def createListing(request):
                 else:
                     raise ValidationError(textbook_copy_form.errors)
                 messages.info(request, message="New Listing Created",extra_tags="success")
-                return redirect('my-textbooks')
+                return redirect('get-user-listings')
         except ValidationError as e:
             form_errors = e.message_dict
             print("Form errors:", form_errors)
@@ -107,15 +108,56 @@ def getListings(request):
 
 @login_required
 @profile_required
-def getListing(request):
-    return render(request, 'listing.html')
+def getListing(request, id):
+    try:
+        listing = TextbookCopy.objects.get(pk=id)
+    except TextbookCopy.DoesNotExist:
+        return HttpResponse('<div>Listing not found</div>')
+    
+    return render(request, 'listing.html', {
+        'listing': listing,
+        # django templates restricts access to attributes that begin with underscore
+        'textbook': listing._textbook,
+        'authors': list(listing._textbook._authors.all()),
+        'courses': list(listing._textbook._belongs.all()),
+        'seller': listing._seller
+    })
 
 @login_required
 @profile_required
 def getUserListings(request):
-    return render(request, 'userListings.html')
+    listings = TextbookCopy.objects.filter(_seller=request.user.student)
+
+    # django templates restricts access to attributes that begin with underscore
+    contexts = []
+    for listing in listings:
+        contexts.append({
+            'listing': listing,
+            'textbook': listing._textbook,
+            'authors': list(listing._textbook._authors.all()),
+            'courses': list(listing._textbook._belongs.all())
+        })
+    
+    return render(request, 'userListings.html', {
+        'contexts': contexts
+    })
 
 @login_required
 @profile_required
-def getUserListing(request):
-    return render(request, 'userListing.html')
+def getUserListing(request, id):
+    try:
+        listing = TextbookCopy.objects.get(pk=id)
+        
+        if listing._seller != request.user.student:
+            return HttpResponse('<div>You do not own this listing.</div>')
+    
+    except TextbookCopy.DoesNotExist:
+        return HttpResponse('<div>Listing not found</div>')
+    
+    return render(request, 'userListing.html', {
+        'listing': listing,
+        # django templates restricts access to attributes that begin with underscore
+        'textbook': listing._textbook,
+        'authors': list(listing._textbook._authors.all()),
+        'courses': list(listing._textbook._belongs.all())
+    })
