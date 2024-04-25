@@ -10,7 +10,7 @@ from django.contrib import messages
 
 @login_required
 @profile_required
-def createPost(request):
+def createListing(request):
     if request.method == 'POST':
         course_formset = CourseFormSet(request.POST, prefix='course')
         author_formset = AuthorFormSet(request.POST, prefix='author')
@@ -59,7 +59,7 @@ def createPost(request):
                     textbook_copy.save()
                 else:
                     raise ValidationError(textbook_copy_form.errors)
-                messages.info(request, message="New Post Created",extra_tags="success")
+                messages.info(request, message="New Listing Created",extra_tags="success")
                 return redirect('my-textbooks')
         except ValidationError as e:
             form_errors = e.message_dict
@@ -92,19 +92,30 @@ def createPost(request):
                 textbook_form = TextbookForm(initial=textbook_initial)
                 author_formset = AuthorFormSet(initial=author_initial, prefix='author')[:len(author_initial)] # Do not send extra form when populated with Search
 
-    return render(request, 'createPost.html', {
+    return render(request, 'createListing.html', {
         'author_formset': author_formset,
         'course_formset': course_formset,
         'textbook_form': textbook_form,
         'textbook_copy_form': textbook_copy_form
     })
 
-@login_required
-@profile_required
-def getPost(request):
-    return render(request, 'getPost.html')
 
 @login_required
 @profile_required
-def getMyTextbooks(request):
-    return render(request, 'myTextbooks.html')
+def getListings(request):
+    return render(request, 'listings.html')
+
+@login_required
+@profile_required
+def getListing(request):
+    return render(request, 'listing.html')
+
+@login_required
+@profile_required
+def getUserListings(request):
+    return render(request, 'userListings.html')
+
+@login_required
+@profile_required
+def getUserListing(request):
+    return render(request, 'userListing.html')
