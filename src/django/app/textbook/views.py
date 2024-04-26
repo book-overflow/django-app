@@ -161,3 +161,15 @@ def getUserListing(request, id):
         'authors': list(listing._textbook._authors.all()),
         'courses': list(listing._textbook._belongs.all())
     })
+
+
+@login_required
+@profile_required
+def deleteUserListing(request, id):
+    try:
+        listing = TextbookCopy.objects.get(pk=id)
+        listing.delete()
+        messages.info(request, message="Listing Deleted",extra_tags="success")
+        return redirect('get-user-listings')
+    except TextbookCopy.DoesNotExist:
+        return HttpResponse('<div>Listing not found</div>')
