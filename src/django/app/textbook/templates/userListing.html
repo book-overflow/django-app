@@ -1,26 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 {% load static %}
-<!-- 
-        <div>Title: {{ textbook.title }}</div>
-        <div>
-            Authors:
-            {% for author in authors %}
-                {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-        </div>
-        <div>
-            Courses:
-            {% for course in courses %}
-                {{ course.course_number }}{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-        </div>
-        <div>Condition: {{ listing.condition }}</div>
-        <div>Sale Price: {{ listing.sale_price }}</div> -->
-
-
-    
-
 <div>
     <div class="search textbook-post" data-bs-theme="dark">
         <div class="textbook-image">
@@ -34,8 +14,21 @@
                         {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
                     {% endfor %}
                 </small>
-                
-                <h4 style="margin: 10px 0px 30px 0px;"></span><b>${{ listing.sale_price }}</b></h4>
+                <div class="mt-3 mb-3">
+                    {% if listing.for_sale %}
+                    <div class="mt-2" style="vertical-align: baseline;">
+                        <span class="badge rounded-pill bg-primary">Sale</span>
+                        <h4 style="display: inline; vertical-align: middle;"> <b>${{ listing.sale_price }}</b></h4>
+                    </div>
+                    {% endif %}
+                    {% if listing.for_rent %}
+                    <div class="mt-2" style="vertical-align: baseline;">
+                        <span class="badge rounded-pill bg-secondary">Rent</span>
+                        <h4 style="display: inline; vertical-align: middle;"> <b>${{ listing.rent_price }}</b></h4>
+                        <small>/ month</small>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
             <div>
                 <table>

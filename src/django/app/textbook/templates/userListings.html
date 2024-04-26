@@ -13,7 +13,7 @@
   <div style="--bs-body-bg: 0;">
     {% for context in contexts %}
     <div class="list-group" style="overflow-y: auto;">
-      <a href="{% url 'get-user-listing' id=context.listing.id %}" class="list-group-item list-group-item-action flex-column align-items-start">
+      <a href="{% url 'get-user-listing' id=context.listing.id %}" style="cursor: pointer;" class="list-group-item list-group-item-action flex-column align-items-start">
           <div class="d-flex w-100 justify-content-between">
             <div>
               <h6 class="mb-1">{{ context.textbook.title }}, {{ context.textbook.edition }}{% if context.textbook.edition == 1 %}st
