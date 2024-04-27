@@ -5,9 +5,10 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from shared.models import TextbookCopy, Textbook, Author, Course
 from student_profile.decorators import profile_required
-from .forms import CourseFormSet, AuthorFormSet, TextbookForm, TextbookCopyForm
+from .forms import CourseFormSet, AuthorFormSet, TextbookForm, TextbookCopyForm, AuthorForm, CourseForm
 from .api import searchISBN
 from django.contrib import messages
+from django.forms import modelformset_factory
 
 @login_required
 @profile_required
@@ -173,3 +174,52 @@ def deleteUserListing(request, id):
         return redirect('get-user-listings')
     except TextbookCopy.DoesNotExist:
         return HttpResponse('<div>Listing not found</div>')
+    
+@login_required
+@profile_required
+def editUserListing(request, id):
+    CourseModelFormSet = modelformset_factory(Course, form=CourseForm, extra=0)
+    AuthorModelFormSet = modelformset_factory(Author, form=AuthorForm, extra=0)
+    listing = TextbookCopy.objects.get(pk=id)
+    textbook = listing._textbook
+    authors = textbook._authors.all()
+    courses = textbook._belongs.all()
+
+    if request.method == 'POST':
+        # Only allow listing & course info update 
+        textbook_copy_form = TextbookCopyForm(request.POST or None, request.FILES, instance=listing)
+        course_formset = CourseModelFormSet(request.POST or None, prefix='course')
+        try:
+            textbook._belongs.clear()
+            for course_form in course_formset:  
+                if course_form.is_valid():
+                    course = course_form.save(commit=False)
+                    course._university = request.user.student._university
+                    course.save()
+                    textbook._belongs.add(course)
+                elif request.POST[f'{course_form.prefix}-course_number']:
+                    course = Course.objects.get(course_number=request.POST[f'{course_form.prefix}-course_number'])
+                    textbook._belongs.add(course)
+                else:
+                    raise ValidationError(course_form.errors)
+            textbook.save()
+            if textbook_copy_form.is_valid():
+                textbook_copy_form.save()
+            else:
+                raise ValidationError(textbook_copy_form.errors)
+            messages.info(request, message="Listing Updated",extra_tags="success")
+            return redirect('get-user-listings')
+        except ValidationError as e:
+            print(e)
+    else:
+        textbook_copy_form = TextbookCopyForm(request.FILES, instance=listing)
+        textbook_form = TextbookForm(instance=textbook)
+        course_formset = CourseModelFormSet(queryset=courses, prefix='course')
+        author_formset = AuthorModelFormSet(queryset=authors, prefix='author')
+        return render(request, 'createListing.html', {
+                'for_edit': True,
+                'author_formset': author_formset,
+                'course_formset': course_formset,
+                'textbook_form': textbook_form,
+                'textbook_copy_form': textbook_copy_form
+        })

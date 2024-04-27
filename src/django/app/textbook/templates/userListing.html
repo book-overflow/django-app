@@ -52,17 +52,20 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="textbook-detail-label">
-                        <small>Condition</small>
-                    </td>
-                    <td>
-                        <small>{{ listing.condition }}</small>
-                    </td>
+                    <td class="textbook-detail-label"><small>Condition</small></td>
+                    <td><small>{{ listing.condition }}</small></td>
                 </tr>
+                {% if listing.for_rent %}
+                <tr>
+                    <td class="textbook-detail-label"><small>Rent Available From</small></td>
+                    <td><small>{{ listing.avail_from }} </small></td>
+                    <td><small class="textbook-detail-label"> To </small><small>{{ listing.avail_to }}</small></td>
+                </tr>
+                {% endif %}
             </table>
         </div>
         <div style="margin-top:30px;">
-            <button id="form-button" class="btn btn-primary">Edit Post</button>
+            <a id="form-button" class="btn btn-primary" href="{% url 'edit-user-listing' id=listing.id %}">Edit Post</a>
             <button id="form-button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Post</button>
         </div>
     </div>

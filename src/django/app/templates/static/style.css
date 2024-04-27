@@ -448,6 +448,19 @@ ul {
         padding-bottom: 2%;
         margin-bottom: 10%;
     }
+    .image-upload{
+        cursor:pointer; 
+        max-width: 100%; 
+        aspect-ratio:1; 
+        background-color: unset; 
+        justify-content: center; 
+        align-items: center; 
+        border-color: grey; 
+        border-width: 1px; 
+        border-style: dashed; 
+        margin-top: 15px;
+        display: inherit;
+    }
     .textbook-post{
         height: fit-content; 
         display: block;
@@ -505,6 +518,7 @@ ul {
         width: 55%;
         margin-right: 10%;
         float: right;
+        margin-bottom: 2%;
     }
     .new-post-left{
         display: flex; 

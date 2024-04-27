@@ -10,10 +10,13 @@
       <p style="margin:0; font-size:14px; color:#57068C;">New Post</p>
     </a>
   </div>
-  <div style="--bs-body-bg: 0;">
+  <div style="--bs-body-bg: 0; border-top: 1px solid rgba(255,255,255,.5);">
+    {% if contexts|length == 0 %}
+      <small class="text center">No listing found.</small>
+    {% else %}
     {% for context in contexts %}
     <div class="list-group" style="overflow-y: auto;">
-      <a href="{% url 'get-user-listing' id=context.listing.id %}" style="cursor: pointer;" class="list-group-item list-group-item-action flex-column align-items-start">
+      <a href="{% url 'get-user-listing' id=context.listing.id %}" style="cursor: pointer; padding: 15px 0px 15px 10px;" class="list-group-item list-group-item-action flex-column align-items-start">
           <div class="d-flex w-100 justify-content-between">
             <div>
               <h6 class="mb-1">{{ context.textbook.title }}, {{ context.textbook.edition }}{% if context.textbook.edition == 1 %}st
@@ -25,14 +28,17 @@
                 {% endfor %}
               </small>
             </div>
-              <div class="text-muted" style="display: flex; flex-direction: column; align-items: flex-end;">
+            <div style="width:20%;">
+              <div class="text-muted" style="display: flex; flex-direction: column; align-items: flex-start;">
                 <small class="mb-1">{% if context.listing.for_sale %}<span class="badge rounded-pill bg-primary">Sale</span> ${{ context.listing.sale_price }}{% endif %}</small>
                 <small>{% if context.listing.for_rent %}<span class="badge rounded-pill bg-secondary">Rent</span> ${{ context.listing.rent_price }} / month{% endif %}</small>
               </div>
+            </div>
         </div>
       </a>
     </div>
     {% endfor %}
+    {% endif %}
   </div>
 </div>
 
