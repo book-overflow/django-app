@@ -85,8 +85,8 @@
                     {% else %}  value="{{ form.data.description }}"  
                     {% endif %} required>
                     <span class="remove-course-button btn btn-outline-danger form-button mb-3" style="height:30px; width:100%; margin:2px;" onclick="removeCourseForm(this)">Remove</span>
-                    <!-- <input type="checkbox" name="{{ form.prefix }}-DELETE" id="{{ form.prefix }}-DELETE"> -->
-                    {{form.DELETE}}
+                    <input hidden type="checkbox" name="{{ form.prefix }}-DELETE" id="{{ form.prefix }}-DELETE">
+                    <!-- {{form.DELETE}} -->
                 </div>
                 {% endfor %}
             </div>
