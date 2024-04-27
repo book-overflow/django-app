@@ -6,11 +6,13 @@
             {% csrf_token %}
             <div class="new-post-left">
                 <div class="multi-card-left form-input" data-bs-theme="dark" style="color:white;">
-                    <label for="id_image" class="form-label">Image</label>
                     {% if textbook_copy_form.initial.image %} 
+                    <label for="id_image" class="form-label">Change Image</label>
                     <input class="form-control" style="font-size: 12px;" type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()"
                     src="{{textbook_copy_form.initial.image.url}}"/> 
+                    <label class="form-label mt-3">Current Image</label>
                     {% else %}
+                    <label for="id_image" class="form-label">Image</label>
                     <input required class="form-control" style="font-size: 12px;" type="file" name="image" accept="image/*" id="id_image" onchange="loadFile()"/> 
                     {% endif %}
                     <div>
@@ -83,6 +85,8 @@
                     {% else %}  value="{{ form.data.description }}"  
                     {% endif %} required>
                     <span class="remove-course-button btn btn-outline-danger form-button mb-3" style="height:30px; width:100%; margin:2px;" onclick="removeCourseForm(this)">Remove</span>
+                    <!-- <input type="checkbox" name="{{ form.prefix }}-DELETE" id="{{ form.prefix }}-DELETE"> -->
+                    {{form.DELETE}}
                 </div>
                 {% endfor %}
             </div>
@@ -197,9 +201,9 @@
                                     <label for="id_sale_price" class="form-label">Sale Price</label>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" style="font-size: 11px;">$</span>
-                                        <input type="number" max="500" min="0.01" step="0.01" name="sale_price" class="textinput form-control" id="id_sale_price"
+                                        <input type="number" max="500" min="0.01" step="0.01" name="sale_price" class="textinput form-control" id="id_sale_price" style="padding-left: 24px;" 
                                         {% if textbook_copy_form.initial.sale_price %} value="{{textbook_copy_form.initial.sale_price}}" 
-                                        {% elif textbook_copy_form.initial.sale_price is None and textbook_copy_form.initial.rent_price %} disabled=""
+                                        {% elif for_edit and textbook_copy_form.initial.rent_price %} disabled
                                         {% else %} value="{{textbook_copy_form.data.sale_price}}" required=""{% endif %}> 
                                     </div>
                                 </div>
@@ -213,7 +217,7 @@
                                         <span class="input-group-text" style="font-size: 11px;">$</span>
                                         <input type="number" max="100" min="0.01" step="0.01" name="rent_price" class="input-for-rent textinput form-control" id="id_rent_price" style="padding-left: 24px;" 
                                         {% if textbook_copy_form.initial.rent_price %}  value="{{textbook_copy_form.initial.rent_price }}"
-                                        {% elif for_edit is False and textbook_copy_form.initial.sale_price %} disabled=""
+                                        {% elif for_edit and textbook_copy_form.initial.sale_price %} disabled
                                         {% else %}  value="{{textbook_copy_form.data.rent_price}}" required="" {% endif %} >
                                     </div>
                                 </div>
@@ -225,7 +229,7 @@
                                     <label for="id_avail_from"  class="form-label">Available From</label>
                                     <input class="input-for-rent textinput form-control" type="date" name="avail_from" id="id_avail_from"
                                     {% if textbook_copy_form.initial.avail_from %}  value="{{textbook_copy_form.initial.avail_from | date:'Y-m-d' }}"
-                                    {% elif for_edit is False and textbook_copy_form.initial.sale_price %} disabled
+                                    {% elif for_edit and textbook_copy_form.initial.sale_price %} disabled
                                     {% else %}  value="{{textbook_copy_form.data.avail_from | date:'Y-m-d' }}" 
                                     {% endif %} required> 
                                 </div>
@@ -235,7 +239,7 @@
                                     <label for="id_avail_to"  class="form-label">To</label>
                                     <input class="input-for-rent textinput form-control" type="date" name="avail_to" id="id_avail_to"
                                     {% if textbook_copy_form.initial.avail_to %}  value="{{textbook_copy_form.initial.avail_to | date:'Y-m-d' }}"
-                                    {% elif for_edit is False and textbook_copy_form.initial.sale_price %} disabled
+                                    {% elif for_edit and textbook_copy_form.initial.sale_price %} disabled
                                     {% else %}  value="{{textbook_copy_form.data.avail_to | date:'Y-m-d' }}"  
                                     {% endif %} required> 
                                 </div>

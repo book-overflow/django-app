@@ -160,7 +160,8 @@ def getUserListing(request, id):
         # django templates restricts access to attributes that begin with underscore
         'textbook': listing._textbook,
         'authors': list(listing._textbook._authors.all()),
-        'courses': list(listing._textbook._belongs.all())
+        'courses': list(listing._textbook._belongs.all()),
+        'condition': listing.condition.replace('_', ' ')
     })
 
 
@@ -178,7 +179,7 @@ def deleteUserListing(request, id):
 @login_required
 @profile_required
 def editUserListing(request, id):
-    CourseModelFormSet = modelformset_factory(Course, form=CourseForm, extra=0)
+    CourseModelFormSet = modelformset_factory(Course, form=CourseForm, extra=0, can_delete=True)
     AuthorModelFormSet = modelformset_factory(Author, form=AuthorForm, extra=0)
     listing = TextbookCopy.objects.get(pk=id)
     textbook = listing._textbook
@@ -191,17 +192,18 @@ def editUserListing(request, id):
         course_formset = CourseModelFormSet(request.POST or None, prefix='course')
         try:
             textbook._belongs.clear()
-            for course_form in course_formset:  
-                if course_form.is_valid():
-                    course = course_form.save(commit=False)
-                    course._university = request.user.student._university
-                    course.save()
-                    textbook._belongs.add(course)
-                elif request.POST[f'{course_form.prefix}-course_number']:
-                    course = Course.objects.get(course_number=request.POST[f'{course_form.prefix}-course_number'])
-                    textbook._belongs.add(course)
-                else:
-                    raise ValidationError(course_form.errors)
+            for course_form in course_formset: 
+                if f'{course_form.prefix}-DELETE' not in request.POST:
+                    if course_form.is_valid():
+                        course = course_form.save(commit=False)
+                        course._university = request.user.student._university
+                        course.save()
+                        textbook._belongs.add(course)
+                    elif request.POST[f'{course_form.prefix}-course_number']:
+                        course = Course.objects.get(course_number=request.POST[f'{course_form.prefix}-course_number'])
+                        textbook._belongs.add(course)
+                    else:
+                        raise ValidationError(course_form.errors)
             textbook.save()
             if textbook_copy_form.is_valid():
                 textbook_copy_form.save()

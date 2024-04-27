@@ -54,7 +54,7 @@ function searchISBN(button){
     if (isbn.length == 13){
         button.href = "?isbn="+document.getElementById('id_isbn').value;
     } else {
-        button.href = "{% url 'create-listing' %}";
+        button.href = "/user/textbooks/create";
     }
 }
 function loadFile() {
@@ -121,14 +121,15 @@ function addCourseForm() {
     var courseFormset = document.getElementById('id_course_formset');
     var totalFormCountInput = document.getElementById('id_course-TOTAL_FORMS');
     var totalFormCount = parseInt(totalFormCountInput.value);
-
-    var newForm = courseFormset.lastElementChild.cloneNode(true);
-
+    var firstForm = courseFormset.getElementsByClassName('course-form')[0];
+    // var newForm = courseFormset.lastElementChild.cloneNode(true);
+    var newForm = firstForm.cloneNode(true);
+    console.log(firstForm);
     newForm.querySelectorAll('input').forEach(function(input) {
         var oldName = input.getAttribute('name');
-        input.setAttribute('name', oldName.replace('-' + (totalFormCount - 1) + '-', '-' + totalFormCount + '-'));
+        input.setAttribute('name', oldName.replace('-0-', '-' + (totalFormCount) + '-'));
         var oldId = input.getAttribute('id');
-        input.setAttribute('id', oldId.replace('-' + (totalFormCount - 1) + '-', '-' + totalFormCount + '-'));
+        input.setAttribute('id', oldId.replace('-0-', '-' + (totalFormCount) + '-'));
         input.value = '';
     });
 
@@ -144,9 +145,16 @@ function removeCourseForm(button) {
     var courseLength = document.getElementsByClassName('course-form').length;
     var totalForms = document.getElementById('id_course-TOTAL_FORMS').value;
     if (courseLength > 1){
-        currentForm.parentNode.removeChild(currentForm);
+        currentForm.style.display = 'none';
+        currentForm.removeAttribute('class'); // Exclude from course-form list
+        currentForm.lastElementChild.setAttribute('checked',"");
+        var inputs = currentForm.getElementsByTagName('input');
+        for (var i = 0; i < inputs.length-1; i ++){
+            inputs[i].setAttribute('disabled', "");
+        }
+    // console.log(currentForm.lastElementChild);
     // toggleRemoveButtons('id_course_formset', '.course-form', '.remove-course-button');
-        document.getElementById('id_course-TOTAL_FORMS').value = totalForms - 1;
+        // document.getElementById('id_course-TOTAL_FORMS').value = totalForms - 1;
     }else{
         inputs = document.getElementsByClassName('course-form')[0].getElementsByTagName('input');
         for (var i = 0; i < inputs.length; i ++){
