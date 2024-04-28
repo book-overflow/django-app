@@ -134,6 +134,11 @@ def getListings(request):
     )
     queryset = queryset.order_by('-num_matches')
     queryset.distinct()
+    textbook_copies = []
+
+    for textbook in queryset:
+        for copy in textbook.copies.all():
+            textbook_copies.append(copy)
 
     return render(request, 'listings.html', context={'results': queryset}) # Added Temp. context for testing
 
