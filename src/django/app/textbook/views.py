@@ -9,6 +9,7 @@ from .forms import CourseFormSet, AuthorFormSet, TextbookForm, TextbookCopyForm,
 from .api import searchISBN
 from django.contrib import messages
 from django.forms import modelformset_factory
+from django.db.models import Q, Count
 
 @login_required
 @profile_required
@@ -105,6 +106,36 @@ def createListing(request):
 @login_required
 @profile_required
 def getListings(request):
+    print("hello", flush=True)
+    query = request.GET.get('query')    
+    queryset = Textbook.objects.all()
+
+    if not query:
+        return render(request, 'listings.html')
+
+    terms = query.split()
+    final_filter = Q()
+    
+    for term in terms:
+        # Try to match the term with ISBN
+        final_filter |= Q(isbn__icontains=term)
+        
+        # Try to match the term with title
+        final_filter |= Q(title__icontains=term)
+        
+        # Try to match the term with authors' names
+        final_filter |= Q(_authors__first_name__icontains=term) | Q(_authors__last_name__icontains=term)
+        
+        # Try to match the term with course name or course number
+        final_filter |= Q(_belongs__name__icontains=term) | Q(_belongs__course_number__icontains=term)
+    
+    queryset = queryset.filter(final_filter)
+    queryset = queryset.annotate(
+        num_matches=Count('isbn') + Count('title') + Count('_authors') + Count('_belongs')
+    )
+    queryset = queryset.order_by('-num_matches')
+
+    print(queryset.distinct(), flush=True)
     return render(request, 'listings.html')
 
 @login_required
