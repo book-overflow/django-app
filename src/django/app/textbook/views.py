@@ -106,7 +106,6 @@ def createListing(request):
 @login_required
 @profile_required
 def getListings(request):
-    print("hello", flush=True)
     query = request.GET.get('query')    
     queryset = Textbook.objects.all()
 
@@ -134,8 +133,8 @@ def getListings(request):
         num_matches=Count('isbn') + Count('title') + Count('_authors') + Count('_belongs')
     )
     queryset = queryset.order_by('-num_matches')
+    queryset.distinct()
 
-    print(queryset.distinct(), flush=True)
     return render(request, 'listings.html', context={'results': queryset}) # Added Temp. context for testing
 
 @login_required
