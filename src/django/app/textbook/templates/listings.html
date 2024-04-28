@@ -46,7 +46,11 @@
         </form>
     </div>
     <div>
-        <div class="search-result" data-bs-theme="dark">
+        <div class="search-result text" data-bs-theme="dark">
+            <!-- Test Here -->
+            {% for result in results %}
+                {{result.title}} <br>
+            {% endfor %}
               <div class="list-group" style="overflow-y: auto;">
                     <a href="" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">

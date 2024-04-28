@@ -136,7 +136,7 @@ def getListings(request):
     queryset = queryset.order_by('-num_matches')
 
     print(queryset.distinct(), flush=True)
-    return render(request, 'listings.html')
+    return render(request, 'listings.html', context={'results': queryset}) # Added Temp. context for testing
 
 @login_required
 @profile_required
