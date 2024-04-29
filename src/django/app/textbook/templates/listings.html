@@ -1,85 +1,137 @@
 {% extends "base.html" %}
     {% block content %}
     {% load static %}
-    <div class="search-left" data-bs-theme="dark">
-        <small class="text" style="font-weight: 700;"> {{ copies|length}} Results Found </small>
-        <hr style="height:2px;border-width:0;color:white; background-color: white; ">
-        <div class="text mb-3">
-            <label for="exampleSelect1" class="form-label">Sort by</label>
-            <select class="form-select" style="font-size:12px;" id="exampleSelect1">
-              <option>Sale Price</option>
-              <option>Rent Price</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <small class="text">Filter by</small>
-            <div class="form-check text mt-2">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
-                <label class="form-check-label" for="flexCheckChecked">
-                  Sale
-                </label>
+    <div>
+        <div class="search-left" data-bs-theme="dark">
+            <div>
+                <small class="text" style="font-weight: 700;"> {{ copies|length}} Results Found </small>
+                <hr style="margin:24px 0px; height:2px;border-width:0;color:white; background-color: white; ">
             </div>
-            <div class="form-check text">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
-                <label class="form-check-label" for="flexCheckChecked">
-                  Rent
-                </label>
+            <div class="text" style="margin-bottom: 24px;">
+                <label for="exampleSelect1" class="form-label">Sort by</label>
+                <select class="form-select" style="font-size: 12px;" id="exampleSelect1">
+                    <option>Sale Price</option>
+                    <option>Rent Price</option>
+                </select>
             </div>
-        </div>
-    </div>
     
-    <div class="search-bar-top" data-bs-theme="dark">
-        <form class="d-flex" action="{% url 'get-listings'%}">
-            <input autofocus name="query" value="{{request.GET.query}}" class="bg-dark form-control" style="padding:14px; font-size:14px; font-family:'Montserrat'; border-top-left-radius: 8px;border-bottom-left-radius: 8px;" type="search" placeholder="Title, ISBN, Author, ...">
-            <button class="btn btn-primary" style="width:50px; font-size: 12px; font-family:'Montserrat'; border-top-right-radius: 8px;border-bottom-right-radius: 8px;" type="submit"> 
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                </svg>
-            </button>
-        </form>
-    </div>
-    <div class="search-result text">
-        <div class="list-group" style="overflow-y: auto;">
-            {% if copies|length == 0 %}
-                <small class="text center">No listing found.</small>
-            {% else %}
-                {% for context in copies %}
-                <a href="{% url 'get-listing' id=context.listing.id %}" style="--bs-list-group-action-hover-bg: #17141f; cursor: pointer; padding: 26px; --bs-list-group-bg: rgba(0,0,0,.5); border-radius: 8px; margin-bottom: 12px; " class="list-group-item list-group-item-action flex-column align-items-start
-                {% if context.listing.for_sale %} for_sale {% endif %} {% if context.listing.for_rent %} for_rent {% endif %} ">
-                    <div class="d-flex w-100 justify-content-between">
-                    <div style="color:white;">
-                        <h6 class="mb-2"><b>{{ context.textbook.title }}</b>, {{ context.textbook.edition }}{% if context.textbook.edition == 1 %}st
-                            {% elif context.textbook.edition == 2 %}nd {% elif context.textbook.edition == 3 %}rd 
-                            {% else %}th{%endif%}Ed. </h6>
-                        <small>
-                            by {% for author in context.authors %}
-                                {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+            <div class="mb-3" style="height: 450px; overflow: auto;">
+                <small class="text">Filter by</small>
+                <div class="form-check text mt-2" style="font-size: 12px;">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked="">
+                    <label class="form-check-label" for="flexCheckChecked1">
+                        Sale
+                    </label>
+                </div>
+                <div class="form-check text mb-2" style="font-size: 12px;">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked="">
+                    <label class="form-check-label" for="flexCheckChecked2">
+                        Rent
+                    </label>
+                </div>
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button text" style="padding: 6px 12px; font-size: 12px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                            Courses
+                        </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                        <div class="accordion-body" style="padding: 12px;">
+                            {% for course in courses %}
+                                <div class="form-check text"  style="font-size: 12px;">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked6" checked="">
+                                    <label class="form-check-label" for="flexCheckChecked6">
+                                    {{course.course_number}} {{course.name}}
+                                    </label>
+                                </div>          
                             {% endfor %}
-                        </small>
-                    </div>
-                    <div style="min-width:20%;">
-                        <div class="text-muted" style="display: flex; flex-direction: column; align-items: flex-start;">
-                        {% if context.listing.for_sale %}
-                            <div class="mb-1" style="display: flex; align-items: center;">
-                                <span class="badge rounded-pill bg-primary">Sale</span>
-                                <span class="text"style="margin: 0px 5px 0px 5px;"> ${{ context.listing.sale_price }} </span>
-                            </div>
-                        {% endif %}
-                        {% if context.listing.for_rent %}
-                            <div style="display: flex; align-items: center;">
-                                <span class="badge rounded-pill bg-secondary">Rent</span>
-                                <span class="text" style="margin: 0px 5px 0px 5px;"> ${{ context.listing.rent_price }} </span> 
-                                <small style="margin-left: 2px; color:white;"> / month</small>
-                            </div>
-                            {% endif %}
+                        </div>
                         </div>
                     </div>
                 </div>
-                </a>
-                {% endfor %}
-            {% endif %}
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button text" style="padding: 6px 12px; font-size: 12px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            Authors
+                        </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body" style="padding: 12px;">
+                            {% for author in authors|dictsort:"first_name"  %}
+                            <div class="form-check text"  style="font-size: 12px;">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3" checked="">
+                                <label class="form-check-label" for="flexCheckChecked3">
+                                    {{author.first_name}} {{author.last_name}} 
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="search-right">
+            <div data-bs-theme="dark" >
+                <form class="d-flex" action="{% url 'get-listings'%}">
+                    <input autofocus name="query" value="{{request.GET.query}}" class="bg-dark form-control" style="padding:12px 24px 12px 24px; font-size:14px; font-family:'Montserrat'; border-top-left-radius: 8px;border-bottom-left-radius: 8px;" type="search" placeholder="Title, ISBN, Author, ...">
+                    <button class="btn btn-primary" style="width:50px; font-size: 12px; font-family:'Montserrat'; border-top-right-radius: 8px;border-bottom-right-radius: 8px;" type="submit"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            <div class="search-result text" style="position: relative; height: 620px; overflow-y: auto;">
+                {% if copies|length == 0 %}
+                <small class="text center">No listing found.</small>
+                {% else %}
+                <div class="list-group">
+                        {% for context in copies %}
+                        <a href="{% url 'get-listing' id=context.listing.id %}" style="--bs-list-group-action-hover-bg: #17141f; cursor: pointer; padding: 26px; --bs-list-group-bg: rgba(0,0,0,.5); border-radius: 8px; margin-bottom: 12px; " class="list-group-item list-group-item-action flex-column align-items-start
+                        {% if context.listing.for_sale %} for_sale {% endif %} {% if context.listing.for_rent %} for_rent {% endif %} ">
+                            <div class="d-flex w-100 justify-content-between">
+                            <div style="color:white;">
+                                <h6 class="mb-2"><b>{{ context.textbook.title }}</b>, {{ context.textbook.edition }}{% if context.textbook.edition == 1 %}st
+                                    {% elif context.textbook.edition == 2 %}nd {% elif context.textbook.edition == 3 %}rd 
+                                    {% else %}th{%endif%}Ed. </h6>
+                                <small>
+                                    by {% for author in context.authors %}
+                                        {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </small>
+                            </div>
+                            <div style="min-width:20%;">
+                                <div class="text-muted" style="display: flex; flex-direction: column; align-items: flex-start;">
+                                {% if context.listing.for_sale %}
+                                    <div class="mb-1" style="display: flex; align-items: center;">
+                                        <span class="badge rounded-pill bg-primary">Sale</span>
+                                        <span class="text"style="margin: 0px 5px 0px 5px;"> ${{ context.listing.sale_price }} </span>
+                                    </div>
+                                {% endif %}
+                                {% if context.listing.for_rent %}
+                                    <div style="display: flex; align-items: center;">
+                                        <span class="badge rounded-pill bg-secondary">Rent</span>
+                                        <span class="text" style="margin: 0px 5px 0px 5px;"> ${{ context.listing.rent_price }} </span> 
+                                        <small style="margin-left: 2px; color:white;"> / month</small>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
+
+    
     {% endblock content %}
     {% block script %}
 
