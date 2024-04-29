@@ -138,9 +138,14 @@ def getListings(request):
 
     for textbook in queryset:
         for copy in textbook.copies.all():
-            textbook_copies.append(copy)
+            textbook_copies.append({
+                'listing': copy,
+                'textbook': copy._textbook,
+                'authors': list(copy._textbook._authors.all()),
+                'courses': list(copy._textbook._belongs.all())
+            })
 
-    return render(request, 'listings.html', context={'results': queryset}) # Added Temp. context for testing
+    return render(request, 'listings.html', context={'copies': textbook_copies}) # Added Temp. context for testing
 
 @login_required
 @profile_required
