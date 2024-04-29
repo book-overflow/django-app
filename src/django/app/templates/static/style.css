@@ -90,6 +90,11 @@ body.browse{
     font-family: 'Montserrat'; 
     font-weight: 700;
 }
+.heading{
+    font-size: 20px; 
+    font-family: 'Montserrat'; 
+    font-weight: 700;
+}
 .form{
     margin-left: 50px;
     margin-right: 50px;
@@ -193,6 +198,13 @@ ul {
     border-radius: 8px;
     margin-bottom: 4%;
 }
+.messenger{
+    margin-top: 0; 
+    background: white; 
+    border-radius: 8px;
+    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.25); 
+    border-radius: 8px;
+}
 .multi-card-left{
     margin: auto; 
     height: fit-content;
@@ -243,7 +255,7 @@ ul {
 }
 .search-right{
     margin: 2% 10% 0 1%;
-    width: 53%;
+    width: 55%;
     float: left;
 }
 .search-result{
@@ -276,6 +288,39 @@ ul {
 .card{
     border-radius: 8px;
 }
+.user-sender{
+    margin-top: 5px; 
+    width: fit-content; 
+    max-width: 100%;
+    margin-left: auto; 
+    margin-right: 0;  
+    background-color:#593196; 
+    padding:6px 12px; 
+    border-radius: 14px;
+    overflow-wrap: break-word;
+}
+.other-sender{
+    margin-top: 5px; 
+    width: fit-content; 
+    max-width: 100%;
+    background-color:#ded6ea; 
+    padding:6px 12px; 
+    border-radius: 14px;
+    overflow-wrap: break-word;
+}
+.other-user{
+    cursor: pointer; 
+    display: flex; 
+    align-items: center;  
+    padding: 10px; 
+    border-radius: 30px;
+}
+.other-user:hover{
+    background-color: rgb(23,20,31);
+}
+.example::-webkit-scrollbar {
+    display: none;
+  }
 #circle {
     width: 35 px;
     height: 35px;
@@ -335,8 +380,8 @@ ul {
     position: absolute;
     left: 0;
     right: 0;
-    width: 300px;
-    height: 60px;
+    min-width: 300px;
+    min-height: 60px;
     margin: auto;
     overflow-y: auto;
     font-size: 14px;
@@ -350,8 +395,8 @@ ul {
 }
   
 #alert{
-    animation: out 2s ease-out forwards;
-    animation-delay: 2s;
+    /* animation: out 2s ease-out forwards;
+    animation-delay: 2s; */
 }
 @media only screen and (max-width: 767px) {
     .window {
@@ -418,6 +463,12 @@ ul {
         margin: auto; 
         padding-bottom: 2%;
         margin-bottom: 10%;
+    }
+    .messenger{
+        width: 60%;
+        margin: auto; 
+        padding-bottom: 2%;
+        margin-bottom: 10%;  
     }
     .new-post-left{
         display: block;
@@ -518,6 +569,14 @@ ul {
         width: 55%;
         margin-right: 10%;
         float: left;
+    }
+    .messenger{
+        margin-top: 2%;
+        padding-bottom: 2%;
+        box-sizing: border-box;
+        width: 55%;
+        margin-right: 10%;
+        float: left;   
     }
     #logout-dropdown{
         display: none;

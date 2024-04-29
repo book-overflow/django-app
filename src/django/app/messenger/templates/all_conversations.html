@@ -1,6 +1,120 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% block content %}
+        <div style="height: inherit;">
+            <div class="card-left">
+                <h1 class="heading" style="color: white; margin-bottom: 20px;">Chats</h1>
+                <div class="mb-3" style="cursor:pointer; display: flex; align-items: center; background-color: white; padding: 10px; border-radius: 30px;">
+                    <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ latest_chat.student.profile.image.url }}" />
+                    <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word">
+                        <b>{{ latest_chat.student.first_name }} {{ latest_chat.student.last_name }}</b><br>
+                        <small style="color: #444;">{{latest_chat.last_message.text}}</small>
+                    </div>
+                    <!-- <div style="color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ other_student.email }}</div> -->
+                </div>
+                <div style="width:auto; overflow-x: auto;">
+                    {% for other_user in other_chats %}
+                        <a class="other-user mb-3" href="{% url 'view_conversation' other_user.conversation.id%}" style="text-decoration: none !important;">
+                            <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ other_user.student.profile.image.url }}" />
+                            <div class="text" style="margin-left: 14px; word-wrap: break-word;">
+                                <b style="color: #ded6ea;">{{other_user.student.first_name}} {{ other_user.student.last_name }}</b><br>
+                                <small style="color: white;">{{other_user.last_message.text}}</small>
+                                <!-- added to check if showing the latest message first -->
+                                <!-- {{other_user.last_message.timestamp}} -->
+                            </div>
+                            <!-- <div style="color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ other_student.email }}</div> -->
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="messenger" style="height:100%; padding:50px;"> 
+                <!-- <h1 class="form-heading"></h1> -->
+                <div class="mb-3" style="display: flex; align-items: center;">
+                    <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ latest_chat.student.profile.image.url }}" />
+                    <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word"><b>{{ latest_chat.student.first_name }} {{ latest_chat.student.last_name }}</b></div>
+                    <!-- <div style="color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ other_student.email }}</div> -->
+                </div>
+                <div>
+                    <div class="messages" style="border-top: 1px solid #ededed; background-color: #fff; color: #333; ">
+                        <div id="message-body" style="padding-top: 14px; height: 450px; overflow-y: auto;">
+                            {% for message in latest_chat.conversation.messages.all %}
+                                {% if message.sender == request.user %}
+                                <div style="text-align: right; margin-bottom: 7px;">
+                                    <strong class="text" style="color: #593196;">{{request.user.student.first_name}} {{request.user.student.last_name}}</strong>
+                                    <div class="user-sender">
+                                        <small class="text" style="font-size: 14px; text-align: left; ">{{ message.text }}</small>
+                                    </div>
+                                {% else %}
+                                <div style="text-align: left; margin-bottom: 7px;">
+                                    <strong class="text" style="color: #593196;">{{latest_chat.student.first_name}} {{latest_chat.student.last_name}}</strong>
+                                    <div class="other-sender">
+                                        <small class="text" style="font-size: 14px; color: #444; text-align: left; ">{{ message.text }}</small>
+                                    </div>
+                                {% endif %}
+                                    <small style="font-size: 12px; color: #666;">{{ message.timestamp|date:"d M Y H:i" }}</small>
+                                </div>
+                                {% empty %}
+                                <!-- <p>No messages yet.</p> -->
+                            {% endfor %}
+                        </div>
+                        <form action="{% url 'view_conversation' latest_chat.conversation.id %}" method="post" style="margin-top: 20px;">
+                            {% csrf_token %}
+                            <!-- {{ form.as_p }} -->
+                            <div style="display: flex; max-height:50px; width: 100%;">
+                                <textarea autofocus class="form-control text" style="max-height:50px; width: 85%; color:#333; padding:5px;" name="text" cols="40" rows="10" required="" id="id_text"></textarea>
+                                <button type="submit" id="form-button" class="btn btn-primary" style="height:inherit; margin-left:1%; width: 14%;">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    {% endblock content %}
+    {% block script %}
+    <script>
+        // scroll start from bottom
+        var messageBody = document.getElementById('message-body');
+        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+        // Get the input field
+        var input = document.getElementById("id_text");
+        // Execute a function when the user presses a key on the keyboard
+        input.addEventListener("keypress", function(event) {
+        // If the user presses the "Enter" key on the keyboard
+        if (event.key === "Enter") {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("form-button").click();
+        }
+        });
+    </script>
+
+    {% endblock script %}
+<!-- 
+<div class="container" style="text-align: center; max-width: 600px; margin: auto; background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    {% if other_student %}
+    <h2>Conversation with {{ other_student.first_name }} {{ other_student.last_name }}</h2> 
+    {% else %}
+    <h2>Conversation</h2>
+    {% endif %}
+    <div class="messages" style="border: 1px solid #ccc; padding: 20px; background-color: #fff; color: #333;">
+        {% for message in messages %}
+        <div style="{% if message.sender == request.user %}text-align: right;{% else %}text-align: left;{% endif %} margin-bottom: 15px;">
+            <strong style="color: #0056b3;">{{ message.sender.get_full_name }}</strong>:
+            <p style="font-size: 16px; color: #444; line-height: 1.6; margin-top: 5px;">{{ message.text }}</p>
+            <small style="font-size: 12px; color: #666;">{{ message.timestamp|date:"d M Y H:i" }}</small>
+        </div>
+        {% empty %}
+        <p>No messages yet.</p>
+        {% endfor %}
+    </div>
+    <form action="{% url 'view_conversation' conversation.id %}" method="post" style="margin-top: 20px;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">Send</button>
+    </form>
+</div> -->
+<!-- 
 <div class="container" style="text-align: center; max-width: 800px; margin: auto; background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
     <h2 style="color: #333; margin-bottom: 20px;">Your Conversations</h2>
 
@@ -22,16 +136,15 @@
     <p>No conversations yet.</p>
     {% endif %}
 
-    <!-- Form to start a new conversation -->
     <h3 style="margin-bottom: 10px;">Start a New Conversation</h3>
     <form action="{% url 'start_conversation' %}" method="post" style="background-color: #fff; padding: 20px; border-radius: 4px; border: 1px solid #ccc;">
         {% csrf_token %}
         <select name="user_id" class="form-control" style="margin-bottom: 10px;">
             {% for user in users %}
-            <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</option>
+            <option value="{{ user.id }}">{{ user.1.first_name }} {{ user.1.last_name }}</option>
             {% endfor %}
         </select>
         <button type="submit" class="btn btn-primary">Start Conversation</button>
     </form>
 </div>
-{% endblock %}
+ -->

@@ -84,7 +84,7 @@
                     {% if form.course_number.value %} value="{{form.description.value}}" 
                     {% else %}  value="{{ form.data.description }}"  
                     {% endif %} required>
-                    <span class="remove-course-button btn btn-outline-danger form-button mb-3" style="height:30px; width:100%; margin:2px;" onclick="removeCourseForm(this)">Remove</span>
+                    <span class="remove-course-button btn btn-outline-danger form-button mb-1" style="height:30px; width:100%; margin:2px;" onclick="removeCourseForm(this)">Remove</span>
                     <input hidden type="checkbox" name="{{ form.prefix }}-DELETE" id="{{ form.prefix }}-DELETE">
                     <!-- {{form.DELETE}} -->
                 </div>

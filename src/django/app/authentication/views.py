@@ -70,21 +70,23 @@ def activateEmail(request, user, to_email):
         },
     )
     print("activate email sent")
-    email = EmailMessage(mail_subject, message, to=[to_email])
-    if email.send():
-        print("activate email success")
-
-        messages.success(
-            request,
-            mark_safe(
-                f"Dear <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder."
-            ),
-        )
-    else:
-        messages.error(
-            request,
-            f"Problem sending email to {to_email}, check if you typed it correctly.",
-        )
+    # email = EmailMessage(mail_subject, message, to=[to_email])
+    # if email.send():
+        # print("activate email success")
+    messages.success(request, 
+        mark_safe(f"Dear <b>{user.first_name}</b>, please go to your email <b>{to_email}</b> inbox and click on received activation link to confirm and complete the registration.<br><b>Note:</b> Check your spam folder.")
+    )
+        # messages.success(
+        #     request,
+        #     mark_safe(
+        #         f"Dear <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder."
+        #     ),
+        # )
+    # else:
+        # messages.error(
+            # request,
+            # f"Problem sending email to {to_email}, check if you typed it correctly.",
+        # )
 
 
 @guest_required
