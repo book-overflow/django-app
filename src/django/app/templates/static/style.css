@@ -190,6 +190,13 @@ ul {
     position: relative;
     padding: 30px;
 }
+.messenger-left{
+    margin: auto; 
+    background: rgba(0, 0, 0, 0.5); 
+    border-radius: 8px;
+    position: relative;
+    padding: 30px;
+}
 .set-profile{
     margin-top: 0; 
     background: white; 
@@ -393,10 +400,9 @@ ul {
     from {opacity: 1;}
     to {opacity: 0;}
 }
-  
 #alert{
-    /* animation: out 2s ease-out forwards;
-    animation-delay: 2s; */
+    animation: out 2s ease-out forwards;
+    animation-delay: 2s;
 }
 @media only screen and (max-width: 767px) {
     .window {
@@ -455,6 +461,12 @@ ul {
     }
     .card-left{
         width: 60%;
+        margin-top: 3%;
+        margin-bottom: 3%;
+    } 
+    .messenger-left{
+        width: 60%;
+        height: 400px;
         margin-top: 3%;
         margin-bottom: 3%;
     } 
@@ -544,6 +556,16 @@ ul {
         padding: 3%;
         box-sizing: border-box;
         float: left;
+    }
+    .messenger-left{
+        margin-left: 10%;
+        margin-top: 2%;
+        margin-right: 2%;
+        width: 23%;
+        height: 690px;
+        padding: 3%;
+        box-sizing: border-box;
+        float: left;
     } 
     .new-post-form{
         margin-top: 2%;
@@ -575,6 +597,7 @@ ul {
         padding-bottom: 2%;
         box-sizing: border-box;
         width: 55%;
+        height: 690px;
         margin-right: 10%;
         float: left;   
     }
