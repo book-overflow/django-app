@@ -11,7 +11,7 @@
             <a href="{% url 'view_conversation' conversation.id %}" style="text-decoration: none; color: #0056b3;">
                 Conversation with {% for user in conversation.participants.all %}
                 {% if user != request.user %}
-                {{ user.first_name }} {{ user.last_name }}
+                {{ user.email }} {{ user.last_name }}
                 {% endif %}
                 {% endfor %}
             </a>

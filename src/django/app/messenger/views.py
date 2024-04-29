@@ -8,11 +8,12 @@ from .models import Conversation
 
 
 def start_conversation(request, user_id):
-    # Assume `user_id` is the ID of the seller
-    other_user = get_user_model().objects.get(pk=user_id)
-    conversation = Conversation.objects.create()
-    conversation.participants.add(request.user, other_user)
-    return redirect("view_conversation", conversation_id=conversation.pk)
+    if request.method == "POST":
+        other_user = get_user_model().objects.get(pk=user_id)
+        conversation = Conversation.objects.create()
+        conversation.participants.add(request.user, other_user)
+        conversation.save()
+        return redirect("view_conversation", conversation_id=conversation.pk)
 
 
 from .forms import (
@@ -39,9 +40,51 @@ def send_message(request, conversation_id):
     )
 
 
+# def view_conversation(request, conversation_id):
+#     conversation = get_object_or_404(Conversation, pk=conversation_id)
+#     other_users = conversation.participants.exclude(
+#         id=request.user.id
+#     )  # Get the other participant
+
+#     if request.method == "POST":
+#         form = MessageForm(request.POST)
+#         if form.is_valid():
+#             message = form.save(commit=False)
+#             message.sender = request.user
+#             message.conversation = conversation
+#             message.save()
+#             return redirect("view_conversation", conversation_id=conversation_id)
+#     else:
+#         form = MessageForm()
+
+#     messages = conversation.messages.all().order_by("timestamp")
+#     return render(
+#         request,
+#         "view_conversation.html",
+#         {
+#             "conversation": conversation,
+#             "messages": messages,
+#             "form": form,
+#             "other_users": other_users,
+#         },
+#     )
+
+from django.http import HttpResponse
+
+
 def view_conversation(request, conversation_id):
     conversation = get_object_or_404(Conversation, pk=conversation_id)
-    other_users = conversation.participants.exclude(id=request.user.id)
+    # Ensure we are fetching the other user correctly
+    other_users = conversation.participants
+    other_users = other_users.exclude(email="admin@admin.com")
+
+    # Debug output
+    print(
+        "Debug: Other users list:", list(other_users.values("id", "email"))
+    )  # Adjust the fields as necessary
+
+    if not other_users.exists():
+        return HttpResponse("No other participants found, something is wrong.")
 
     if request.method == "POST":
         form = MessageForm(request.POST)
