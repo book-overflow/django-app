@@ -11,70 +11,73 @@
               <option>Rent Price</option>
             </select>
         </div>
-        <small class="text">Filter by</small>
-        <div class="form-check text mt-1">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
-            <label class="form-check-label" for="flexCheckChecked">
-              Sale
-            </label>
-        </div>
-        <div class="form-check text">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
-            <label class="form-check-label" for="flexCheckChecked">
-              Rent
-            </label>
+        <div class="mb-3">
+            <small class="text">Filter by</small>
+            <div class="form-check text mt-2">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
+                <label class="form-check-label" for="flexCheckChecked">
+                  Sale
+                </label>
+            </div>
+            <div class="form-check text">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked="">
+                <label class="form-check-label" for="flexCheckChecked">
+                  Rent
+                </label>
+            </div>
         </div>
     </div>
     
     <div class="search-bar-top" data-bs-theme="dark">
         <form class="d-flex" action="{% url 'get-listings'%}">
-            <input autofocus name="query" value="{{request.GET.query}}" class="bg-dark form-control" style="padding:12px; font-size: 14px; font-family: 'Montserrat';" type="search" placeholder="Title, ISBN, Author, ...">
-            <button class="btn btn-primary" style="width:50px; font-size: 12px; font-family: 'Montserrat';" type="submit"> 
+            <input autofocus name="query" value="{{request.GET.query}}" class="bg-dark form-control" style="padding:14px; font-size:14px; font-family:'Montserrat'; border-top-left-radius: 8px;border-bottom-left-radius: 8px;" type="search" placeholder="Title, ISBN, Author, ...">
+            <button class="btn btn-primary" style="width:50px; font-size: 12px; font-family:'Montserrat'; border-top-right-radius: 8px;border-bottom-right-radius: 8px;" type="submit"> 
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                 </svg>
             </button>
         </form>
     </div>
-    <div>
-        <div class="search-result text" data-bs-theme="dark">
-            <div class="list-group" style="overflow-y: auto;">
-                    {% if copies|length == 0 %}
-                        <small class="text center">No listing found.</small>
-                    {% else %}
-                        {% for context in copies %}
-                        <a href="{% url 'get-listing' id=context.listing.id %}" style="cursor: pointer; padding: 24px;" class="list-group-item list-group-item-action flex-column align-items-start
-                        {% if context.listing.for_sale %} for_sale {% endif %} {% if context.listing.for_rent %} for_rent {% endif %} ">
-                            <div class="d-flex w-100 justify-content-between">
-                            <div style="color:white;">
-                                <h6 class="mb-1"><b>{{ context.textbook.title }}</b>, {{ context.textbook.edition }}{% if context.textbook.edition == 1 %}st
-                                {% elif context.textbook.edition == 2 %}nd {% elif context.textbook.edition == 3 %}rd 
-                                {% else %}th{%endif%}Ed. </h6>
-                                <small class="mb-1">
-                                by {% for author in context.authors %}
+    <div class="search-result text">
+        <div class="list-group" style="overflow-y: auto;">
+            {% if copies|length == 0 %}
+                <small class="text center">No listing found.</small>
+            {% else %}
+                {% for context in copies %}
+                <a href="{% url 'get-listing' id=context.listing.id %}" style="--bs-list-group-action-hover-bg: #17141f; cursor: pointer; padding: 26px; --bs-list-group-bg: rgba(0,0,0,.5); border-radius: 8px; margin-bottom: 12px; " class="list-group-item list-group-item-action flex-column align-items-start
+                {% if context.listing.for_sale %} for_sale {% endif %} {% if context.listing.for_rent %} for_rent {% endif %} ">
+                    <div class="d-flex w-100 justify-content-between">
+                    <div style="color:white;">
+                        <h6 class="mb-2"><b>{{ context.textbook.title }}</b>, {{ context.textbook.edition }}{% if context.textbook.edition == 1 %}st
+                            {% elif context.textbook.edition == 2 %}nd {% elif context.textbook.edition == 3 %}rd 
+                            {% else %}th{%endif%}Ed. </h6>
+                        <small>
+                            by {% for author in context.authors %}
                                 {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
-                                {% endfor %}
-                                </small>
+                            {% endfor %}
+                        </small>
+                    </div>
+                    <div style="min-width:20%;">
+                        <div class="text-muted" style="display: flex; flex-direction: column; align-items: flex-start;">
+                        {% if context.listing.for_sale %}
+                            <div class="mb-1" style="display: flex; align-items: center;">
+                                <span class="badge rounded-pill bg-primary">Sale</span>
+                                <span class="text"style="margin: 0px 5px 0px 5px;"> ${{ context.listing.sale_price }} </span>
                             </div>
-                            <div style="min-width:20%;">
-                                <div class="text-muted" style="display: flex; flex-direction: column; align-items: flex-start;">
-                                {% if context.listing.for_sale %}
-                                    <div style="display: flex; align-items: baseline;">
-                                        <span class="badge rounded-pill bg-primary">Sale</span><h6 class="text"style="margin-left: 5px;"> ${{ context.listing.sale_price }} </h6>
-                                    </div>
-                                {% endif %}
-                                {% if context.listing.for_rent %}
-                                    <div class="mt-1" style="display: flex; align-items: baseline;">
-                                        <span class="badge rounded-pill bg-secondary">Rent</span><h6 class="text" style="margin-left: 5px;"> ${{ context.listing.rent_price }} </h6> <small style="margin-left: 2px; color:white;"> / month</small>
-                                    </div>
-                                    {% endif %}
-                                </div>
+                        {% endif %}
+                        {% if context.listing.for_rent %}
+                            <div style="display: flex; align-items: center;">
+                                <span class="badge rounded-pill bg-secondary">Rent</span>
+                                <span class="text" style="margin: 0px 5px 0px 5px;"> ${{ context.listing.rent_price }} </span> 
+                                <small style="margin-left: 2px; color:white;"> / month</small>
                             </div>
+                            {% endif %}
                         </div>
-                        </a>
-                        {% endfor %}
-                    {% endif %}
-            </div>
+                    </div>
+                </div>
+                </a>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
     {% endblock content %}

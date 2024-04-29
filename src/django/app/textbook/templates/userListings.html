@@ -1,54 +1,57 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="search" data-bs-theme="dark" style="height:620px;">
-  <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
-    <h1 style="margin:0; font-size: 30px; font-family: 'Montserrat'; font-weight: bold; color: white;">My Textbooks</h1>
-    <a href="{% url 'create-listing' %}" class="btn btn-light" id="form-button" style="display: flex; align-content: center; align-items: center;">
-      <svg style="margin-right: 4px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-      <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h6a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h6v-5A.5.5 0 0 1 8 2"/>
-      </svg>    
-      <p style="margin:0; font-size:14px; color:#57068C;">New Post</p>
-    </a>
-  </div>
-  <div style="--bs-body-bg: 0; border-top: 1px solid rgba(255,255,255,.5);">
-    {% if contexts|length == 0 %}
-      <small class="text center">No listing found.</small>
-    {% else %}
-    {% for context in contexts %}
-    <div class="list-group" style="overflow-y: auto;">
-      <a href="{% url 'get-user-listing' id=context.listing.id %}" style="cursor: pointer; padding: 15px 0px 15px 10px;" class="list-group-item list-group-item-action flex-column align-items-start">
-          <div class="d-flex w-100 justify-content-between">
-            <div style="color:white;">
-              <h6 class="mb-1">{{ context.textbook.title }}, {{ context.textbook.edition }}{% if context.textbook.edition == 1 %}st
-              {% elif context.textbook.edition == 2 %}nd {% elif context.textbook.edition == 3 %}rd 
-              {% else %}th{%endif%}Ed. </h6>
-              <small class="mb-1">
-              by {% for author in context.authors %}
-              {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
-              {% endfor %}
-              </small>
-          </div>
-            <div style="min-width:20%;">
-              <div class="text-muted" style="display: flex; flex-direction: column; align-items: flex-start;">
-                {% if context.listing.for_sale %}
-                    <div style="display: flex; align-items: baseline;">
-                        <span class="badge rounded-pill bg-primary">Sale</span><h6 class="text"style="margin-left: 5px;"> ${{ context.listing.sale_price }} </h6>
-                    </div>
-                {% endif %}
-                {% if context.listing.for_rent %}
-                    <div style="display: flex; align-items: baseline;">
-                        <span class="badge rounded-pill bg-secondary">Rent</span><h6 class="text" style="margin-left: 5px;"> ${{ context.listing.rent_price }} </h6> <small style="margin-left: 2px; color:white;"> / month</small>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+  <div class="search" data-bs-theme="dark" style="height: 650px; display: grid;">
+    <div style="display: flex; justify-content: space-between; padding-bottom:30px; border-bottom: 1px solid rgba(255,255,255,.5); ">
+      <h1 style="margin:0; font-size: 30px; font-family: 'Montserrat'; font-weight: bold; color: white;">My Textbooks</h1>
+      <a href="{% url 'create-listing' %}" class="btn btn-light" id="form-button" style="display: flex; align-content: center; align-items: center;">
+        <svg style="margin-right: 4px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h6a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h6v-5A.5.5 0 0 1 8 2"/>
+        </svg>    
+        <p style="margin:0; font-size:14px; color:#57068C;">New Post</p>
       </a>
     </div>
-    {% endfor %}
-    {% endif %}
+    <div style="overflow-y:auto; position: relative; height: 100%;">
+      <div class="list-group">
+        {% if contexts|length == 0 %}
+          <small class="text center">No listing found.</small>
+        {% else %}
+        {% for context in contexts %}
+            <a href="{% url 'get-user-listing' id=context.listing.id %}" style="cursor:pointer; padding:20px; --bs-list-group-bg:none;" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <div style="color:white;">
+                    <h6 class="mb-1">{{ context.textbook.title }}, {{ context.textbook.edition }}{% if context.textbook.edition == 1 %}st
+                    {% elif context.textbook.edition == 2 %}nd {% elif context.textbook.edition == 3 %}rd 
+                    {% else %}th{%endif%}Ed. </h6>
+                    <small class="mb-1">
+                    by {% for author in context.authors %}
+                    {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    </small>
+                </div>
+                  <div style="min-width:20%;">
+                    <div class="text-muted" style="display: flex; flex-direction: column; align-items: flex-start;">
+                      {% if context.listing.for_sale %}
+                          <div style="display: flex; align-items: baseline;">
+                              <span class="badge rounded-pill bg-primary">Sale</span><h6 class="text"style="margin-left: 5px;"> ${{ context.listing.sale_price }} </h6>
+                          </div>
+                      {% endif %}
+                      {% if context.listing.for_rent %}
+                          <div style="display: flex; align-items: baseline;">
+                              <span class="badge rounded-pill bg-secondary">Rent</span><h6 class="text" style="margin-left: 5px;"> ${{ context.listing.rent_price }} </h6> <small style="margin-left: 2px; color:white;"> / month</small>
+                          </div>
+                          {% endif %}
+                      </div>
+                  </div>
+              </div>
+            </a>
+        {% endfor %}
+        <!-- </div> -->
+        {% endif %}
+      </div>
+    </div>
+
   </div>
-</div>
+
 
 {% endblock content %}
 {% block script %}
