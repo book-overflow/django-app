@@ -4,25 +4,34 @@
             <div class="messenger-left">
                 <h1 class="heading" style="height:5%; color: white; margin-bottom: 20px;">Chats</h1>
                 <div style="height: 95%; overflow-y: scroll;">
-                    <div class="mb-3" style="cursor:pointer; display: flex; align-items: center; background-color: white; padding: 10px; border-radius: 30px;">
+                    <!-- <div class="mb-3" style="cursor:pointer; display: flex; align-items: center; background-color: white; padding: 10px; border-radius: 30px;">
                     <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ other_user.student.profile.image.url }}" />
                     <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word">
                         <b>{{ other_user.student.first_name }} {{ other_user.student.last_name }}</b><br>
                         <small style="color: #444;">{{msgs.last.text}}</small>
                     </div>
-                    <!-- <div style="color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ other_student.email }}</div> -->
-                </div>
-                <div style="width:auto; overflow-x: auto;">
-                    {% for other_user in other_users %}
-                        <a class="other-user mb-3" href="{% url 'view_conversation' other_user.id%}" style="text-decoration: none !important;">
-                            <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ other_user.student.profile.image.url }}" />
-                            <div class="text" style="margin-left: 14px; word-wrap: break-word;">
-                                <b style="color: #ded6ea;">{{other_user.student.first_name}} {{ other_user.student.last_name }}</b><br>
-                                <small style="color: white;">{{other_user.last_message.text}}</small>
-                            </div>
-                            <!-- <div style="color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ other_student.email }}</div> -->
-                        </a>
-                    {% endfor %}
+                    </div> -->
+                    <div style="width:auto; overflow-x: auto;">
+                        {% for user in other_users %}   
+                            {% if user.student.email == other_user.email %}
+                                <div class="mb-3" style="cursor:pointer; display: flex; align-items: center; background-color: white; padding: 10px; border-radius: 30px;">
+                                <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ user.student.profile.image.url }}" />
+                                <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word">
+                                    <b>{{ user.student.first_name }} {{ user.student.last_name }}</b><br>
+                                    <small style="color: #444;">{{msgs.last.text}}</small>
+                                </div>
+                                </div>
+                            {% else %}
+                            <a class="other-user mb-3" href="{% url 'view_conversation' user.id%}" style="text-decoration: none !important;">
+                                <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ user.student.profile.image.url }}" />
+                                <div class="text" style="margin-left: 14px; word-wrap: break-word;">
+                                    <b style="color: #ded6ea;">{{user.student.first_name}} {{ user.student.last_name }}</b><br>
+                                    <small style="color: white;">{{user.last_message.text}}</small>
+                                </div>
+                                <!-- <div style="color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ other_student.email }}</div> -->
+                            </a>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>

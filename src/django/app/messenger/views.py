@@ -82,7 +82,7 @@ def view_conversation(request, conversation_id):
         # Ensure we are fetching the other user correctly
         users = conversation.participants.exclude(email="admin@admin.com")
         other_user = users.exclude(id=request.user.id)[0]
-        other_conversations = Conversation.objects.filter(participants=request.user).exclude(pk=conversation_id)
+        other_conversations = Conversation.objects.filter(participants=request.user)
         other_users = []
         for c in other_conversations:
             last_message = c.messages.all().order_by("-timestamp")[0]
