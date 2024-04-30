@@ -5,9 +5,9 @@
                 <h1 class="heading" style="height:5%; color: white; margin-bottom: 20px;">Chats</h1>
                 <div style="height: 95%; overflow-y: scroll;">
                     <div class="mb-3" style="cursor:pointer; display: flex; align-items: center; background-color: white; padding: 10px; border-radius: 30px;">
-                    <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ other_student.profile.image.url }}" />
+                    <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ other_user.student.profile.image.url }}" />
                     <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word">
-                        <b>{{ other_student.first_name }} {{ other_student.last_name }}</b><br>
+                        <b>{{ other_user.student.first_name }} {{ other_user.student.last_name }}</b><br>
                         <small style="color: #444;">{{messages.last.text}}</small>
                     </div>
                     <!-- <div style="color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ other_student.email }}</div> -->
@@ -18,7 +18,7 @@
                             <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ other_user.student.profile.image.url }}" />
                             <div class="text" style="margin-left: 14px; word-wrap: break-word;">
                                 <b style="color: #ded6ea;">{{other_user.student.first_name}} {{ other_user.student.last_name }}</b><br>
-                                <small style="color: white;">{{other_user.last_message}}</small>
+                                <small style="color: white;">{{other_user.last_message.text}}</small>
                             </div>
                             <!-- <div style="color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ other_student.email }}</div> -->
                         </a>
@@ -29,8 +29,8 @@
             <div class="messenger" style="height:100%; padding:50px;"> 
                 <!-- <h1 class="form-heading"></h1> -->
                 <div class="mb-3" style="display: flex; align-items: center;">
-                    <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ other_student.profile.image.url }}" />
-                    <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word"><b>{{ other_student.first_name }} {{ other_student.last_name }}</b></div>
+                    <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ other_user.student.profile.image.url }}" />
+                    <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word"><b>{{ other_user.student.first_name }} {{ other_user.student.last_name }}</b></div>
                     <!-- <div style="color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ other_student.email }}</div> -->
                 </div>
                 <div>
@@ -60,8 +60,12 @@
                             {% csrf_token %}
                             <!-- {{ form.as_p }} -->
                             <div style="display: flex; max-height:50px; width: 100%;">
-                                <textarea class="form-control text" style="max-height:50px; width: 85%; color:#333; padding:5px;" name="text" cols="40" rows="10" required="" id="id_text"></textarea>
-                                <button type="submit" id="form-button" class="btn btn-primary" style="height:inherit; margin-left:1%; width: 14%;">Send</button>
+                                <textarea autofocus class="form-control text" style="max-height:50px; width: 90%; color:#333; padding:14px; resize: none; border-radius: 8px;" placeholder="Type your message" name="text" cols="40" rows="10" required="" id="id_text"></textarea>
+                                <button type="submit" id="form-button" class="btn btn-primary" style="height:inherit; margin-left:2%; width: 8%;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                                        <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+                                    </svg> 
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -89,27 +93,3 @@
     </script>
 
     {% endblock script %}
-<!-- 
-<div class="container" style="text-align: center; max-width: 600px; margin: auto; background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    {% if other_student %}
-    <h2>Conversation with {{ other_student.first_name }} {{ other_student.last_name }}</h2> 
-    {% else %}
-    <h2>Conversation</h2>
-    {% endif %}
-    <div class="messages" style="border: 1px solid #ccc; padding: 20px; background-color: #fff; color: #333;">
-        {% for message in messages %}
-        <div style="{% if message.sender == request.user %}text-align: right;{% else %}text-align: left;{% endif %} margin-bottom: 15px;">
-            <strong style="color: #0056b3;">{{ message.sender.get_full_name }}</strong>:
-            <p style="font-size: 16px; color: #444; line-height: 1.6; margin-top: 5px;">{{ message.text }}</p>
-            <small style="font-size: 12px; color: #666;">{{ message.timestamp|date:"d M Y H:i" }}</small>
-        </div>
-        {% empty %}
-        <p>No messages yet.</p>
-        {% endfor %}
-    </div>
-    <form action="{% url 'view_conversation' conversation.id %}" method="post" style="margin-top: 20px;">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">Send</button>
-    </form>
-</div> -->

@@ -183,6 +183,7 @@ AUTH_USER_MODEL = "shared.CustomUser"
 
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "/browse"
+LOGOUT_REDIRECT_URL = 'login'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"

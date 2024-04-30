@@ -62,7 +62,7 @@ def createListing(request):
                     textbook_copy.save()
                 else:
                     raise ValidationError(textbook_copy_form.errors)
-                messages.info(request, message="New Listing Created",extra_tags="success")
+                messages.success(request, message="New Listing Created")
                 return redirect('get-user-listings')
         except ValidationError as e:
             form_errors = e.message_dict
@@ -218,7 +218,7 @@ def deleteUserListing(request, id):
     try:
         listing = TextbookCopy.objects.get(pk=id)
         listing.delete()
-        messages.info(request, message="Listing Deleted",extra_tags="success")
+        messages.success(request, message="Listing Deleted")
         return redirect('get-user-listings')
     except TextbookCopy.DoesNotExist:
         return HttpResponse('<div>Listing not found</div>')
@@ -256,7 +256,7 @@ def editUserListing(request, id):
                 textbook_copy_form.save()
             else:
                 raise ValidationError(textbook_copy_form.errors)
-            messages.info(request, message="Listing Updated",extra_tags="success")
+            messages.success(request, message="Listing Updated")
             return redirect('get-user-listings')
         except ValidationError as e:
             print(e)

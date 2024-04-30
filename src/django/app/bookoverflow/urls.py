@@ -40,6 +40,7 @@ urlpatterns = [
     path("textbooks/", include("textbook.urls")),
     path("helloworld/", include("helloworld.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
+    path("", auth_views.browse, name="browse"),
     path("browse/", auth_views.browse, name="browse"),
     path("messages/", message_views.all_conversations, name="all_conversations"),
     path(

@@ -10,19 +10,21 @@
         {% block headers %}{% endblock %}
     </head>
     <body>
-        {% if messages %}
-            {% for message in messages %}
-            {% if message.tags == "success info" %}
-            <div class="alert alert-dismissible alert-primary alert-window" id="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                </svg>
-                {{ message.message.value }}
-            </div>
-            {% endif %}
-            {% endfor %}
+      {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == "success" %}
+          <div class="alert alert-dismissible alert-primary alert-window" id="alert">
+        {% else %}
+          <div class="alert alert-dismissible alert-{{ message.tags }} alert-window" id="alert">
         {% endif %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </svg>
+            {{ message }}
+          </div>
+      {% endfor %}
+      {% endif %}
         <nav class="navbar navbar-expand-md" data-bs-theme="dark">
             <div class="container-fluid">
               <a class="navbar-brand" style="padding: 0;" href="/browse">
@@ -44,10 +46,10 @@
                         <img class="profile-photo" style="object-fit: cover; display:inline-block; clip-path: circle();"  src="{{ user.student.profile.image.url }}" />
                         <small style="font-size:14px; top:0.1rem; position: relative;">{{ user.student.first_name }} {{ user.student.last_name }}</small>
                     </a>
-                    <div class="dropdown-menu" style="font-size: 14px; --bs-dropdown-spacer: 0.45rem; right: 0px; --bs-dropdown-link-color:rgba(255,255,255,.75);">
-                        <a class="dropdown-item" href="{% url 'get-profile' %}">My Profile</a>
-                        <a class="dropdown-item" href="{% url 'get-user-listings' %}">My Textbooks</a>
-                        <a class="dropdown-item" href="/logout">
+                    <div class="dropdown-menu" style="padding:0; font-size: 14px; --bs-dropdown-spacer: 0.45rem; right: 0px; --bs-dropdown-link-color:rgba(255,255,255,.75);">
+                        <a class="dropdown-item" style="padding: 12px;" href="{% url 'get-profile' %}">My Profile</a>
+                        <a class="dropdown-item" style="padding: 12px;" href="{% url 'get-user-listings' %}">My Textbooks</a>
+                        <a class="dropdown-item" style="padding: 12px;" href="/logout">
                             <svg style="margin-right:2px;" xmlns="http://www.w3.org/2000/svg" width="14px" height="14px" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
                                 <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>

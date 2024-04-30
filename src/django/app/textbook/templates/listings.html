@@ -3,11 +3,11 @@
     {% load static %}
     <div>
         <div class="search-left" data-bs-theme="dark">
-            <div>
+            <div style="margin-bottom: 8%; height: 10%;">
                 <small class="text" style="font-weight: 700;"> {{ copies|length}} Results Found </small>
                 <hr style="margin:24px 0px; height:2px;border-width:0;color:white; background-color: white; ">
             </div>
-            <div class="text" style="margin-bottom: 24px;">
+            <div class="text" style="margin-bottom: 10%; height: 10%;">
                 <label for="exampleSelect1" class="form-label">Sort by</label>
                 <select class="form-select" style="font-size: 12px;" id="exampleSelect1">
                     <option>Sale Price</option>
@@ -15,7 +15,7 @@
                 </select>
             </div>
     
-            <div class="mb-3" style="height: 450px; overflow: auto;">
+            <div style="height: 75%; overflow: auto;">
                 <small class="text">Filter by</small>
                 <div class="form-check text mt-2" style="font-size: 12px;">
                     <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked="">
@@ -86,9 +86,16 @@
                     </button>
                 </form>
             </div>
-            <div class="search-result text" style="position: relative; height: 620px; overflow-y: auto;">
+            <div class="search-result text" style="position: relative; height: 95%; overflow-y: auto;">
                 {% if copies|length == 0 %}
-                <small class="text center">No listing found.</small>
+                <div style="background-color: rgba(0,0,0,.5); height: 100%; border-radius: 8px;">
+                    <div class="center" style="display: flex; flex-direction: column; align-items: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-book mb-1" viewBox="0 0 16 16">
+                            <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+                        </svg>
+                        <small class="text">No listing found.</small>
+                    </div>
+                </div>
                 {% else %}
                 <div class="list-group">
                         {% for context in copies %}

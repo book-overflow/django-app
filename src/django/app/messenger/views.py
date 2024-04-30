@@ -82,16 +82,10 @@ def view_conversation(request, conversation_id):
         # Ensure we are fetching the other user correctly
         users = conversation.participants.exclude(email="admin@admin.com")
         other_user = users.exclude(id=request.user.id)[0]
-        other_student = Student.objects.get(email=other_user.email)
-        # Debug output
-        # print(
-        #     "Debug: Other users list:", list(other_users.values("id", "email"))
-        # )  # Adjust the fields as necessary
-        # To display other chat rooms
         other_conversations = Conversation.objects.filter(participants=request.user).exclude(pk=conversation_id)
         other_users = []
         for c in other_conversations:
-            last_message = c.messages.all().order_by("-timestamp")[0].text
+            last_message = c.messages.all().order_by("-timestamp")[0]
             for participant in c.participants.all().exclude(email=request.user.email):
                 student = Student.objects.get(email=participant)
                 other_users.append({
@@ -112,20 +106,17 @@ def view_conversation(request, conversation_id):
                 return redirect("view_conversation", conversation_id=conversation_id)
         else:
             form = MessageForm()
+
         messages = conversation.messages.all().order_by("timestamp")
-        # print(messages[0].sender, flush=True) 
-        return render(
-            request,
-            "view_conversation.html",
-            {
-                "conversation": conversation,
-                "messages": messages,
-                "form": form,
-                "users": users,
-                "other_student": other_student,
-                "other_users": other_users,
-            },
-        )
+        other_users = sorted(other_users, key=lambda d:d['last_message'].timestamp, reverse=True)
+
+        return render(request, "view_conversation.html", {
+            "conversation": conversation,
+            "messages": messages,
+            "form": form,
+            "other_user": other_user,
+            "other_users": other_users,
+        })
 
 
 def all_conversations(request):
@@ -155,7 +146,7 @@ def all_conversations(request):
         latest_chat = chats[0]
 
     return render(request, "all_conversations.html", 
-                  context={"latest_chat": latest_chat, "other_chats": other_chats})
+                  {"latest_chat": latest_chat, "other_chats": other_chats})
 
 
 def start_conversation(request):
