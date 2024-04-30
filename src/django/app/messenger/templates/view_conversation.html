@@ -8,7 +8,7 @@
                     <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ other_user.student.profile.image.url }}" />
                     <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word">
                         <b>{{ other_user.student.first_name }} {{ other_user.student.last_name }}</b><br>
-                        <small style="color: #444;">{{messages.last.text}}</small>
+                        <small style="color: #444;">{{msgs.last.text}}</small>
                     </div>
                     <!-- <div style="color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ other_student.email }}</div> -->
                 </div>
@@ -36,7 +36,7 @@
                 <div>
                     <div class="messages" style="border-top: 1px solid #ededed; background-color: #fff; color: #333; ">
                         <div id="message-body" style="padding-top: 14px; height: 450px; overflow-y: auto;">
-                            {% for message in messages %}
+                            {% for message in msgs %}
                             {% if message.sender == request.user %}
                             <div style="text-align: right; margin-bottom: 10px;">
                                 <strong class="text" style="color: #593196;">{{request.user.student.first_name}} {{request.user.student.last_name}}</strong>

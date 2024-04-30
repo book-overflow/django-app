@@ -112,7 +112,7 @@ def view_conversation(request, conversation_id):
 
         return render(request, "view_conversation.html", {
             "conversation": conversation,
-            "messages": messages,
+            "msgs": messages, 
             "form": form,
             "other_user": other_user,
             "other_users": other_users,
