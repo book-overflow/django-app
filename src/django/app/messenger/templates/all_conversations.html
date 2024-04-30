@@ -41,13 +41,13 @@
                         <div id="message-body" style="padding-top: 14px; height: 450px; overflow-y: auto;">
                             {% for message in latest_chat.conversation.messages.all %}
                                 {% if message.sender == request.user %}
-                                <div style="text-align: right; margin-bottom: 7px;">
+                                <div style="text-align: right; margin-bottom: 10px;">
                                     <strong class="text" style="color: #593196;">{{request.user.student.first_name}} {{request.user.student.last_name}}</strong>
                                     <div class="user-sender">
                                         <small class="text" style="font-size: 14px; text-align: left; ">{{ message.text }}</small>
                                     </div>
                                 {% else %}
-                                <div style="text-align: left; margin-bottom: 7px;">
+                                <div style="text-align: left; margin-bottom: 10px;">
                                     <strong class="text" style="color: #593196;">{{latest_chat.student.first_name}} {{latest_chat.student.last_name}}</strong>
                                     <div class="other-sender">
                                         <small class="text" style="font-size: 14px; color: #444; text-align: left; ">{{ message.text }}</small>
