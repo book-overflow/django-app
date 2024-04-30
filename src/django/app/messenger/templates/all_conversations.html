@@ -7,7 +7,7 @@
                 <div style="height: 95%; overflow-y: scroll;">
                     <div class="mb-3" style="cursor:pointer; display: flex; align-items: center; background-color: white; padding: 10px; border-radius: 30px;">
                         <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ latest_chat.student.profile.image.url }}" />
-                        <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word">
+                        <div class="text" style="height: 40px; overflow: hidden; margin-left: 14px; color: #593196; word-wrap: break-word">
                             <b>{{ latest_chat.student.first_name }} {{ latest_chat.student.last_name }}</b><br>
                             <small style="color: #444;">{{latest_chat.last_message.text}}</small>
                         </div>
@@ -17,7 +17,7 @@
                             {% for other_user in other_chats %}
                                 <a class="other-user mb-3" href="{% url 'view_conversation' other_user.conversation.id%}" style="text-decoration: none !important;">
                                     <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ other_user.student.profile.image.url }}" />
-                                    <div class="text" style="margin-left: 14px; word-wrap: break-word;">
+                                    <div class="text" style="height: 40px; overflow: hidden; margin-left: 14px; word-wrap: break-word;">
                                         <b style="color: #ded6ea;">{{other_user.student.first_name}} {{ other_user.student.last_name }}</b><br>
                                         <small style="color: white;">{{other_user.last_message.text}}</small>
                                         <!-- added to check if showing the latest message first -->
