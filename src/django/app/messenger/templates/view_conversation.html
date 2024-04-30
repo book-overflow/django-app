@@ -16,7 +16,7 @@
                             {% if user.student.email == other_user.email %}
                                 <div class="mb-3" style="cursor:pointer; display: flex; align-items: center; background-color: white; padding: 10px; border-radius: 30px;">
                                 <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ user.student.profile.image.url }}" />
-                                <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word">
+                                <div class="text" style="height: 40px; overflow: hidden; margin-left: 14px; color: #593196; word-wrap: break-word">
                                     <b>{{ user.student.first_name }} {{ user.student.last_name }}</b><br>
                                     <small style="color: #444;">{{msgs.last.text}}</small>
                                 </div>
@@ -24,7 +24,7 @@
                             {% else %}
                             <a class="other-user mb-3" href="{% url 'view_conversation' user.id%}" style="text-decoration: none !important;">
                                 <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ user.student.profile.image.url }}" />
-                                <div class="text" style="margin-left: 14px; word-wrap: break-word;">
+                                <div class="text" style="height: 40px; overflow: hidden; margin-left: 14px; word-wrap: break-word;">
                                     <b style="color: #ded6ea;">{{user.student.first_name}} {{ user.student.last_name }}</b><br>
                                     <small style="color: white;">{{user.last_message.text}}</small>
                                 </div>
