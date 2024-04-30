@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block content %}
+        <div style="height: 100%;">
+            <div class="messenger-left">
+                <h1 class="heading" style="height:5%; color: white; margin-bottom: 20px;">Chats</h1>
+                <div style="height: 95%; overflow-y: scroll;">
+                    <!-- <div class="mb-3" style="cursor:pointer; display: flex; align-items: center; background-color: white; padding: 10px; border-radius: 30px;">
+                    <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ other_user.student.profile.image.url }}" />
+                    <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word">
+                        <b>{{ other_user.student.first_name }} {{ other_user.student.last_name }}</b><br>
+                        <small style="color: #444;">{{msgs.last.text}}</small>
+                    </div>
+                    </div> -->
+                    <div style="width:auto; overflow-x: auto;">
+                        {% for user in other_users %}   
+                            {% if user.student.email == other_user.email %}
+                                <div class="mb-3" style="cursor:pointer; display: flex; align-items: center; background-color: white; padding: 10px; border-radius: 30px;">
+                                <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ user.student.profile.image.url }}" />
+                                <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word">
+                                    <b>{{ user.student.first_name }} {{ user.student.last_name }}</b><br>
+                                    <small style="color: #444;">{{msgs.last.text}}</small>
+                                </div>
+                                </div>
+                            {% else %}
+                            <a class="other-user mb-3" href="{% url 'view_conversation' user.id%}" style="text-decoration: none !important;">
+                                <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ user.student.profile.image.url }}" />
+                                <div class="text" style="margin-left: 14px; word-wrap: break-word;">
+                                    <b style="color: #ded6ea;">{{user.student.first_name}} {{ user.student.last_name }}</b><br>
+                                    <small style="color: white;">{{user.last_message.text}}</small>
+                                </div>
+                                <!-- <div style="color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ other_student.email }}</div> -->
+                            </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="messenger" style="height:100%; padding:50px;"> 
+                <!-- <h1 class="form-heading"></h1> -->
+                <div class="mb-3" style="display: flex; align-items: center;">
+                    <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ other_user.student.profile.image.url }}" />
+                    <div class="text" style="margin-left: 14px; color: #593196; word-wrap: break-word"><b>{{ other_user.student.first_name }} {{ other_user.student.last_name }}</b></div>
+                    <!-- <div style="color: #eee6f3; font-size: 12px; font-family: Montserrat; font-weight: 500; word-wrap: break-word">{{ other_student.email }}</div> -->
+                </div>
+                <div>
+                    <div class="messages" style="border-top: 1px solid #ededed; background-color: #fff; color: #333; ">
+                        <div id="message-body" style="padding-top: 14px; height: 450px; overflow-y: auto;">
+                            {% for message in msgs %}
+                            {% if message.sender == request.user %}
+                            <div style="text-align: right; margin-bottom: 10px;">
+                                <strong class="text" style="color: #593196;">{{request.user.student.first_name}} {{request.user.student.last_name}}</strong>
+                                <div class="user-sender">
+                                    <small class="text" style="font-size: 14px; text-align: left; ">{{ message.text }}</small>
+                                </div>
+                            {% else %}
+                            <div style="text-align: left; margin-bottom: 10px;">
+                                <strong class="text" style="color: #593196;">{{ other_user.student.first_name }} {{ other_user.student.last_name }}</strong>
+                                <div class="other-sender">
+                                    <small class="text" style="font-size: 14px; color: #444; text-align: left; ">{{ message.text }}</small>
+                                </div>
+                            {% endif %}
+                                <small style="font-size: 12px; color: #666;">{{ message.timestamp|date:"d M Y H:i" }}</small>
+                            </div>
+                            {% empty %}
+                            <!-- <p>No messages yet.</p> -->
+                            {% endfor %}
+                        </div>
+                        <form action="{% url 'view_conversation' conversation.id %}" method="post" style="margin-top: 20px;">
+                            {% csrf_token %}
+                            <!-- {{ form.as_p }} -->
+                            <div style="display: flex; max-height:50px; width: 100%;">
+                                <textarea autofocus class="form-control text" style="max-height:50px; width: 90%; color:#333; padding:14px; resize: none; border-radius: 8px;" placeholder="Type your message" name="text" cols="40" rows="10" required="" id="id_text"></textarea>
+                                <button type="submit" id="form-button" class="btn btn-primary" style="height:inherit; margin-left:2%; width: 8%;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                                        <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+                                    </svg> 
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+    {% endblock content %}
+    {% block script %}
+    <script>
+        // scroll start from bottom
+        var messageBody = document.getElementById('message-body');
+        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+        // Get the input field
+        var input = document.getElementById("id_text");
+        // Execute a function when the user presses a key on the keyboard
+        input.addEventListener("keypress", function(event) {
+        // If the user presses the "Enter" key on the keyboard
+        if (event.key === "Enter") {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("form-button").click();
+        }
+        });
+    </script>
+
+    {% endblock script %}

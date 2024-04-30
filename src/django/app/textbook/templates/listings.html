@@ -1,4 +1,145 @@
 {% extends "base.html" %}
     {% block content %}
-        <div>Textbook listings</div>
+    {% load static %}
+    <div>
+        <div class="search-left" data-bs-theme="dark">
+            <div style="margin-bottom: 8%; height: 10%;">
+                <small class="text" style="font-weight: 700;"> {{ copies|length}} Results Found </small>
+                <hr style="margin:24px 0px; height:2px;border-width:0;color:white; background-color: white; ">
+            </div>
+            <div class="text" style="margin-bottom: 10%; height: 10%;">
+                <label for="exampleSelect1" class="form-label">Sort by</label>
+                <select class="form-select" style="font-size: 12px;" id="exampleSelect1">
+                    <option>Sale Price</option>
+                    <option>Rent Price</option>
+                </select>
+            </div>
+    
+            <div style="height: 75%; overflow: auto;">
+                <small class="text">Filter by</small>
+                <div class="form-check text mt-2" style="font-size: 12px;">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1" checked="">
+                    <label class="form-check-label" for="flexCheckChecked1">
+                        Sale
+                    </label>
+                </div>
+                <div class="form-check text mb-2" style="font-size: 12px;">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2" checked="">
+                    <label class="form-check-label" for="flexCheckChecked2">
+                        Rent
+                    </label>
+                </div>
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button text" style="padding: 6px 12px; font-size: 12px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                            Courses
+                        </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                        <div class="accordion-body" style="padding: 12px;">
+                            {% for course in courses %}
+                                <div class="form-check text"  style="font-size: 12px;">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked6" checked="">
+                                    <label class="form-check-label" for="flexCheckChecked6">
+                                    {{course.course_number}} {{course.name}}
+                                    </label>
+                                </div>          
+                            {% endfor %}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button text" style="padding: 6px 12px; font-size: 12px;" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            Authors
+                        </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body" style="padding: 12px;">
+                            {% for author in authors|dictsort:"first_name"  %}
+                            <div class="form-check text"  style="font-size: 12px;">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3" checked="">
+                                <label class="form-check-label" for="flexCheckChecked3">
+                                    {{author.first_name}} {{author.last_name}} 
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="search-right">
+            <div data-bs-theme="dark" >
+                <form class="d-flex" action="{% url 'get-listings'%}">
+                    <input autofocus name="query" value="{{request.GET.query}}" class="bg-dark form-control" style="padding:12px 24px 12px 24px; font-size:14px; font-family:'Montserrat'; border-top-left-radius: 8px;border-bottom-left-radius: 8px;" type="search" placeholder="Title, ISBN, Author, ...">
+                    <button class="btn btn-primary" style="width:50px; font-size: 12px; font-family:'Montserrat'; border-top-right-radius: 8px;border-bottom-right-radius: 8px;" type="submit"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            <div class="search-result text" style="position: relative; height: 95%; overflow-y: auto; scrollbar-width: thin; margin-right: 5px;">
+                {% if copies|length == 0 %}
+                <div style="background-color: rgba(0,0,0,.5); height: 100%; border-radius: 8px;">
+                    <div class="center" style="display: flex; flex-direction: column; align-items: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-book mb-1" viewBox="0 0 16 16">
+                            <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+                        </svg>
+                        <small class="text">No listing found.</small>
+                    </div>
+                </div>
+                {% else %}
+                <div class="list-group">
+                        {% for context in copies %}
+                        <a href="{% url 'get-listing' id=context.listing.id %}" style="--bs-list-group-action-hover-bg: #17141f; cursor: pointer; padding: 26px; --bs-list-group-bg: rgba(0,0,0,.5); border-radius: 8px; margin-bottom: 12px; " class="list-group-item list-group-item-action flex-column align-items-start
+                        {% if context.listing.for_sale %} for_sale {% endif %} {% if context.listing.for_rent %} for_rent {% endif %} ">
+                            <div class="d-flex w-100 justify-content-between">
+                            <div style="color:white;">
+                                <h6 class="mb-2"><b>{{ context.textbook.title }}</b>, {{ context.textbook.edition }}{% if context.textbook.edition == 1 %}st
+                                    {% elif context.textbook.edition == 2 %}nd {% elif context.textbook.edition == 3 %}rd 
+                                    {% else %}th{%endif%}Ed. </h6>
+                                <small>
+                                    by {% for author in context.authors %}
+                                        {{ author.first_name }} {{ author.last_name }}{% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </small>
+                            </div>
+                            <div style="min-width:20%;">
+                                <div class="text-muted" style="display: flex; flex-direction: column; align-items: flex-start;">
+                                {% if context.listing.for_sale %}
+                                    <div class="mb-1" style="display: flex; align-items: center;">
+                                        <span class="badge rounded-pill bg-primary">Sale</span>
+                                        <span class="text"style="margin: 0px 5px 0px 5px;"> ${{ context.listing.sale_price }} </span>
+                                    </div>
+                                {% endif %}
+                                {% if context.listing.for_rent %}
+                                    <div style="display: flex; align-items: center;">
+                                        <span class="badge rounded-pill bg-secondary">Rent</span>
+                                        <span class="text" style="margin: 0px 5px 0px 5px;"> ${{ context.listing.rent_price }} </span> 
+                                        <small style="margin-left: 2px; color:white;"> / month</small>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        </a>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
     {% endblock content %}
+    {% block script %}
+
+    {% endblock script %}

@@ -22,20 +22,23 @@ sale_check.addEventListener('change', function() {
 });
 
 rent_check.addEventListener('change', function() {
-    var for_rent = document.getElementsByClassName('for-rent');
+    var for_rent = document.getElementsByClassName('row-for-rent');
     var input_for_rent = document.getElementsByClassName('input-for-rent');
     if (this.checked) {
         document.getElementById('checkbox-warning').style.display= 'none';
         document.getElementById('submit-button').removeAttribute('disabled');
-
         for (var i = 0; i < for_rent.length; i++){
-            for_rent[i].style.display = 'block';
+            for_rent[i].style.display = 'table-row';
+        }
+        for (var i = 0; i < input_for_rent.length; i++){
             input_for_rent[i].setAttribute('required', true);
             input_for_rent[i].removeAttribute('disabled');
         }
     } else {
         for (var i = 0; i < for_rent.length; i++){
             for_rent[i].style.display = 'none';
+        }
+        for (var i = 0; i < input_for_rent.length; i++){
             input_for_rent[i].removeAttribute('required');
             input_for_rent[i].setAttribute('disabled', '');
         }
@@ -51,7 +54,7 @@ function searchISBN(button){
     if (isbn.length == 13){
         button.href = "?isbn="+document.getElementById('id_isbn').value;
     } else {
-        button.href = "{% url 'create-listing' %}";
+        button.href = "/user/textbooks/create";
     }
 }
 function loadFile() {
@@ -118,14 +121,15 @@ function addCourseForm() {
     var courseFormset = document.getElementById('id_course_formset');
     var totalFormCountInput = document.getElementById('id_course-TOTAL_FORMS');
     var totalFormCount = parseInt(totalFormCountInput.value);
-
-    var newForm = courseFormset.lastElementChild.cloneNode(true);
-
+    var firstForm = courseFormset.getElementsByClassName('course-form')[0];
+    // var newForm = courseFormset.lastElementChild.cloneNode(true);
+    var newForm = firstForm.cloneNode(true);
+    console.log(firstForm);
     newForm.querySelectorAll('input').forEach(function(input) {
         var oldName = input.getAttribute('name');
-        input.setAttribute('name', oldName.replace('-' + (totalFormCount - 1) + '-', '-' + totalFormCount + '-'));
+        input.setAttribute('name', oldName.replace('-0-', '-' + (totalFormCount) + '-'));
         var oldId = input.getAttribute('id');
-        input.setAttribute('id', oldId.replace('-' + (totalFormCount - 1) + '-', '-' + totalFormCount + '-'));
+        input.setAttribute('id', oldId.replace('-0-', '-' + (totalFormCount) + '-'));
         input.value = '';
     });
 
@@ -138,10 +142,25 @@ function addCourseForm() {
 
 function removeCourseForm(button) {
     var currentForm = button.parentNode;
-    currentForm.parentNode.removeChild(currentForm);
-    toggleRemoveButtons('id_course_formset', '.course-form', '.remove-course-button');
+    var courseLength = document.getElementsByClassName('course-form').length;
     var totalForms = document.getElementById('id_course-TOTAL_FORMS').value;
-    document.getElementById('id_course-TOTAL_FORMS').value = totalForms - 1;
+    if (courseLength > 1){
+        currentForm.style.display = 'none';
+        currentForm.removeAttribute('class'); // Exclude from course-form list
+        currentForm.lastElementChild.setAttribute('checked',"");
+        var inputs = currentForm.getElementsByTagName('input');
+        for (var i = 0; i < inputs.length-1; i ++){
+            inputs[i].setAttribute('disabled', "");
+        }
+    // console.log(currentForm.lastElementChild);
+    // toggleRemoveButtons('id_course_formset', '.course-form', '.remove-course-button');
+        // document.getElementById('id_course-TOTAL_FORMS').value = totalForms - 1;
+    }else{
+        inputs = document.getElementsByClassName('course-form')[0].getElementsByTagName('input');
+        for (var i = 0; i < inputs.length; i ++){
+            inputs[i].value = "";
+        }
+    }
 }
 
 function toggleRemoveButtons(formsetId, formClass, buttonClass) {

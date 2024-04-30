@@ -5,12 +5,24 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
 }
+body.browse{
+    background-image: url("background_browse.png");
+    background-attachment:fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 .window {
     margin:auto;
     box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.25); 
     background-color: white;
     border-radius: 8px;
     position: relative;
+}
+.text{
+    font-family: 'Montserrat'; 
+    font-size: 14px; 
+    color:white; 
 }
 .center {
     margin: 0;
@@ -24,8 +36,6 @@ body{
     border-radius: 8px; 
     background-image: url("books.png"); 
     margin: 2%;
-    /* <a href="https://www.freepik.com/free-photo/modern-bookstore-showcasing-rows-vibrant-books_84718526.htm#fromView=search&page=1&position=22&uuid=45c3f2d9-97a9-4a79-9d3e-368c1cfffd79">Image by maniacvector on Freepik</a> */
-    /* background-color: rgba(255, 255, 255, .3); */
     background-position: left;
     background-size: cover;
     background-repeat: no-repeat;
@@ -41,9 +51,10 @@ body{
 }
 .dropdown-menu{
     --bs-dropdown-bg:  rgba(0, 0, 0, 0.5);
-    /* --bs-dropdown-bg: black; */
     --bs-dropdown-link-hover-bg: unset;
-    /* border: 0; */
+}
+.dropdown-item:hover{
+    background-color: #17141f;
 }
 .profile-section{
     float: right;
@@ -79,6 +90,11 @@ body{
     padding-left:50px; 
     padding-top:50px; 
     padding-bottom:20px; 
+    font-family: 'Montserrat'; 
+    font-weight: 700;
+}
+.heading{
+    font-size: 20px; 
     font-family: 'Montserrat'; 
     font-weight: 700;
 }
@@ -177,6 +193,21 @@ ul {
     position: relative;
     padding: 30px;
 }
+.message-body {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+.messenger-left{
+    margin: auto; 
+    background: rgba(0, 0, 0, 0.5); 
+    border-radius: 8px;
+    position: relative;
+    padding: 30px;
+}
 .set-profile{
     margin-top: 0; 
     background: white; 
@@ -184,6 +215,13 @@ ul {
     box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.25); 
     border-radius: 8px;
     margin-bottom: 4%;
+}
+.messenger{
+    margin-top: 0; 
+    background: white; 
+    border-radius: 8px;
+    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.25); 
+    border-radius: 8px;
 }
 .multi-card-left{
     margin: auto; 
@@ -215,6 +253,49 @@ ul {
     margin-bottom: 2%;
     left:10%;
 }
+.search-bar{
+    position: absolute;
+    display: block;
+    width: 40%;
+    min-height: 30%;
+    padding: 50px;
+    border-radius: 8px;
+    left:30%;
+    top: 30%;
+}
+.search-left{
+    margin: auto; 
+    background: rgba(0, 0, 0, 0.5); 
+    border-radius: 8px;
+    position: relative;
+    padding: 30px;
+}
+.search-right{
+    /* margin: 2% 10% 0 1%;
+    width: 55%;
+    float: left; */
+    margin-top: 0; 
+    border-radius: 8px;
+}
+.search-result{
+    margin-top: 2%;
+}
+.listing{
+    cursor: pointer; 
+    padding: 26px; 
+    background-color: rgba(0,0,0,.5); 
+    border-radius: 8px; 
+    margin-bottom: 12px;
+}
+.search-item{
+    background: rgba(0, 0, 0, 0.5); 
+    border-radius: 8px;
+    position: relative;
+    display: block;
+    top: 22%;
+    width: 100%;
+    height:20%;
+}
 .cards{
     position: relative;
     display: flex;
@@ -226,6 +307,39 @@ ul {
 .card{
     border-radius: 8px;
 }
+.user-sender{
+    margin-top: 5px; 
+    width: fit-content; 
+    max-width: 100%;
+    margin-left: auto; 
+    margin-right: 0;  
+    background-color:#593196; 
+    padding:6px 12px; 
+    border-radius: 14px;
+    overflow-wrap: break-word;
+}
+.other-sender{
+    margin-top: 5px; 
+    width: fit-content; 
+    max-width: 100%;
+    background-color:#ded6ea; 
+    padding:6px 12px; 
+    border-radius: 14px;
+    overflow-wrap: break-word;
+}
+.other-user{
+    cursor: pointer; 
+    display: flex; 
+    align-items: center;  
+    padding: 10px; 
+    border-radius: 30px;
+}
+.other-user:hover{
+    background-color: rgb(23,20,31);
+}
+.example::-webkit-scrollbar {
+    display: none;
+  }
 #circle {
     width: 35 px;
     height: 35px;
@@ -244,9 +358,6 @@ ul {
     font-size: 14px;
 }
 .list-group-item{
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background-color: unset;
     font-family: 'Montserrat';
     --bs-list-group-action-hover-bg: #17141f;
     --bs-list-group-action-active-bg: #17141f;
@@ -257,7 +368,6 @@ ul {
     background-color: white;
     width: 80%;
     min-height: 30%;
-    /* padding: 50px; */
     border-radius: 8px;
     margin-top:2%;
     margin-bottom: 2%;
@@ -289,8 +399,8 @@ ul {
     position: absolute;
     left: 0;
     right: 0;
-    width: 300px;
-    height: 60px;
+    min-width: 300px;
+    min-height: 60px;
     margin: auto;
     overflow-y: auto;
     font-size: 14px;
@@ -299,10 +409,11 @@ ul {
     vertical-align: middle;
 }
 @keyframes out{
-    from {opacity: 1;}
-    to {opacity: 0;}
+    from {opacity: 1;
+        display: block;}
+    to {opacity: 0; 
+        display: none;}
 }
-  
 #alert{
     animation: out 2s ease-out forwards;
     animation-delay: 2s;
@@ -359,7 +470,6 @@ ul {
     }
     .dropdown-menu{
         --bs-dropdown-bg:  unset;
-        /* --bs-dropdown-bg: black; */
         --bs-dropdown-link-hover-bg: unset;
         border: 0;
     }
@@ -368,11 +478,35 @@ ul {
         margin-top: 3%;
         margin-bottom: 3%;
     } 
+    .messenger-left{
+        width: 60%;
+        height: 400px;
+        margin-top: 3%;
+        margin-bottom: 3%;
+    } 
+    .search-left{
+        width: 60%;
+        height: 400px;
+        margin-top: 3%;
+        margin-bottom: 3%;
+    }
     .set-profile{
         width: 60%;
         margin: auto; 
         padding-bottom: 2%;
         margin-bottom: 10%;
+    }
+    .messenger{
+        width: 60%;
+        margin: auto; 
+        padding-bottom: 2%;
+        margin-bottom: 10%;  
+    }
+    .search-right{
+        width: 60%;
+        margin: auto; 
+        padding-bottom: 2%;
+        margin-bottom: 10%; 
     }
     .new-post-left{
         display: block;
@@ -387,6 +521,19 @@ ul {
         padding-bottom: 2%;
         margin-bottom: 10%;
     }
+    .image-upload{
+        cursor:pointer; 
+        max-width: 100%; 
+        aspect-ratio:1; 
+        background-color: unset; 
+        justify-content: center; 
+        align-items: center; 
+        border-color: grey; 
+        border-width: 1px; 
+        border-style: dashed; 
+        margin-top: 15px;
+        display: inherit;
+    }
     .textbook-post{
         height: fit-content; 
         display: block;
@@ -398,6 +545,16 @@ ul {
     }
     .textbook-image{
         width: 100%;
+    }
+    .search-bar{
+        position: absolute;
+        display: block;
+        width: 80%;
+        min-height: 30%;
+        padding: 50px;
+        border-radius: 8px;
+        left:10%;
+        top: 30%;
     }
 }
 
@@ -425,7 +582,36 @@ ul {
         padding: 3%;
         box-sizing: border-box;
         float: left;
+    }
+    .messenger-left{
+        margin-left: 10%;
+        margin-top: 2%;
+        margin-right: 2%;
+        width: 23%;
+        height: 690px;
+        padding: 3%;
+        box-sizing: border-box;
+        float: left;
     } 
+    .search-left{
+        margin-left: 10%;
+        margin-top: 2%;
+        margin-right: 2%;
+        width: 23%;
+        height: 690px;
+        padding: 3%;
+        box-sizing: border-box;
+        float: left;
+    }
+    .search-right{
+        margin-top: 2%;
+        padding-bottom: 2%;
+        box-sizing: border-box;
+        width: 55%;
+        height: 690px;
+        margin-right: 10%;
+        float: left;   
+    }
     .new-post-form{
         margin-top: 2%;
         padding-bottom: 2%;
@@ -433,6 +619,7 @@ ul {
         width: 55%;
         margin-right: 10%;
         float: right;
+        margin-bottom: 2%;
     }
     .new-post-left{
         display: flex; 
@@ -449,6 +636,15 @@ ul {
         width: 55%;
         margin-right: 10%;
         float: left;
+    }
+    .messenger{
+        margin-top: 2%;
+        padding-bottom: 2%;
+        box-sizing: border-box;
+        width: 55%;
+        height: 690px;
+        margin-right: 10%;
+        float: left;   
     }
     #logout-dropdown{
         display: none;

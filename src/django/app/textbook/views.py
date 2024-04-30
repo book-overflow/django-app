@@ -5,9 +5,11 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponse
 from shared.models import TextbookCopy, Textbook, Author, Course
 from student_profile.decorators import profile_required
-from .forms import CourseFormSet, AuthorFormSet, TextbookForm, TextbookCopyForm
+from .forms import CourseFormSet, AuthorFormSet, TextbookForm, TextbookCopyForm, AuthorForm, CourseForm
 from .api import searchISBN
 from django.contrib import messages
+from django.forms import modelformset_factory
+from django.db.models import Q, Count
 
 @login_required
 @profile_required
@@ -60,7 +62,7 @@ def createListing(request):
                     textbook_copy.save()
                 else:
                     raise ValidationError(textbook_copy_form.errors)
-                messages.info(request, message="New Listing Created",extra_tags="success")
+                messages.success(request, message="New Listing Created")
                 return redirect('get-user-listings')
         except ValidationError as e:
             form_errors = e.message_dict
@@ -104,7 +106,53 @@ def createListing(request):
 @login_required
 @profile_required
 def getListings(request):
-    return render(request, 'listings.html')
+    query = request.GET.get('query')    
+    queryset = Textbook.objects.all()
+
+    if not query:
+        return render(request, 'listings.html')
+
+    terms = query.split()
+    final_filter = Q()
+    
+    for term in terms:
+        # Try to match the term with ISBN
+        final_filter |= Q(isbn__icontains=term)
+        
+        # Try to match the term with title
+        final_filter |= Q(title__icontains=term)
+        
+        # Try to match the term with authors' names
+        final_filter |= Q(_authors__first_name__icontains=term) | Q(_authors__last_name__icontains=term)
+        
+        # Try to match the term with course name or course number
+        final_filter |= Q(_belongs__name__icontains=term) | Q(_belongs__course_number__icontains=term)
+    
+    queryset = queryset.filter(final_filter)
+    queryset = queryset.annotate(
+        num_matches=Count('isbn') + Count('title') + Count('_authors') + Count('_belongs')
+    )
+    queryset = queryset.order_by('-num_matches')
+    queryset.distinct()
+    textbook_copies = []
+    courses = []
+    authors = []
+    for textbook in queryset:
+        for copy in textbook.copies.all():
+            textbook_copies.append({
+                'listing': copy,
+                'textbook': copy._textbook,
+                'authors': list(copy._textbook._authors.all()),
+                'courses': list(copy._textbook._belongs.all())
+            })
+        for course in textbook._belongs.all():
+            if course not in courses:
+                courses.append(course)
+        for author in textbook._authors.all():
+            if author not in authors:
+                authors.append(author)
+
+    return render(request, 'listings.html', context={'copies': textbook_copies, 'courses':courses, 'authors':authors}) # Added Temp. context for testing
 
 @login_required
 @profile_required
@@ -159,5 +207,68 @@ def getUserListing(request, id):
         # django templates restricts access to attributes that begin with underscore
         'textbook': listing._textbook,
         'authors': list(listing._textbook._authors.all()),
-        'courses': list(listing._textbook._belongs.all())
+        'courses': list(listing._textbook._belongs.all()),
+        'condition': listing.condition.replace('_', ' ')
     })
+
+
+@login_required
+@profile_required
+def deleteUserListing(request, id):
+    try:
+        listing = TextbookCopy.objects.get(pk=id)
+        listing.delete()
+        messages.success(request, message="Listing Deleted")
+        return redirect('get-user-listings')
+    except TextbookCopy.DoesNotExist:
+        return HttpResponse('<div>Listing not found</div>')
+    
+@login_required
+@profile_required
+def editUserListing(request, id):
+    CourseModelFormSet = modelformset_factory(Course, form=CourseForm, extra=0, can_delete=True)
+    AuthorModelFormSet = modelformset_factory(Author, form=AuthorForm, extra=0)
+    listing = TextbookCopy.objects.get(pk=id)
+    textbook = listing._textbook
+    authors = textbook._authors.all()
+    courses = textbook._belongs.all()
+
+    if request.method == 'POST':
+        # Only allow listing & course info update 
+        textbook_copy_form = TextbookCopyForm(request.POST or None, request.FILES, instance=listing)
+        course_formset = CourseModelFormSet(request.POST or None, prefix='course')
+        try:
+            textbook._belongs.clear()
+            for course_form in course_formset: 
+                if f'{course_form.prefix}-DELETE' not in request.POST:
+                    if course_form.is_valid():
+                        course = course_form.save(commit=False)
+                        course._university = request.user.student._university
+                        course.save()
+                        textbook._belongs.add(course)
+                    elif request.POST[f'{course_form.prefix}-course_number']:
+                        course = Course.objects.get(course_number=request.POST[f'{course_form.prefix}-course_number'])
+                        textbook._belongs.add(course)
+                    else:
+                        raise ValidationError(course_form.errors)
+            textbook.save()
+            if textbook_copy_form.is_valid():
+                textbook_copy_form.save()
+            else:
+                raise ValidationError(textbook_copy_form.errors)
+            messages.success(request, message="Listing Updated")
+            return redirect('get-user-listings')
+        except ValidationError as e:
+            print(e)
+    else:
+        textbook_copy_form = TextbookCopyForm(request.FILES, instance=listing)
+        textbook_form = TextbookForm(instance=textbook)
+        course_formset = CourseModelFormSet(queryset=courses, prefix='course')
+        author_formset = AuthorModelFormSet(queryset=authors, prefix='author')
+        return render(request, 'createListing.html', {
+                'for_edit': True,
+                'author_formset': author_formset,
+                'course_formset': course_formset,
+                'textbook_form': textbook_form,
+                'textbook_copy_form': textbook_copy_form
+        })
