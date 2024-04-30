@@ -85,14 +85,16 @@ def view_conversation(request, conversation_id):
         other_conversations = Conversation.objects.filter(participants=request.user)
         other_users = []
         for c in other_conversations:
-            last_message = c.messages.all().order_by("-timestamp")[0]
-            for participant in c.participants.all().exclude(email=request.user.email):
-                student = Student.objects.get(email=participant)
-                other_users.append({
-                    'id': c.pk, 
-                    'student': student, 
-                    'last_message': last_message
-                })
+            c_messages = c.messages.all()
+            if c_messages:
+                last_message = c_messages.order_by("-timestamp")[0]
+                for participant in c.participants.all().exclude(email=request.user.email):
+                    student = Student.objects.get(email=participant)
+                    other_users.append({
+                        'id': c.pk, 
+                        'student': student, 
+                        'last_message': last_message
+                    })
         if not users.exists():
             return HttpResponse("No other participants found, something is wrong.")
 
@@ -108,6 +110,7 @@ def view_conversation(request, conversation_id):
             form = MessageForm()
 
         messages = conversation.messages.all().order_by("timestamp")
+
         other_users = sorted(other_users, key=lambda d:d['last_message'].timestamp, reverse=True)
 
         return render(request, "view_conversation.html", {
