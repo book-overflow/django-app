@@ -22,7 +22,7 @@
                                 </div>
                                 </div>
                             {% else %}
-                            <a class="other-user mb-3" href="{% url 'view_conversation' user.id%}" style="text-decoration: none !important;">
+                            <a class="other-user mb-3" href="{% url 'view_conversation' user.conversation_id %}" style="text-decoration: none !important;">
                                 <img style="object-fit: cover; height: 50px; width: 50px; display: block; clip-path: circle();"  src="{{ user.student.profile.image.url }}" />
                                 <div class="text" style="height: 40px; overflow: hidden; margin-left: 14px; word-wrap: break-word;">
                                     <b style="color: #ded6ea;">{{user.student.first_name}} {{ user.student.last_name }}</b><br>
