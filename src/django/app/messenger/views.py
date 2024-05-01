@@ -91,7 +91,7 @@ def view_conversation(request, conversation_id):
                 for participant in c.participants.all().exclude(email=request.user.email):
                     student = Student.objects.get(email=participant)
                     other_users.append({
-                        'id': c.pk, 
+                        'conversation_id': c.pk, 
                         'student': student, 
                         'last_message': last_message
                     })
